@@ -1,0 +1,688 @@
+/* Hero section — pixel match to AstroNext reference (1440 artboard) */
+
+:root {
+  --hero-navy: #1a237e;
+  --hero-navy-deep: #121a5c;
+  --hero-navy-cta: #1a1a40;
+  --hero-purple-nav: #512d81;
+  --hero-wheel-gold: #d4af37;
+  --hero-gold: #b8944a;
+  --hero-bg-base: #fbf4f8;
+  --hero-bg-mid: #f7edf2;
+  --hero-bg-edge: #f2e6ec;
+  --hero-text-body: #333333;
+  --hero-text-nav: #2e2648;
+}
+
+/* —— Header (reference: completely transparent, overlays the pink hero section) —— */
+.nav-header.nav-header--home {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  padding: 1.8rem 4.5% 1.2rem 4.5% !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important; /* Top align because of the two-row stack on the right */
+  z-index: 1000 !important;
+  transition: all 0.3s ease !important;
+}
+
+.nav-header.nav-header--home.scrolled {
+  position: sticky !important;
+  background: rgba(255, 255, 255, 0.65) !important;
+  backdrop-filter: blur(16px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(120%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 4px 30px rgba(119, 78, 171, 0.04) !important;
+  padding: 0.8rem 4.5% !important;
+  align-items: center !important;
+}
+
+.nav-header--home .nav-right-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  gap: 0.9rem !important;
+  max-width: min(68vw, 860px) !important;
+  min-width: 0;
+}
+
+.nav-header--home.scrolled .nav-right-container {
+  gap: 0.4rem !important;
+}
+
+.nav-header--home .logo-container {
+  align-self: flex-start !important;
+  margin-top: -0.4rem !important;
+}
+
+.nav-header--home .logo-container .site-logo-img {
+  height: 110px !important; /* Perfectly sized prominent logo mark */
+  max-width: 320px !important;
+  transition: all 0.3s ease !important;
+}
+
+.nav-header--home.scrolled .logo-container .site-logo-img {
+  height: 80px !important;
+}
+
+/* Icons styling on top right */
+.nav-header--home .nav-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1.6rem !important;
+}
+
+.nav-header--home .nav-actions .action-btn {
+  color: #110729 !important; /* Sleek dark color */
+  background: none !important;
+  border: none !important;
+  padding: 0.2rem !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: none !important;
+}
+
+.nav-header--home .nav-actions .action-btn:hover {
+  transform: translateY(-1px) !important;
+  opacity: 0.75 !important;
+}
+
+/* Nav Menu links styling */
+.nav-header--home .nav-menu {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  justify-content: flex-end !important;
+  flex-wrap: wrap !important;
+  row-gap: 0.35rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.nav-header--home .nav-link {
+  color: #110729 !important;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
+  font-size: 0.88rem !important;
+  font-weight: 600 !important;
+  padding: 0.5rem 1.1rem !important;
+  border-radius: 6px !important; /* Elegant rounded rectangle corners matching reference image */
+  transition: all 0.25s ease !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  background: transparent !important;
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  white-space: nowrap !important;
+  line-height: 1.2 !important;
+}
+
+.nav-header--home .nav-link::after {
+  content: none !important;
+  display: none !important;
+}
+
+.nav-header--home .nav-link:hover {
+  color: #432371 !important;
+  background: rgba(67, 35, 113, 0.05) !important;
+}
+
+.nav-header--home .nav-link.active {
+  background: #432371 !important; /* Rich solid purple background */
+  color: #ffffff !important; /* Bold white text */
+  box-shadow: none !important;
+  font-weight: 700 !important;
+}
+
+/* —— Hero block —— */
+.hero-section {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.02fr 0.98fr;
+  align-items: end;
+  gap: 0.5rem 2.5rem;
+  min-height: 100vh;
+  max-height: none;
+  padding: 8.5rem 4.5% 0 4.5% !important; /* Top room for header; flush to ticker below */
+  margin: 0 !important;
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  overflow-x: clip;
+  overflow-y: visible;
+  /* Powder texture: soft white behind logo, warmer pink wash on the left column */
+  background-image: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.78) 24%, rgba(255, 255, 255, 0) 48%),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.68) 18%, rgba(255, 255, 255, 0.22) 36%, rgba(255, 255, 255, 0) 50%),
+    linear-gradient(to right, rgba(252, 188, 212, 0.28) 0%, rgba(248, 172, 200, 0.16) 28%, transparent 48%),
+    linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.25) 35%, rgba(255, 255, 255, 0.78) 68%, rgba(255, 255, 255, 0.98) 100%),
+    url('../assets/pink_powder_texture.png') !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  isolation: isolate;
+}
+
+/* Pink dust / sparkle layers (reference hero) */
+.hero-stardust {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-stardust__wash {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 38% at 12% 6%, rgba(255, 255, 255, 0.94) 0%, transparent 55%), /* Neutral wash behind logo */
+    radial-gradient(ellipse 95% 75% at 50% 42%, rgba(255, 248, 252, 0.75) 0%, transparent 58%),
+    radial-gradient(ellipse 72% 58% at 2% 28%, rgba(248, 165, 200, 0.4) 0%, transparent 52%), /* Pink left column */
+    radial-gradient(ellipse 68% 52% at 6% 58%, rgba(242, 168, 205, 0.34) 0%, transparent 50%),
+    radial-gradient(ellipse 78% 62% at 95% 22%, rgba(255, 255, 255, 0.7) 0%, transparent 48%),
+    radial-gradient(ellipse 60% 48% at 80% 80%, rgba(255, 255, 255, 0.5) 0%, transparent 46%),
+    radial-gradient(ellipse 58% 48% at 10% 78%, rgba(242, 168, 205, 0.44) 0%, transparent 44%),
+    radial-gradient(ellipse 40% 35% at 50% 88%, rgba(255, 255, 255, 0.4) 0%, transparent 42%);
+}
+
+.hero-stardust__mist {
+  position: absolute;
+  inset: -8%;
+  background-image:
+    radial-gradient(ellipse 85% 65% at 62% 36%, rgba(255, 255, 255, 0.5) 0%, transparent 56%), /* White glow on the right */
+    radial-gradient(ellipse 58% 52% at 12% 42%, rgba(245, 165, 200, 0.36) 0%, transparent 52%), /* Pink mist on left column */
+    radial-gradient(ellipse 52% 46% at 88% 65%, rgba(255, 255, 255, 0.45) 0%, transparent 48%), /* White glow on the right */
+    radial-gradient(ellipse 45% 40% at 42% 72%, rgba(255, 255, 255, 0.3) 0%, transparent 46%);
+  filter: blur(22px);
+  opacity: 1;
+}
+
+.hero-stardust__glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 75% 55% at 55% 42%, rgba(255, 255, 255, 0.65) 0%, transparent 52%), /* White glow on the right */
+    radial-gradient(ellipse 52% 46% at 14% 46%, rgba(255, 220, 235, 0.38) 0%, transparent 50%);
+  opacity: 0.92;
+}
+
+.hero-stardust__haze {
+  position: absolute;
+  inset: 0;
+  background:
+  radial-gradient(ellipse 85% 70% at 18% 45%, rgba(252, 175, 205, 0.22) 0%, transparent 62%),
+    radial-gradient(ellipse 100% 80% at 50% 50%, rgba(252, 175, 205, 0.16) 0%, transparent 70%),
+    linear-gradient(105deg, rgba(248, 160, 195, 0.2) 0%, transparent 42%, rgba(240, 150, 190, 0.1) 100%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.hero-stardust__dust {
+  position: absolute;
+  inset: -12%;
+  background-size: 300px 300px;
+  background-repeat: repeat;
+  opacity: 0.88;
+  mix-blend-mode: multiply;
+  animation: hero-dust-drift 90s linear infinite;
+}
+
+.hero-stardust__dust--alt {
+  background-size: 220px 220px;
+  opacity: 0.72;
+  mix-blend-mode: soft-light;
+  animation: hero-dust-drift-alt 120s linear infinite reverse;
+  transform: rotate(2deg) scale(1.05);
+}
+
+.hero-stardust__dust--fine {
+  background-size: 160px 160px;
+  opacity: 0.55;
+  mix-blend-mode: color-burn;
+  animation: hero-dust-drift 65s linear infinite reverse;
+  filter: blur(0.3px);
+}
+
+.hero-stardust__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.28;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+@keyframes hero-dust-drift {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-120px, -60px);
+  }
+}
+
+@keyframes hero-dust-drift-alt {
+  from {
+    transform: rotate(2deg) scale(1.04) translate(0, 0);
+  }
+  to {
+    transform: rotate(2deg) scale(1.04) translate(80px, 40px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-stardust__dust,
+  .hero-stardust__dust--alt,
+  .hero-stardust__dust--fine {
+    animation: none;
+  }
+}
+
+.hero-section::before,
+.hero-section::after {
+  content: none;
+  display: none;
+}
+
+/* —— Left column —— */
+.hero-left {
+  position: relative;
+  z-index: 2;
+  align-self: center;
+  padding: 0.5rem 0 1.25rem;
+  padding-left: clamp(0.5rem, 2vw, 1.5rem);
+  max-width: 620px;
+}
+
+.hero-title {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif) !important;
+  font-size: clamp(2.65rem, 4.35vw, 4.35rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.08 !important;
+  color: var(--hero-navy) !important;
+  -webkit-text-fill-color: var(--hero-navy) !important;
+  letter-spacing: -0.025em !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.hero-title-second {
+  display: inline !important;
+  white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  .hero-title-second {
+    white-space: normal;
+  }
+}
+
+.hero-subtitle {
+  font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
+  font-size: clamp(1rem, 1.25vw, 1.125rem) !important;
+  line-height: 1.55 !important;
+  color: var(--hero-text-body) !important;
+  max-width: 500px !important;
+  margin-bottom: 2.35rem !important;
+  font-weight: 400 !important;
+}
+
+/* WhatsApp CTA — overlapping green speech bubble + deep navy pill matching reference */
+.hero-section .whatsapp-badge-wrapper {
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 1.6rem !important;
+}
+
+.hero-section .whatsapp-badge {
+  background: #0f052d !important; /* Deep navy/purple space pill background */
+  border: 2px solid rgba(255, 255, 255, 0.85) !important; /* Strong, crisp white border */
+  border-radius: 50px !important;
+  padding: 0 2rem 0 3.2rem !important; /* Spaced to allow absolute icon on left */
+  height: 52px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  position: relative !important;
+  box-shadow:
+    0 10px 30px rgba(15, 5, 45, 0.35),
+    0 0 15px rgba(255, 255, 255, 0.1) inset !important;
+  transition: all 0.3s ease !important;
+}
+
+.hero-section .whatsapp-icon-circle {
+  position: absolute !important;
+  left: -8px !important; /* Overlap the left edge exactly like reference image */
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 58px !important; /* Taller overlapping bubble */
+  height: 58px !important;
+  background: #25d366 !important; /* Rich green speech bubble background */
+  color: #ffffff !important; /* Crisp white phone icon inside */
+  border: 3px solid #ffffff !important; /* Crisp white border framing the bubble */
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18) !important;
+  animation: none !important;
+}
+
+.hero-section .whatsapp-icon-circle svg {
+  width: 28px !important;
+  height: 28px !important;
+  fill: currentColor !important;
+}
+
+.hero-section .whatsapp-badge-text {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  letter-spacing: 0.1px !important;
+  margin-left: 0.2rem !important;
+  white-space: nowrap !important;
+}
+
+/* —— Right column: wheel + woman —— */
+.hero-right {
+  position: relative;
+  z-index: 2;
+  min-height: 0;
+  height: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  overflow: visible;
+}
+
+.hero-visual-stack {
+  position: relative;
+  width: min(100%, 720px);
+  max-width: 720px;
+  height: auto;
+  min-height: 0;
+  margin: 0 auto;
+  display: grid;
+  grid-template: 1fr / 1fr;
+  align-items: end;
+  justify-items: center;
+  overflow: visible;
+  padding-bottom: 0;
+  isolation: isolate;
+}
+
+/* Soft neutral hub behind wheel + upper body (reference) */
+.hero-visual-stack::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  width: min(520px, 78%);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.92) 0%,
+    rgba(255, 252, 254, 0.55) 42%,
+    transparent 72%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-wheel-layer {
+  grid-area: 1 / 1;
+  align-self: stretch;
+  justify-self: center;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.hero-woman-layer {
+  grid-area: 1 / 1;
+  align-self: end;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hero-zodiac-spin {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  width: min(94%, 520px);
+  max-width: 520px;
+  aspect-ratio: 1;
+  z-index: 1;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transform-origin: 50% 50%;
+  animation: hero-zodiac-spin 120s linear infinite;
+  will-change: transform;
+}
+
+@keyframes hero-zodiac-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+.hero-zodiac-spin .zodiac-wheel-bg.zodiac-wheel-svg {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto;
+  display: block;
+  color: #c9a227 !important;
+  opacity: 0.95 !important;
+  mix-blend-mode: normal !important;
+  animation: none !important;
+  filter: drop-shadow(0 0 1px rgba(201, 162, 39, 0.35)) !important;
+}
+
+.hero-woman-cutout {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  line-height: 0;
+}
+
+.hero-woman-layer .hero-woman-fg,
+.hero-woman-layer .hero-woman-fg--generated {
+  position: relative !important;
+  z-index: 2 !important;
+  display: block !important;
+  width: 118% !important;
+  max-width: min(600px, 62vw) !important;
+  min-width: 300px;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: bottom center !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  animation: none !important;
+  transform: scale(1.06) translateZ(0) !important;
+  transform-origin: bottom center;
+  margin: 0 auto !important;
+  margin-bottom: 0 !important;
+  pointer-events: none;
+}
+
+.hero-section .zodiac-wheel-bg.zodiac-wheel-svg {
+  color: #c9a227 !important;
+  opacity: 0.95 !important;
+}
+
+/* —— Hero bottom bar (reference: centered italic serif) —— */
+.hero-ticker-bar {
+  width: 100%;
+  margin: 0 !important;
+  margin-top: 0 !important;
+  padding: 1rem 4.5% !important;
+  background: var(--hero-navy) !important;
+  border: none !important;
+  box-shadow: none !important;
+  position: relative;
+  z-index: 3;
+  text-align: center;
+}
+
+.hero-ticker-text {
+  margin: 0;
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+/* Legacy ticker hooks (other pages) */
+.hero-section + .ticker-footer,
+.page-section > .ticker-footer:not(.hero-ticker-bar) {
+  margin-top: 0 !important;
+}
+
+.app-container .space-sparkles {
+  display: none;
+}
+
+.site-logo {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  line-height: 0;
+}
+
+.site-logo:not(.site-logo--footer) .site-logo-img {
+  display: block;
+  height: 74px;
+  width: auto;
+  max-width: 320px;
+  object-fit: contain;
+  background: transparent;
+}
+
+.site-logo--compact .site-logo-img {
+  height: 56px;
+  max-width: 240px;
+}
+
+.site-logo--phone .site-logo-img {
+  height: auto;
+  max-width: 210px;
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  /* Hide text links on tablets and mobile to avoid squishing and overlapping */
+  .nav-header--home nav {
+    display: none !important;
+  }
+
+  .nav-header--home .nav-right-container {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.6rem !important;
+  }
+
+  .nav-header.nav-header--home {
+    padding: 0.8rem 4.5% !important;
+    align-items: center !important;
+  }
+
+  .nav-header--home .logo-container {
+    margin-top: 0 !important;
+  }
+
+  .nav-header--home .logo-container .site-logo-img {
+    height: 88px !important; /* Prominent elegant logo on mobile viewports */
+  }
+
+  .hero-section {
+    grid-template-columns: 1fr;
+    text-align: center;
+    min-height: auto;
+    padding-bottom: 0 !important;
+  }
+
+  .hero-left {
+    align-items: center;
+    padding-left: 0;
+    padding-bottom: 1rem;
+  }
+
+  .hero-subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-right {
+    min-height: 0;
+  }
+
+  .hero-visual-stack {
+    min-height: 0;
+    max-width: 100%;
+  }
+
+  .hero-woman-layer .hero-woman-fg,
+  .hero-woman-layer .hero-woman-fg--generated {
+    max-height: none !important;
+    min-width: unset;
+    width: 118% !important;
+    max-width: 100% !important;
+    transform: scale(1.14) translateZ(0) !important;
+  }
+
+  .hero-visual-stack::before {
+    top: 36%;
+    width: min(380px, 88%);
+  }
+
+  .hero-zodiac-spin {
+    top: 38%;
+    width: min(92%, 380px);
+    max-width: 380px;
+  }
+
+  .hero-woman-layer .hero-woman-fg,
+  .hero-woman-layer .hero-woman-fg--generated {
+    transform: scale(1.02) translateZ(0) !important;
+    width: 112% !important;
+  }
+
+  .hero-ticker-bar {
+    padding: 0.9rem 5% !important;
+  }
+}

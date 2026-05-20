@@ -1,0 +1,139 @@
+/* Embrace Divine Grace — pixel match to reference (centered white band) */
+
+.puja-promo-section {
+  background: #ffffff !important;
+  padding: 5.5rem 5% 4.5rem !important;
+  text-align: center;
+  border-bottom: none !important;
+  overflow: visible;
+  scroll-margin-top: 110px;
+}
+
+.puja-promo-title {
+  font-family: var(--font-display, 'Playfair Display', 'Cormorant Garamond', Georgia, serif) !important;
+  font-size: clamp(2.55rem, 3.85vw, 3.45rem) !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.01em !important;
+  color: #f15a24 !important;
+  -webkit-text-fill-color: #f15a24 !important;
+  background: none !important;
+  margin: 0 auto 0.7rem !important;
+  max-width: 900px;
+}
+
+.puja-promo-subtitle {
+  font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
+  font-size: clamp(1.28rem, 1.75vw, 1.55rem) !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+  line-height: 1.35 !important;
+  color: #1a1a1a !important;
+  -webkit-text-fill-color: #1a1a1a !important;
+  margin: 0 auto 1.25rem !important;
+  max-width: 720px;
+}
+
+.puja-promo-divider {
+  width: min(520px, 88vw);
+  height: 0;
+  border: none;
+  border-top: 2px dotted #c8c8c8 !important;
+  margin: 0 auto 1.75rem;
+}
+
+.puja-promo-body {
+  font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
+  font-size: clamp(0.98rem, 1.12vw, 1.05rem) !important;
+  font-weight: 400 !important;
+  line-height: 1.65 !important;
+  color: #4a4a4a !important;
+  max-width: min(680px, 92vw) !important;
+  margin: 0 auto 2.35rem !important;
+}
+
+.puja-promo-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 auto 3.25rem !important;
+  padding: 0.82rem 2.35rem !important;
+  min-height: 48px;
+  border-radius: 999px !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.92) !important;
+  background: #1a0a4e !important;
+  color: #ffffff !important;
+  font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow:
+    0 0 0 1px rgba(200, 185, 235, 0.35),
+    0 8px 28px rgba(26, 10, 78, 0.22),
+    0 0 24px rgba(180, 160, 220, 0.18) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.puja-promo-btn:hover {
+  transform: translateY(-2px);
+  background: #220d62 !important;
+  box-shadow:
+    0 0 0 1px rgba(220, 205, 255, 0.45),
+    0 12px 32px rgba(26, 10, 78, 0.28),
+    0 0 28px rgba(180, 160, 220, 0.24) !important;
+}
+
+/* Kalash + lavender wave (baked into reference art) */
+.puja-promo-visual {
+  position: relative;
+  width: min(900px, 100%);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.puja-promo-image {
+  display: block;
+  width: 100%;
+  max-width: min(720px, 92vw);
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+  object-position: center;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 640px) {
+  .puja-promo-section {
+    padding: 3.5rem 4% 3rem !important;
+  }
+
+  .puja-promo-title {
+    font-size: clamp(2rem, 8vw, 2.45rem) !important;
+  }
+
+  .puja-promo-subtitle {
+    font-size: 1.15rem !important;
+  }
+
+  .puja-promo-body {
+    margin-bottom: 2rem !important;
+  }
+
+  .puja-promo-btn {
+    margin-bottom: 2.5rem !important;
+    padding: 0.75rem 1.85rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  .puja-promo-image {
+    max-width: min(94vw, 440px);
+  }
+}

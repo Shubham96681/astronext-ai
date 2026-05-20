@@ -1,0 +1,223 @@
+@import './design-tokens.css';
+
+.kundali-page {
+  background: #fff;
+  color: var(--astro-text);
+  font-family: var(--font-sans);
+}
+
+.kundali-hero {
+  position: relative;
+  min-height: clamp(380px, 52vh, 520px);
+  padding: clamp(7.5rem, 12vw, 9.5rem) var(--astro-gutter) clamp(2rem, 4vw, 3rem);
+  overflow: hidden;
+  background-color: #fbf4f8;
+  background-image:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.78) 24%, transparent 48%),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.22) 36%, transparent 50%),
+    url('../assets/pink_powder_texture.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.kundali-hero__inner {
+  position: relative;
+  z-index: 2;
+  max-width: var(--astro-content-max);
+  margin: 0 auto;
+}
+
+.kundali-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 4vw, 3.75rem);
+  font-weight: 700;
+  line-height: 1.12;
+  color: var(--astro-text);
+  margin: 0 0 1rem;
+}
+
+.kundali-hero__title span {
+  color: var(--astro-orange);
+}
+
+.kundali-hero__subtitle {
+  font-size: clamp(1rem, 1.35vw, 1.125rem);
+  line-height: 1.65;
+  color: var(--astro-text-body);
+  max-width: 560px;
+  margin: 0;
+}
+
+.kundali-page__ticker {
+  margin: 0;
+}
+
+.kundali-main {
+  padding: clamp(2.5rem, 5vw, 4rem) var(--astro-gutter) clamp(4rem, 8vw, 6rem);
+}
+
+.kundali-main__grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) minmax(320px, 1.1fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  max-width: var(--astro-content-max);
+  margin: 0 auto;
+  align-items: start;
+}
+
+.kundali-form-card,
+.kundali-output-card {
+  background: var(--astro-card-bg);
+  border: 1px solid var(--astro-card-border);
+  border-radius: var(--astro-card-radius);
+  padding: clamp(1.5rem, 2.5vw, 2rem);
+}
+
+.kundali-form-card__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2vw, 1.85rem);
+  color: var(--astro-orange);
+  margin: 0 0 1.5rem;
+  font-weight: 700;
+}
+
+.kundali-form__group {
+  margin-bottom: 1.1rem;
+}
+
+.kundali-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.kundali-form__label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--astro-text);
+  margin-bottom: 0.4rem;
+}
+
+.kundali-form__input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--astro-card-border);
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  background: #fff;
+  color: var(--astro-text);
+}
+
+.kundali-form__input:focus {
+  outline: 2px solid var(--astro-purple);
+  outline-offset: 1px;
+}
+
+.kundali-form__gender {
+  border: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.kundali-form__gender legend {
+  margin-right: 0.5rem;
+}
+
+.kundali-form__radio {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.kundali-form__submit {
+  width: 100%;
+  max-width: 352px;
+  height: 65px;
+  border: none;
+  border-radius: 32.5px;
+  background: var(--astro-navy);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.kundali-form__submit:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.kundali-output-card {
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kundali-output-card__loading,
+.kundali-output-card__placeholder {
+  text-align: center;
+  padding: 2rem;
+}
+
+.kundali-output-card__spinner {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 4px solid var(--astro-purple);
+  border-top-color: var(--astro-gold);
+  animation: rotate-zodiac 1.5s linear infinite;
+  margin: 0 auto 1.5rem;
+}
+
+.kundali-output-card__placeholder h3,
+.kundali-output-card__loading h3 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--astro-navy);
+  margin: 0 0 0.5rem;
+}
+
+.kundali-output-card__wheel {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.kundali-output-card__result {
+  width: 100%;
+}
+
+.kundali-output-card__chart-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--astro-navy);
+  margin: 0 0 1rem;
+}
+
+.kundali-report-quote {
+  margin-top: 0.8rem;
+  border-left: 3px solid var(--astro-gold);
+  padding-left: 10px;
+  font-style: italic;
+  background: rgba(212, 175, 55, 0.05);
+}
+
+@media (max-width: 900px) {
+  .kundali-main__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kundali-form__row {
+    grid-template-columns: 1fr;
+  }
+}
