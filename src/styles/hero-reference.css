@@ -614,7 +614,7 @@
     min-height: auto;
     padding-bottom: 0 !important;
     gap: 0;
-    row-gap: 2.25rem;
+    row-gap: 1.35rem;
   }
 
   .hero-left {
@@ -625,7 +625,7 @@
     max-width: none;
     padding-left: 0;
     padding-right: 0;
-    padding-bottom: 1.5rem;
+    padding-bottom: 0.85rem;
     text-align: center;
     position: relative;
     z-index: 3;
@@ -677,7 +677,7 @@
 
   .hero-right {
     min-height: 0;
-    padding-top: 0.5rem;
+    padding-top: 0;
     align-items: center;
     justify-content: flex-start;
   }
@@ -686,8 +686,8 @@
     width: min(100%, 26rem);
     min-height: clamp(300px, 88vw, 400px);
     max-width: min(26rem, 94vw);
-    margin-top: 0.5rem;
-    padding-top: 1rem;
+    margin-top: 0;
+    padding-top: 0.35rem;
     padding-bottom: 0.25rem;
   }
 

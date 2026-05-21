@@ -34,7 +34,7 @@
     grid-template-columns: 1fr !important;
     align-items: stretch !important;
     gap: 0 !important;
-    row-gap: 2.5rem !important;
+    row-gap: 1.25rem !important;
   }
 
   .hero-left {
@@ -44,7 +44,7 @@
     width: 100%;
     padding-left: 0 !important;
     padding-right: 0 !important;
-    padding-bottom: 1.75rem !important;
+    padding-bottom: 0.75rem !important;
     margin-bottom: 0 !important;
     text-align: center !important;
     position: relative;
@@ -64,7 +64,7 @@
     max-width: min(20rem, calc(100vw - 2.5rem)) !important;
     margin-inline: auto !important;
     margin-top: 0.75rem !important;
-    margin-bottom: 0.75rem !important;
+    margin-bottom: 0.25rem !important;
   }
 
   .hero-title {
@@ -122,7 +122,7 @@
   .hero-right {
     min-height: 0 !important;
     margin-top: 0 !important;
-    padding-top: 0.5rem !important;
+    padding-top: 0 !important;
     align-items: center !important;
     justify-content: flex-start !important;
     position: relative;
@@ -134,8 +134,8 @@
     max-width: min(26rem, 96vw) !important;
     min-height: clamp(340px, 98vw, 420px) !important;
     margin-inline: auto !important;
-    margin-top: 0.75rem !important;
-    padding-top: 1rem !important;
+    margin-top: 0 !important;
+    padding-top: 0.35rem !important;
     padding-bottom: 0.25rem !important;
     align-items: end !important;
   }
