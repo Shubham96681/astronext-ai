@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, Check, ChevronDown, Minus, Plus, ShoppingCart, Star, X } from 'lucide-react';
-import { HeroStardust } from './HeroStardust';
+import JgProductImage from './JgProductImage';
 import heroJagannathTriad from '../assets/generated/hero-jagannath-triad.png';
 import {
   JG_STORE_HERO_SUBTITLE,
@@ -10,6 +10,7 @@ import {
   JG_STORE_TICKER_TEXT,
 } from '../content/siteCopy';
 import { JG_STORE_PRODUCTS, type JgProduct } from '../content/jgStoreProducts';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 type AvailabilityFilter = 'all' | 'in' | 'out';
 type PriceFilter = 'all' | 'under1000' | '1000-4000' | 'over4000';
@@ -68,7 +69,7 @@ function ProductCard({
       <div className="jg-product-card__top">
         <button type="button" className="jg-product-card__media" onClick={onSelect} aria-label={`View ${product.name}`}>
           <div className="jg-product-card__img-wrap">
-            <img src={product.image} alt="" className="jg-product-card__img" loading="lazy" />
+            <JgProductImage src={product.image} alt={product.name} className="jg-product-card__img" loading="lazy" />
           </div>
         </button>
         <span className={`jg-stock-pill ${product.inStock ? 'jg-stock-pill--in' : 'jg-stock-pill--out'}`}>
@@ -118,95 +119,123 @@ function ProductDetail({
   addedItems: Record<number, boolean>;
 }) {
   const [qty, setQty] = useState(1);
+  const [readMore, setReadMore] = useState(false);
   const related = JG_STORE_PRODUCTS.filter((p) => p.id !== product.id).slice(0, 3);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setReadMore(false);
+  }, [product.id]);
+
   return (
-    <div className="jg-detail">
-      <button type="button" className="jg-detail__back" onClick={onBack}>
-        <ArrowLeft size={18} />
-        Back to Store
-      </button>
+    <div className="detail-ref-page jg-detail-readmore">
+      <div className="detail-ref-page__inner site-shell jg-detail-readmore__inner" data-reveal="fade-up" data-reveal-immediate>
+        <button type="button" className="detail-ref-page__back" onClick={onBack}>
+          <ArrowLeft size={18} />
+          Back to Store
+        </button>
 
-      <div className="jg-detail__main">
-        <div className="jg-detail__gallery">
-          <img src={product.image} alt={product.name} className="jg-detail__hero-img" />
-        </div>
-
-        <div className="jg-detail__info">
-          <span className={`jg-detail__badge ${product.inStock ? 'jg-detail__badge--in' : 'jg-detail__badge--out'}`}>
-            {product.inStock ? 'In Stock' : 'Out of Stock'}
-          </span>
-          <p className="jg-detail__category">{product.category}</p>
-          <h1 className="jg-detail__title">{product.name}</h1>
-          <div className="jg-detail__rating">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <Star key={i} size={18} fill={i <= Math.round(product.rating) ? '#d4af37' : 'none'} stroke="#d4af37" />
-            ))}
-            <span>
-              {product.rating.toFixed(1)} ({product.reviews} reviews)
-            </span>
-          </div>
-          <p className="jg-detail__price">₹ {product.price.toLocaleString('en-IN')}</p>
-          <p className="jg-detail__desc">{product.desc}</p>
-
-          {product.inStock && (
-            <div className="jg-detail__qty">
-              <span className="jg-detail__qty-label">Quantity</span>
-              <div className="jg-qty-stepper">
-                <button type="button" aria-label="Decrease" onClick={() => setQty((q) => Math.max(1, q - 1))}>
-                  <Minus size={16} />
-                </button>
-                <span>{qty}</span>
-                <button type="button" aria-label="Increase" onClick={() => setQty((q) => q + 1)}>
-                  <Plus size={16} />
-                </button>
-              </div>
-            </div>
-          )}
-
-          <button
-            type="button"
-            className="jg-detail__cta"
-            disabled={!product.inStock || added}
-            onClick={() => onAddToCart(product.id)}
-          >
-            {added ? 'Added to Cart' : product.inStock ? 'Add to Cart' : 'Out of Stock'}
-          </button>
-        </div>
-      </div>
-
-      <section className="jg-related">
-        <h2 className="jg-related__title">Related Products</h2>
-        <div className="jg-store-grid">
-          {related.map((p) => (
-            <ProductCard
-              key={p.id}
-              product={p}
-              onSelect={() => onSelectProduct(p.id)}
-              onAddToCart={() => onAddToCart(p.id)}
-              added={!!addedItems[p.id]}
+        <div className="detail-ref-page__profile">
+          <div className="detail-ref-page__media jg-detail-readmore__media">
+            <JgProductImage
+              src={product.image}
+              alt={product.name}
+              className="jg-detail-readmore__img"
+              loading="eager"
+              fetchPriority="high"
             />
-          ))}
+          </div>
+
+          <div className="detail-ref-page__info">
+            <span className={`detail-ref-page__stock ${product.inStock ? '' : ' detail-ref-page__stock--out'}`}>
+              {product.inStock ? 'In Stock' : 'Out of Stock'}
+            </span>
+            <p className="detail-ref-page__category">{product.category}</p>
+            <h1 className="detail-ref-page__title">{product.name}</h1>
+
+            <hr className="detail-ref-page__dash" />
+
+            <div className="detail-ref-page__rating">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <Star key={i} size={18} fill={i <= Math.round(product.rating) ? '#d4af37' : 'none'} stroke="#d4af37" />
+              ))}
+              <span>
+                {product.rating.toFixed(1)} ({product.reviews} reviews)
+              </span>
+            </div>
+
+            <hr className="detail-ref-page__dash" />
+
+            <p className="detail-ref-page__price">₹ {product.price.toLocaleString('en-IN')}</p>
+            <p className="detail-ref-page__desc">{product.desc}</p>
+            {readMore && <p className="detail-ref-page__desc detail-ref-page__desc--long">{product.descLong}</p>}
+
+            <div className="detail-ref-page__actions">
+              <button
+                type="button"
+                className="detail-ref-page__cta detail-ref-page__cta--outline"
+                onClick={() => setReadMore((v) => !v)}
+              >
+                {readMore ? 'Show Less' : 'Read More'}
+              </button>
+
+              {product.inStock && (
+                <div className="jg-detail-readmore__qty">
+                  <span className="detail-ref-page__qty-label">Quantity</span>
+                  <div className="jg-detail-readmore__stepper">
+                    <button type="button" aria-label="Decrease" onClick={() => setQty((q) => Math.max(1, q - 1))}>
+                      <Minus size={16} />
+                    </button>
+                    <span>{qty}</span>
+                    <button type="button" aria-label="Increase" onClick={() => setQty((q) => q + 1)}>
+                      <Plus size={16} />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="button"
+                className="detail-ref-page__cta"
+                disabled={!product.inStock || added}
+                onClick={() => onAddToCart(product.id)}
+              >
+                {added ? 'Added to Cart' : product.inStock ? 'Add to Cart' : 'Out of Stock'}
+              </button>
+            </div>
+          </div>
         </div>
-      </section>
+
+        <section className="jg-detail-readmore__related">
+          <h2 className="detail-ref-page__related-title">Related Products</h2>
+          <div className="jg-store-grid">
+            {related.map((p) => (
+              <ProductCard
+                key={p.id}
+                product={p}
+                onSelect={() => onSelectProduct(p.id)}
+                onAddToCart={() => onAddToCart(p.id)}
+                added={!!addedItems[p.id]}
+              />
+            ))}
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
 
 function JagannathStoreHero() {
   return (
-    <section className="jg-store-hero" aria-labelledby="jg-store-hero-title">
-      <HeroStardust />
-      <div className="jg-store-hero__left">
+    <section className="jg-store-hero" aria-labelledby="jg-store-hero-title" data-reveal="fade-up" data-reveal-immediate>
+      <div className="jg-store-hero__left" data-reveal="fade-right" data-reveal-immediate data-reveal-delay="60ms">
         <h1 id="jg-store-hero-title" className="jg-store-hero__title">
           {JG_STORE_HERO_TITLE}
         </h1>
         <p className="jg-store-hero__subtitle">{JG_STORE_HERO_SUBTITLE}</p>
       </div>
-      <div className="jg-store-hero__right">
+      <div className="jg-store-hero__right" data-reveal="fade-left" data-reveal-immediate data-reveal-delay="120ms">
         <div className="jg-store-hero__visual">
-          <div className="jg-store-hero__aura" aria-hidden="true" />
-          <div className="jg-store-hero__shadow" aria-hidden="true" />
           <img
             src={heroJagannathTriad}
             className="jg-store-hero__deities"
@@ -358,6 +387,17 @@ export default function JagannathStorePage({ onAddToCart, addedItems }: Props) {
 
   const hasActiveFilters = availabilityFilter !== 'all' || priceFilter !== 'all';
 
+  useScrollReveal([selectedId]);
+
+  useEffect(() => {
+    if (selected) {
+      document.body.classList.add('jg-store-detail-active');
+    } else {
+      document.body.classList.remove('jg-store-detail-active');
+    }
+    return () => document.body.classList.remove('jg-store-detail-active');
+  }, [selected]);
+
   const clearFilters = () => {
     setAvailabilityFilter('all');
     setPriceFilter('all');
@@ -365,25 +405,21 @@ export default function JagannathStorePage({ onAddToCart, addedItems }: Props) {
 
   if (selected) {
     return (
-      <div className="jg-store-page">
-        <section className="jg-store-hero jg-store-hero--compact" aria-hidden>
-          <HeroStardust />
-        </section>
-        <div className="jg-store-ticker hero-ticker-bar">
-          <p className="hero-ticker-text">{JG_STORE_TICKER_TEXT}</p>
-        </div>
-        <section className="jg-store-listing">
-          <div className="jg-store-inner">
-            <ProductDetail
+      <div className="jg-store-page jg-store-page--detail">
+        <div className="jg-store-detail-shell site-shell">
+          <section className="jg-store-listing jg-store-listing--detail">
+            <div className="jg-store-inner jg-store-inner--detail">
+              <ProductDetail
               product={selected}
               onBack={() => setSelectedId(null)}
               onSelectProduct={setSelectedId}
               onAddToCart={onAddToCart}
               added={!!addedItems[selected.id]}
               addedItems={addedItems}
-            />
-          </div>
-        </section>
+              />
+            </div>
+          </section>
+        </div>
       </div>
     );
   }
@@ -397,7 +433,7 @@ export default function JagannathStorePage({ onAddToCart, addedItems }: Props) {
       </div>
 
       <section className="jg-store-listing" aria-labelledby="jg-store-section-title">
-        <header className="jg-store-section-header">
+        <header className="jg-store-section-header" data-reveal="fade-up">
           <h2 id="jg-store-section-title" className="jg-store-section-title">
             {JG_STORE_SECTION_TITLE}
           </h2>
@@ -416,7 +452,7 @@ export default function JagannathStorePage({ onAddToCart, addedItems }: Props) {
             onClearFilters={clearFilters}
           />
 
-          <div className="jg-store-grid" role="list">
+          <div className="jg-store-grid" role="list" data-reveal="fade-up" data-reveal-stagger>
             {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}

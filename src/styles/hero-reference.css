@@ -25,10 +25,11 @@
   -webkit-backdrop-filter: none !important;
   border-bottom: none !important;
   box-shadow: none !important;
-  padding: 1.8rem 4.5% 1.2rem 4.5% !important;
+  padding: var(--nav-padding-y, 1.25rem) var(--nav-padding-x, clamp(1.5rem, 5vw, 4.5rem)) !important;
+  min-height: var(--nav-height, 6.5rem) !important;
   display: flex !important;
   justify-content: space-between !important;
-  align-items: flex-start !important; /* Top align because of the two-row stack on the right */
+  align-items: center !important;
   z-index: 1000 !important;
   transition: all 0.3s ease !important;
 }
@@ -40,43 +41,36 @@
   -webkit-backdrop-filter: blur(16px) saturate(120%) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.4) !important;
   box-shadow: 0 4px 30px rgba(119, 78, 171, 0.04) !important;
-  padding: 0.8rem 4.5% !important;
+  padding-block: 1rem !important;
+  min-height: var(--nav-height-compact, 5.5rem) !important;
   align-items: center !important;
 }
 
 .nav-header--home .nav-right-container {
   display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-end !important;
-  gap: 0.9rem !important;
-  max-width: min(68vw, 860px) !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: var(--nav-link-gap, 2rem) !important;
+  max-width: min(72vw, 920px) !important;
   min-width: 0;
-}
-
-.nav-header--home.scrolled .nav-right-container {
-  gap: 0.4rem !important;
+  flex-wrap: nowrap !important;
 }
 
 .nav-header--home .logo-container {
-  align-self: flex-start !important;
-  margin-top: -0.4rem !important;
+  align-self: center !important;
+  margin-top: 0 !important;
 }
 
 .nav-header--home .logo-container .site-logo-img {
-  height: 110px !important; /* Perfectly sized prominent logo mark */
-  max-width: 320px !important;
-  transition: all 0.3s ease !important;
-}
-
-.nav-header--home.scrolled .logo-container .site-logo-img {
-  height: 80px !important;
+  transition: height 0.25s ease !important;
 }
 
 /* Icons styling on top right */
 .nav-header--home .nav-actions {
   display: flex !important;
   align-items: center !important;
-  gap: 1.6rem !important;
+  gap: var(--nav-icon-gap, 1.5rem) !important;
 }
 
 .nav-header--home .nav-actions .action-btn {
@@ -98,10 +92,9 @@
 .nav-header--home .nav-menu {
   display: flex !important;
   align-items: center !important;
-  gap: 0.4rem !important;
+  gap: var(--nav-link-gap, 2rem) !important;
   justify-content: flex-end !important;
-  flex-wrap: wrap !important;
-  row-gap: 0.35rem !important;
+  flex-wrap: nowrap !important;
   margin: 0 !important;
   padding: 0 !important;
 }
@@ -109,11 +102,11 @@
 .nav-header--home .nav-link {
   color: #110729 !important;
   font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
-  font-size: 0.88rem !important;
-  font-weight: 600 !important;
-  padding: 0.5rem 1.1rem !important;
-  border-radius: 6px !important; /* Elegant rounded rectangle corners matching reference image */
-  transition: all 0.25s ease !important;
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  padding: 0.35rem 0 !important;
+  border-radius: 0 !important;
+  transition: color 0.2s ease !important;
   text-decoration: none !important;
   cursor: pointer !important;
   background: transparent !important;
@@ -130,15 +123,19 @@
 }
 
 .nav-header--home .nav-link:hover {
-  color: #432371 !important;
-  background: rgba(67, 35, 113, 0.05) !important;
+  color: #110729 !important;
+  background: transparent !important;
 }
 
 .nav-header--home .nav-link.active {
-  background: #432371 !important; /* Rich solid purple background */
-  color: #ffffff !important; /* Bold white text */
+  background: transparent !important;
+  color: #110729 !important;
   box-shadow: none !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 1.5px !important;
+  text-underline-offset: 5px !important;
+  padding: 0.35rem 0 !important;
 }
 
 /* —— Hero block —— */
@@ -577,56 +574,27 @@
   display: none;
 }
 
-.site-logo {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  line-height: 0;
-}
-
-.site-logo:not(.site-logo--footer) .site-logo-img {
-  display: block;
-  height: 74px;
-  width: auto;
-  max-width: 320px;
-  object-fit: contain;
-  background: transparent;
-}
-
-.site-logo--compact .site-logo-img {
-  height: 56px;
-  max-width: 240px;
-}
-
-.site-logo--phone .site-logo-img {
-  height: auto;
-  max-width: 210px;
-  width: 100%;
-}
+/* Logo sizing lives in site-logo.css */
 
 @media (max-width: 1024px) {
-  /* Hide text links on tablets and mobile to avoid squishing and overlapping */
-  .nav-header--home nav {
-    display: none !important;
+  .nav-header--home {
+    --nav-link-gap: 1.35rem;
+    --nav-icon-gap: 1.15rem;
   }
 
   .nav-header--home .nav-right-container {
     flex-direction: row !important;
     align-items: center !important;
-    gap: 0.6rem !important;
+    gap: var(--nav-link-gap, 1.35rem) !important;
+  }
+
+  .nav-header--home .nav-menu {
+    gap: var(--nav-link-gap, 1.35rem) !important;
   }
 
   .nav-header.nav-header--home {
-    padding: 0.8rem 4.5% !important;
+    padding: var(--nav-padding-y, 0.75rem) var(--nav-padding-x, clamp(1.25rem, 5vw, 4rem)) !important;
     align-items: center !important;
-  }
-
-  .nav-header--home .logo-container {
-    margin-top: 0 !important;
-  }
-
-  .nav-header--home .logo-container .site-logo-img {
-    height: 88px !important; /* Prominent elegant logo on mobile viewports */
   }
 
   .hero-section {

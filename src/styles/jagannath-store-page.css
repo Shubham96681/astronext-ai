@@ -30,38 +30,7 @@
   overflow-x: hidden;
 }
 
-/* Transparent header overlays store hero (same as home) */
-.app-container:has(.jg-store-page) .nav-header {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  background: transparent !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border-bottom: none !important;
-  box-shadow: none !important;
-  padding: 1.35rem 5% 0.85rem 5% !important;
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: flex-start !important;
-  z-index: 1000 !important;
-}
-
-.app-container:has(.jg-store-page) .nav-header.scrolled {
-  position: sticky !important;
-  background: rgba(255, 249, 249, 0.92) !important;
-  backdrop-filter: blur(12px) saturate(120%) !important;
-  -webkit-backdrop-filter: blur(12px) saturate(120%) !important;
-  border-bottom: 1px solid rgba(46, 26, 71, 0.06) !important;
-  box-shadow: 0 4px 24px rgba(26, 10, 61, 0.04) !important;
-  padding: 0.75rem 5% !important;
-  align-items: center !important;
-}
-
-.app-container:has(.jg-store-page) .main-content {
-  padding-top: 0;
-}
+/* Header on Divine Store — see nav-header.css (.nav-header--overlay) */
 
 /* —— Hero (two-column, pink texture) —— */
 .jg-store-page .jg-store-hero {
@@ -76,20 +45,19 @@
   isolation: isolate;
   background-color: var(--jg-page-bg);
   background-image:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.55) 28%, transparent 52%),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.35) 22%, transparent 42%),
-    linear-gradient(to right, rgba(252, 188, 212, 0.22) 0%, rgba(248, 172, 200, 0.12) 32%, transparent 50%),
-    linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.35) 55%, rgba(255, 255, 255, 0.92) 100%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, transparent 42%),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0%, transparent 38%),
+    linear-gradient(to right, rgba(252, 188, 212, 0.18) 0%, transparent 45%),
     url('../assets/pink_powder_texture.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-.jg-store-page .jg-store-hero--compact {
-  display: block;
-  min-height: 140px;
-  padding: 6rem var(--jg-gutter) 1rem;
+/* Detail view — nav clearance without empty hero band */
+.jg-store-page .jg-detail-top-spacer {
+  height: 6.25rem;
+  background: #ffffff;
 }
 
 .jg-store-page .jg-store-hero__left {
@@ -136,47 +104,9 @@
   justify-content: center;
   width: min(100%, 540px);
   max-width: 540px;
+  isolation: isolate;
   animation: jg-deities-float 5.5s ease-in-out infinite;
   will-change: transform;
-}
-
-.jg-store-page .jg-store-hero__aura {
-  position: absolute;
-  left: 50%;
-  top: 52%;
-  width: 78%;
-  aspect-ratio: 1.15;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: radial-gradient(
-    ellipse 70% 55% at 50% 50%,
-    rgba(255, 255, 255, 0.75) 0%,
-    rgba(252, 188, 212, 0.22) 42%,
-    transparent 72%
-  );
-  filter: blur(8px);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.jg-store-page .jg-store-hero__shadow {
-  position: absolute;
-  left: 50%;
-  bottom: 4%;
-  width: 62%;
-  height: 14%;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: radial-gradient(
-    ellipse 100% 100% at 50% 50%,
-    rgba(46, 26, 71, 0.14) 0%,
-    rgba(248, 165, 200, 0.08) 45%,
-    transparent 72%
-  );
-  filter: blur(14px);
-  pointer-events: none;
-  z-index: 0;
-  animation: jg-deities-shadow 5.5s ease-in-out infinite;
 }
 
 .jg-store-page .jg-store-hero__deities {
@@ -191,8 +121,8 @@
   pointer-events: none;
   user-select: none;
   background: transparent;
-  filter: drop-shadow(0 18px 32px rgba(46, 26, 71, 0.14))
-    drop-shadow(0 6px 14px rgba(248, 165, 200, 0.2));
+  filter: drop-shadow(0 16px 28px rgba(46, 26, 71, 0.12))
+    drop-shadow(0 4px 12px rgba(248, 165, 200, 0.15));
 }
 
 @keyframes jg-deities-float {
@@ -205,21 +135,8 @@
   }
 }
 
-@keyframes jg-deities-shadow {
-  0%,
-  100% {
-    transform: translateX(-50%) scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: translateX(-50%) scale(0.88);
-    opacity: 0.65;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .jg-store-page .jg-store-hero__visual,
-  .jg-store-page .jg-store-hero__shadow {
+  .jg-store-page .jg-store-hero__visual {
     animation: none;
   }
 }
@@ -478,12 +395,13 @@
   flex-shrink: 0;
 }
 
-.jg-store-page .jg-product-card__img {
+.jg-store-page .jg-product-card__img,
+.jg-store-page .jg-product-img-fallback.jg-product-card__img {
   display: block;
   width: 200px !important;
   height: 200px !important;
   max-width: none !important;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 
@@ -592,18 +510,22 @@
 }
 
 /* —— Product detail —— */
+.jg-store-page .jg-store-listing--detail .jg-store-inner {
+  max-width: 1240px;
+}
+
 .jg-store-page .jg-detail {
   width: 100%;
   max-width: 1240px;
   margin: 0 auto;
-  padding: clamp(1.5rem, 3vw, 2.5rem) 0;
+  padding: clamp(1.25rem, 2.5vw, 2rem) 0 clamp(2.5rem, 4vw, 3.5rem);
 }
 
 .jg-store-page .jg-detail__back {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
   padding: 0;
   border: none;
   background: none;
@@ -616,8 +538,8 @@
 
 .jg-store-page .jg-detail__main {
   display: grid;
-  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.05fr);
-  gap: clamp(2rem, 4vw, 3.5rem);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(2rem, 4vw, 3.25rem);
   align-items: start;
   margin-bottom: 3rem;
 }
@@ -626,24 +548,57 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  min-height: min(420px, 52vw);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
   background: var(--jg-card-bg);
   border: 1px solid var(--jg-card-border);
   border-radius: var(--jg-card-radius);
 }
 
-.jg-store-page .jg-detail__hero-img {
+.jg-store-page .jg-detail__hero-img,
+.jg-store-page .jg-product-img-fallback.jg-detail__hero-img {
   display: block;
   width: 100%;
-  max-width: 420px;
+  max-width: 400px;
+  max-height: min(400px, 48vw);
   aspect-ratio: 1;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
   border-radius: 12px;
+}
+
+.jg-store-page .jg-product-img-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #f0ebe3 0%, #e8e0d4 100%);
+  color: var(--jg-purple);
+}
+
+.jg-store-page .jg-product-img-fallback__icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  opacity: 0.55;
+}
+
+.jg-store-page .jg-detail__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-top: 0.25rem;
+}
+
+.jg-store-page .jg-detail__info-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  margin-bottom: 1rem;
 }
 
 .jg-store-page .jg-detail__badge {
   display: inline-block;
-  margin-bottom: 0.75rem;
+  margin: 0 0 0.85rem;
   padding: 0.35rem 0.85rem;
   border-radius: 10px;
   font-size: 0.8rem;
@@ -661,50 +616,68 @@
 }
 
 .jg-store-page .jg-detail__category {
-  margin: 0 0 0.35rem;
-  font-size: 0.8rem;
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--jg-text-muted);
 }
 
 .jg-store-page .jg-detail__title {
-  margin: 0 0 0.75rem;
+  margin: 0;
   font-family: var(--jg-font-display);
-  font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+  font-size: clamp(1.85rem, 2.6vw, 2.35rem);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.18;
+  color: var(--jg-heading);
 }
 
 .jg-store-page .jg-detail__rating {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.35rem;
-  margin-bottom: 0.75rem;
+  gap: 0.35rem 0.5rem;
+  margin: 0 0 1.1rem;
   font-size: 0.9rem;
   color: var(--jg-text-muted);
 }
 
 .jg-store-page .jg-detail__price {
-  margin: 0 0 1rem;
-  font-size: 1.75rem;
+  margin: 0 0 1.15rem;
+  font-size: clamp(1.65rem, 2.2vw, 1.85rem);
   font-weight: 700;
+  color: var(--jg-text);
 }
 
 .jg-store-page .jg-detail__desc {
-  margin: 0 0 1.5rem;
+  margin: 0 0 1.75rem;
+  max-width: 36em;
   font-size: 0.95rem;
-  line-height: 1.65;
+  line-height: 1.7;
   color: var(--jg-text-body);
+}
+
+.jg-store-page .jg-detail__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 550px;
+}
+
+.jg-store-page .jg-detail__qty {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .jg-store-page .jg-detail__qty-label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin: 0;
   font-size: 0.875rem;
   font-weight: 600;
+  color: var(--jg-text);
 }
 
 .jg-store-page .jg-qty-stepper {
@@ -734,17 +707,22 @@
 
 .jg-store-page .jg-detail__cta {
   width: 100%;
-  max-width: 550px;
-  height: 65px;
-  margin-top: 0.5rem;
+  height: 56px;
+  margin: 0;
   border: none;
-  border-radius: 32.5px;
+  border-radius: 28px;
   background: var(--jg-navy);
   color: #ffffff;
   font-family: inherit;
   font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.jg-store-page .jg-detail__cta:hover:not(:disabled) {
+  background: #2a1458;
+  transform: translateY(-1px);
 }
 
 .jg-store-page .jg-detail__cta:disabled {

@@ -8,6 +8,12 @@ export const HERO_TICKER_TEXT =
 export const HOME_HERO_TICKER_TEXT =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
 
+/** Login / Sign Up page copy */
+export const AUTH_HERO_TITLE = 'Step into your guided Vedic journey with AstroNext';
+
+export const AUTH_HERO_SUBTITLE =
+  'Sign in to view your Kundli Patra, book live pujas, explore Jagannath Store blessings, and chat with Pandit Jee — your trusted companion for astrology and devotion.';
+
 /** Jagannath Store page copy */
 export const JG_STORE_HERO_TITLE = 'Sacred blessings from Jagannath Dham, Puri';
 
@@ -87,6 +93,17 @@ export const FOOTER_ABOUT =
   'AstroNext.ai empowers seekers with Vedic astrology, AI-generated Kundli Patra, WhatsApp guidance from Pandit Jee, home puja services, and blessed spiritual products—all in one trusted place.';
 
 export const FOOTER_CONTACT_INTRO =
-  'Reach us for Kundli reports, puja bookings, product orders, or partnership enquiries. We typically respond within one business day.';
+  'Reach us for Kundli reports, Divine Store orders, or partnership enquiries.';
+
+export const FOOTER_CONTACT_INTRO_2 =
+  'Our team typically responds within one business day on weekdays.';
 
 export const SUPPORT_EMAIL = 'hello@astronext.ai';
+
+/** WhatsApp — Pandit Jee / support chat */
+export const WHATSAPP_CHAT_URL =
+  'https://wa.me/919999999999?text=Namaste%20Pandit%20Jee,%20I%20would%20like%20to%20chat%20with%20you.';
+
+export const WHATSAPP_PANDIT_NAME = 'Pandit DurgaShankar Ji';
+export const WHATSAPP_PANDIT_STATUS = 'online';
+export const WHATSAPP_INTRO_MESSAGE = 'Aap Apna Bhavishya Janna Chahte Hai?';

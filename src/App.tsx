@@ -1,10 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Search, 
   User, 
   ShoppingCart, 
-  MessageCircle, 
-  Send, 
   X, 
   Star, 
   Calendar, 
@@ -21,12 +19,17 @@ import productImg3 from './assets/generated/product-gold-bracelet-women.png';
 import productImg4 from './assets/generated/product-gold-bracelet-men.png';
 import devotionWaveBg from './assets/devotion-wave-bg.svg';
 import WhatsAppPhoneMockup from './components/WhatsAppPhoneMockup';
+import WhatsAppChatButton from './components/WhatsAppChatButton';
+import FooterSocialLinks from './components/FooterSocialLinks';
 import ZodiacWheel from './components/ZodiacWheel';
 import AppQrMockup from './components/AppQrMockup';
 import SiteLogo from './components/SiteLogo';
+import logoFooterImg from './assets/logos/logo-footer.svg';
+import { getNavLogoTheme, type AppTab } from './content/logoThemes';
 import AstrologersPage from './components/AstrologersPage';
 import KundaliPatraPage from './components/KundaliPatraPage';
 import JagannathStorePage from './components/JagannathStorePage';
+import AuthPage from './components/AuthPage';
 import {
   HERO_TICKER_TEXT,
   TESTIMONIALS,
@@ -64,9 +67,25 @@ interface Puja {
 }
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'home' | 'kundali' | 'estore' | 'jgstore' | 'puja' | 'astrologers'>('home');
+  const [activeTab, setActiveTab] = useState<AppTab>('home');
+  const navLogoTheme = getNavLogoTheme(activeTab);
+  const isHeroOverlayPage =
+    activeTab === 'jgstore' || activeTab === 'kundali' || activeTab === 'astrologers';
   const [cartCount, setCartCount] = useState<number>(0);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const navHeaderClass = [
+    'nav-header',
+    activeTab === 'home' && 'nav-header--home',
+    isHeroOverlayPage && 'nav-header--overlay',
+    !isHeroOverlayPage &&
+      activeTab !== 'home' &&
+      activeTab !== 'login' &&
+      activeTab !== 'signup' &&
+      'nav-header--inner',
+    isScrolled && 'scrolled',
+  ]
+    .filter(Boolean)
+    .join(' ');
   const [addedItems, setAddedItems] = useState<{ [key: number]: boolean }>({});
   
   // Newsletter Footer Form state
@@ -77,20 +96,10 @@ function App() {
   // FAQ Accordion Toggle State
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
-  // Floating AI Pandit Jee Chat State
-  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
-  const [chatInput, setChatInput] = useState<string>('');
-  const [isTyping, setIsTyping] = useState<boolean>(false);
-  const [chatMessages, setChatMessages] = useState<Array<{ sender: 'bot' | 'user'; text: string }>>([
-    { sender: 'bot', text: 'Namaste! I am Pandit Jee, your AI Vedic Guide. Share your birth details or ask any question about your life, career, marriage, or remedies.' }
-  ]);
-
   // Puja Booking Modal State
   const [selectedPuja, setSelectedPuja] = useState<Puja | null>(null);
   const [bookingForm, setBookingForm] = useState({ name: '', dob: '', gotra: '' });
   const [bookingSuccess, setBookingSuccess] = useState<boolean>(false);
-
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Scroll Event Listener for Navbar
   useEffect(() => {
@@ -114,11 +123,6 @@ function App() {
   }, [activeTab]);
 
   useScrollReveal([activeTab]);
-
-  // Auto-scroll chat windows
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chatMessages, isTyping]);
 
   // E-Store Products (Updated with exact names/prices/discounts from PDF)
   const estoreProducts: Product[] = [
@@ -211,38 +215,6 @@ function App() {
     }, 1500);
   };
 
-  // Floating Chat Assistant Message Handler
-  const handleSendChatMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!chatInput.trim()) return;
-
-    const userText = chatInput;
-    setChatMessages(prev => [...prev, { sender: 'user', text: userText }]);
-    setChatInput('');
-    setIsTyping(true);
-
-    // AI Responses logic
-    setTimeout(() => {
-      let botResponse = '';
-      const inputLower = userText.toLowerCase();
-
-      if (inputLower.includes('career') || inputLower.includes('job') || inputLower.includes('work')) {
-        botResponse = 'The planetary transit of Saturn (Shani) indicates a crucial transition phase. Dedication will yield results. Consider chanting "Om Sham Shanaischaraya Namah" on Saturdays to clear obstacles.';
-      } else if (inputLower.includes('love') || inputLower.includes('marriage') || inputLower.includes('compatibility')) {
-        botResponse = 'Venus (Shukra) represents relationship harmony. If Venus is aspected by Mars in your charts, minor conflicts might arise. Chanting the Lakshmi Mantra daily creates positive marital vibrations.';
-      } else if (inputLower.includes('gemstone') || inputLower.includes('stone') || inputLower.includes('remedy')) {
-        botResponse = 'To choose the correct gemstone, we evaluate your Lagna (ascendant) Lord. For Aries, Coral (Moonga) is auspicious. For Taurus/Libra, Diamond or White Sapphire brings immense fortune. Do you know your Ascendant?';
-      } else if (inputLower.includes('puja') || inputLower.includes('yajna') || inputLower.includes('worship')) {
-        botResponse = 'Performing target Vedic Pujas can clear planetary malefic effects. Currently, a Grah Shanti Yajna or Ganesha Puja is highly recommended to stabilize household energy.';
-      } else {
-        botResponse = 'Excellent question. According to Vedic principles, our Karma interacts dynamically with planetary nodes (Rahu & Ketu). Share your Date of Birth, and I will analyze this alignment deeply for you.';
-      }
-
-      setChatMessages(prev => [...prev, { sender: 'bot', text: botResponse }]);
-      setIsTyping(false);
-    }, 1200);
-  };
-
   // Puja Booking Handlers
   const handleOpenPujaModal = (puja: Puja) => {
     setSelectedPuja(puja);
@@ -277,65 +249,71 @@ function App() {
       <div className="space-sparkles"></div>
 
       {/* Premium Navigation Header */}
-      <header className={`nav-header ${activeTab === 'home' ? 'nav-header--home' : ''} ${isScrolled ? 'scrolled' : ''}`}>
-        <a href="#home" className="logo-container" onClick={() => setActiveTab('home')}>
-          <SiteLogo compact={isScrolled} />
-        </a>
+      <header className={navHeaderClass}>
+        <div className="site-shell nav-header__shell">
+          <a href="#home" className="logo-container" onClick={() => setActiveTab('home')}>
+            <SiteLogo
+              compact={isScrolled && !isHeroOverlayPage}
+              theme={navLogoTheme}
+              priority={activeTab === 'home' || isHeroOverlayPage}
+            />
+          </a>
 
-        <div className="nav-right-container">
-          <div className="nav-actions">
-            <button className="action-btn" title="Search stars...">
-              <Search size={22} strokeWidth={1.75} />
-            </button>
-            <button className="action-btn" title="AI Pandit Profile">
-              <User size={22} strokeWidth={1.75} />
-            </button>
-            <button className="action-btn" title="Remedies Cart">
-              <ShoppingCart size={22} strokeWidth={1.75} />
-              {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-            </button>
+          <div className="nav-right-container">
+            <nav aria-label="Main">
+              <ul className="nav-menu">
+                <li>
+                  <span className={`nav-link ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
+                    Home
+                  </span>
+                </li>
+                <li>
+                  <span className={`nav-link ${activeTab === 'kundali' ? 'active' : ''}`} onClick={() => setActiveTab('kundali')}>
+                    Kundali Patra
+                  </span>
+                </li>
+                <li>
+                  <span className={`nav-link ${activeTab === 'astrologers' ? 'active' : ''}`} onClick={() => setActiveTab('astrologers')}>
+                    Astrologers
+                  </span>
+                </li>
+                <li>
+                  <span className={`nav-link ${activeTab === 'jgstore' ? 'active' : ''}`} onClick={() => setActiveTab('jgstore')}>
+                    Divine Store
+                  </span>
+                </li>
+              </ul>
+            </nav>
+
+            <div className="nav-actions">
+              <button className="action-btn" title="Search stars...">
+                <Search size={22} strokeWidth={1.75} />
+              </button>
+              <button
+                className="action-btn"
+                title="Login / Sign Up"
+                onClick={() => setActiveTab('login')}
+              >
+                <User size={22} strokeWidth={1.75} />
+              </button>
+              <button className="action-btn" title="Remedies Cart">
+                <ShoppingCart size={22} strokeWidth={1.75} />
+                {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+              </button>
+            </div>
           </div>
-
-          <nav>
-            <ul className="nav-menu">
-              <li>
-                <span className={`nav-link ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
-                  Home
-                </span>
-              </li>
-              <li>
-                <span className={`nav-link ${activeTab === 'kundali' ? 'active' : ''}`} onClick={() => setActiveTab('kundali')}>
-                  Kundali Patra
-                </span>
-              </li>
-              <li>
-                <span className={`nav-link ${activeTab === 'estore' ? 'active' : ''}`} onClick={() => setActiveTab('estore')}>
-                  E-Store
-                </span>
-              </li>
-              <li>
-                <span className={`nav-link ${activeTab === 'jgstore' ? 'active' : ''}`} onClick={() => setActiveTab('jgstore')}>
-                  Jagannath Store
-                </span>
-              </li>
-              <li>
-                <span className={`nav-link ${activeTab === 'puja' ? 'active' : ''}`} onClick={() => setActiveTab('puja')}>
-                  Book My Puja
-                </span>
-              </li>
-              <li>
-                <span className={`nav-link ${activeTab === 'astrologers' ? 'active' : ''}`} onClick={() => setActiveTab('astrologers')}>
-                  Astrologers
-                </span>
-              </li>
-            </ul>
-          </nav>
         </div>
       </header>
 
       {/* Main Workspace */}
-      <main className={`main-content ${activeTab !== 'home' ? 'main-content--with-nav-gap' : ''}`}>
-        
+      <main
+        className={`main-content ${
+          activeTab !== 'home' && activeTab !== 'login' && activeTab !== 'signup'
+            ? 'main-content--with-nav-gap'
+            : ''
+        } ${isHeroOverlayPage ? 'main-content--hero-overlay' : ''}`}
+      >
+        <div key={activeTab} className="page-view">
         {/* ==================== HOME / HERO VIEW (DETAILED PDF SCROLLING LAYOUT) ==================== */}
         {activeTab === 'home' && (
           <div className="page-section">
@@ -381,6 +359,8 @@ function App() {
                         src={heroWoman}
                         className="hero-woman-fg hero-woman-fg--generated"
                         alt="Spiritual Indian Woman in Namaste Pose"
+                        fetchPriority="high"
+                        decoding="async"
                       />
                     </div>
                   </div>
@@ -443,6 +423,8 @@ function App() {
                       src={meditationWoman}
                       alt="Meditation and cosmic alignment"
                       className="cosmic-woman section-photo"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                 </div>
@@ -482,6 +464,8 @@ function App() {
                   src={pujaItems}
                   alt="Traditional puja kalash with offerings"
                   className="puja-promo-image"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             </section>
@@ -524,7 +508,13 @@ function App() {
                   <div className="product-card product-card--pdf" key={prod.id}>
                     <div className="product-img-wrapper">
                       {prod.image ? (
-                        <img src={prod.image} alt={prod.name} className="product-photo" />
+                        <img
+                          src={prod.image}
+                          alt={prod.name}
+                          className="product-photo"
+                          loading="lazy"
+                          decoding="async"
+                        />
                       ) : (
                         <div className="product-photo-fallback" style={{ background: prod.iconBg }}>{prod.iconText}</div>
                       )}
@@ -696,125 +686,102 @@ function App() {
           </div>
         )}
 
-        {activeTab === 'astrologers' && <AstrologersPage />}
+        {activeTab === 'astrologers' && (
+          <AstrologersPage onNavigateHome={() => setActiveTab('home')} />
+        )}
 
+        {(activeTab === 'login' || activeTab === 'signup') && (
+          <AuthPage
+            mode={activeTab}
+            onSwitchMode={(mode) => setActiveTab(mode)}
+          />
+        )}
+
+        </div>
       </main>
 
-      <footer className="mega-footer">
-        <div className="footer-top-row">
-          <ul className="footer-legal-inline">
-            <li><a href="#privacy">Privacy Policy</a></li>
-            <li><a href="#refund">Refund Policy</a></li>
-            <li><a href="#terms">Terms of Service</a></li>
-            <li><a href="#home" onClick={(e) => { e.preventDefault(); setActiveTab('home'); }}>Menu Item</a></li>
-            <li><a href="#kundali" onClick={(e) => { e.preventDefault(); setActiveTab('kundali'); }}>Menu Item</a></li>
-            <li><a href="#estore" onClick={(e) => { e.preventDefault(); setActiveTab('estore'); }}>Menu Item</a></li>
-            <li><a href="#puja" onClick={(e) => { e.preventDefault(); setActiveTab('puja'); }}>Menu Item</a></li>
-          </ul>
-        </div>
-
-        <div className="footer-grid footer-grid--design">
-          <div className="footer-col footer-col--brand">
+      <footer className="mega-footer" data-reveal="fade-up">
+        <div className="footer-inner">
+          <div className="footer-top-row" data-reveal="fade" data-reveal-delay="60ms">
             <a
               href="#home"
-              className="footer-brand-link"
-              onClick={(e) => { e.preventDefault(); setActiveTab('home'); }}
+              className="footer-top-logo"
+              onClick={(e) => { e.preventDefault(); setActiveTab('home'); window.scrollTo(0, 0); }}
             >
-              <SiteLogo variant="footer" />
+              <img
+                src={logoFooterImg}
+                alt="Astronext.ai — THE NEXT-GEN AI OF ASTROLOGY"
+                className="footer-top-logo__img"
+                width={222}
+                height={134}
+                loading="lazy"
+                decoding="async"
+              />
             </a>
-            <h4>About Astro AI</h4>
-            <p>{FOOTER_ABOUT}</p>
+            <nav className="footer-top-nav" aria-label="Footer navigation">
+              <ul className="footer-legal-inline">
+                <li><a href="#privacy">Privacy Policy</a></li>
+                <li><a href="#refund">Refund Policy</a></li>
+                <li><a href="#terms">Terms of Service</a></li>
+                <li><a href="#home" onClick={(e) => { e.preventDefault(); setActiveTab('home'); window.scrollTo(0, 0); }}>Home</a></li>
+                <li><a href="#kundali" onClick={(e) => { e.preventDefault(); setActiveTab('kundali'); window.scrollTo(0, 0); }}>Kundali Patra</a></li>
+                <li><a href="#astrologers" onClick={(e) => { e.preventDefault(); setActiveTab('astrologers'); window.scrollTo(0, 0); }}>Astrologers</a></li>
+                <li><a href="#jgstore" onClick={(e) => { e.preventDefault(); setActiveTab('jgstore'); window.scrollTo(0, 0); }}>Divine Store</a></li>
+              </ul>
+            </nav>
           </div>
 
-          <div className="footer-col footer-col--form">
-            <h4>We&apos;d be glad to connect with you.</h4>
-            {footerSubmitted ? (
-              <p className="footer-success-msg">Thank you! We will reach out soon.</p>
-            ) : (
-              <form onSubmit={handleFooterSubmit} className="footer-input-group">
-                <input type="email" className="footer-input" placeholder="Type Email ID" value={footerEmail} onChange={(e) => setFooterEmail(e.target.value)} required />
-                <input type="text" className="footer-input" placeholder="Type your query" value={footerQuery} onChange={(e) => setFooterQuery(e.target.value)} required />
-                <button type="submit" className="footer-submit-btn">Submit</button>
-              </form>
-            )}
-          </div>
+          <div className="footer-grid" data-reveal="fade-up" data-reveal-delay="120ms" data-reveal-stagger>
+            <div className="footer-col footer-col--brand">
+              <h4>About Astro AI</h4>
+              <p>{FOOTER_ABOUT}</p>
+            </div>
 
-          <div className="footer-col footer-col--contact">
-            <h4>Contact Us</h4>
-            <p className="footer-contact-line">{FOOTER_CONTACT_INTRO}</p>
-            <p className="footer-email-line">
-              <span className="footer-email-label">Email ID:</span>{' '}
-              <a href={`mailto:${SUPPORT_EMAIL}`} className="footer-email-value">{SUPPORT_EMAIL}</a>
-            </p>
-            <div className="footer-social-row">
-              <a href="https://wa.me/919999999999" className="footer-social-btn footer-social-btn--wa" aria-label="WhatsApp">W</a>
-              <a href="#youtube" className="footer-social-btn footer-social-btn--yt" aria-label="YouTube">▶</a>
-              <a href="#facebook" className="footer-social-btn footer-social-btn--fb" aria-label="Facebook">f</a>
-              <a href="#instagram" className="footer-social-btn footer-social-btn--ig" aria-label="Instagram">◎</a>
+            <div className="footer-col footer-col--form">
+              <h4>We&apos;d be glad to connect with you.</h4>
+              {footerSubmitted ? (
+                <p className="footer-success-msg">Thank you! We will reach out soon.</p>
+              ) : (
+                <form onSubmit={handleFooterSubmit} className="footer-input-group">
+                  <input
+                    type="email"
+                    className="footer-input"
+                    placeholder="Type Email ID"
+                    value={footerEmail}
+                    onChange={(e) => setFooterEmail(e.target.value)}
+                    required
+                  />
+                  <input
+                    type="text"
+                    className="footer-input"
+                    placeholder="Type your query"
+                    value={footerQuery}
+                    onChange={(e) => setFooterQuery(e.target.value)}
+                    required
+                  />
+                  <button type="submit" className="footer-submit-btn">Submit</button>
+                </form>
+              )}
+            </div>
+
+            <div id="footer-contact" className="footer-col footer-col--contact">
+              <h4>Contact Us</h4>
+              <p className="footer-contact-line">{FOOTER_CONTACT_INTRO}</p>
+              <p className="footer-email-line">
+                <span className="footer-email-label">Email ID:</span>{' '}
+                <a href={`mailto:${SUPPORT_EMAIL}`} className="footer-email-value">{SUPPORT_EMAIL}</a>
+              </p>
+              <FooterSocialLinks />
             </div>
           </div>
-        </div>
 
-        <div className="footer-bottom">
-          <p>Copyright 2025 AstroAI . All Rights Reserved</p>
+          <div className="footer-bottom">
+            <p>Copyright 2025 AstroAI . All Rights Reserved</p>
+          </div>
         </div>
       </footer>
 
-      {/* Floating AI Pandit Jee Toggle Button */}
-      <button 
-        className="pandit-chat-toggle" 
-        onClick={() => setIsChatOpen(!isChatOpen)}
-        title="Consult AI Pandit Jee"
-      >
-        {isChatOpen ? <X size={26} /> : <MessageCircle size={26} />}
-      </button>
-
-      {/* Floating AI Pandit Jee Chat Window */}
-      {isChatOpen && (
-        <div className="pandit-chat-window">
-          <div className="chat-window-header">
-            <div className="chat-header-user">
-              <div className="chat-header-avatar">🕉️</div>
-              <div className="chat-header-info">
-                <h5>Pandit Jee AI</h5>
-                <p>Divine Vedic Intelligence • Online</p>
-              </div>
-            </div>
-            <button className="close-chat-btn" onClick={() => setIsChatOpen(false)}>
-              <X size={18} />
-            </button>
-          </div>
-
-          <div className="chat-messages-container">
-            {chatMessages.map((msg, idx) => (
-              <div key={idx} className={`chat-msg ${msg.sender === 'bot' ? 'bot' : 'user'}`}>
-                {msg.text}
-              </div>
-            ))}
-            {isTyping && (
-              <div className="chat-msg bot" style={{ display: 'flex', gap: '4px', padding: '0.6rem 0.8rem' }}>
-                <span className="typing-dot"></span>
-                <span className="typing-dot"></span>
-                <span className="typing-dot"></span>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          <form onSubmit={handleSendChatMessage} className="chat-input-form">
-            <input 
-              type="text" 
-              className="chat-input-field" 
-              placeholder="Ask Pandit Jee anything..." 
-              value={chatInput}
-              onChange={(e) => setChatInput(e.target.value)}
-            />
-            <button type="submit" className="chat-send-btn">
-              <Send size={14} />
-            </button>
-          </form>
-        </div>
-      )}
+      <WhatsAppChatButton className="wa-chat-widget--floating" />
 
       {/* Puja Booking Glass Modal */}
       {selectedPuja && (

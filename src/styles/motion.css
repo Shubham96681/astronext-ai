@@ -126,10 +126,13 @@ html {
     left 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.nav-link:hover::after,
-.nav-link.active::after {
+.nav-link:hover:not(.active)::after {
   width: 70%;
   left: 15%;
+}
+
+.nav-link.active::after {
+  display: none;
 }
 
 .action-btn {

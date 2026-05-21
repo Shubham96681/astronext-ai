@@ -1,0 +1,86 @@
+/* Shared header — comfortable height, visible logo */
+
+:root {
+  --nav-height: 6.5rem;
+  --nav-height-compact: 5.5rem;
+  --nav-padding-y: 1.25rem;
+  --nav-padding-x: clamp(1.5rem, 5vw, 4.5rem);
+  /* Shared horizontal rhythm — header + page content */
+  --site-gutter-x: var(--nav-padding-x);
+  --site-content-max: 1440px;
+  /* Horizontal lockup ~260×157 — scale by height */
+  --nav-logo-height: clamp(3.25rem, 6vw, 4rem);
+  --nav-logo-height-compact: clamp(3rem, 5.5vw, 3.5rem);
+  --nav-logo-max-width: min(16.25rem, 52vw);
+}
+
+.nav-header--inner {
+  position: sticky;
+  top: 0;
+  padding: var(--nav-padding-y) 0;
+  min-height: var(--nav-height);
+  background: rgba(255, 255, 255, 0.97) !important;
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border-bottom: 1px solid rgba(46, 26, 71, 0.06) !important;
+  box-shadow: 0 1px 0 rgba(10, 10, 36, 0.04) !important;
+}
+
+.nav-header--inner.scrolled {
+  min-height: var(--nav-height-compact);
+  padding-block: 1rem;
+}
+
+.nav-header--overlay {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: var(--nav-padding-y) 0 !important;
+  min-height: var(--nav-height);
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  z-index: 1000;
+}
+
+.nav-header--overlay.scrolled {
+  position: sticky !important;
+  min-height: var(--nav-height-compact);
+  padding-block: 1rem !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(14px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(120%) !important;
+  border-bottom: 1px solid rgba(46, 26, 71, 0.06) !important;
+  box-shadow: 0 4px 24px rgba(26, 10, 61, 0.05) !important;
+}
+
+.nav-header--overlay .logo-container {
+  align-self: center !important;
+  margin: 0 !important;
+}
+
+.nav-header--overlay .nav-link {
+  color: #110729 !important;
+}
+
+.nav-header--overlay .nav-actions .action-btn {
+  color: #110729 !important;
+}
+
+.main-content--hero-overlay {
+  padding-top: 0 !important;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --nav-height: 5.5rem;
+    --nav-height-compact: 4.75rem;
+    --nav-padding-y: 1rem;
+    --nav-logo-height: 3rem;
+    --nav-logo-height-compact: 2.75rem;
+    --nav-logo-max-width: min(13rem, 62vw);
+  }
+}

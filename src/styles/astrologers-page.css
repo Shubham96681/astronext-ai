@@ -1,5 +1,12 @@
 /* Astrologers page — tokens & layout from Astrologer-pAGE.svg (1440×3426) */
 
+.astrologers-page--detail {
+  background: transparent;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .astrologers-page {
   --astro-navy: #1c064f;
   --astro-purple: #552c83;
@@ -208,6 +215,15 @@
   background: #ffffff;
 }
 
+.astrologers-main--chat-only {
+  padding: clamp(6.5rem, 12vw, 8rem) var(--astro-gutter) clamp(3rem, 6vw, 4rem);
+}
+
+.astrologers-main--chat-only .astrologers-chat-panel {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 .astrologers-page .astrologers-experts-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, var(--astro-card-w)));
@@ -254,10 +270,25 @@
   height: 120px;
   transform: translate(-50%, -50%);
   line-height: 0;
-  pointer-events: none;
+  border-radius: 50%;
+  background: #e8e8e8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.astrologers-page .astro-expert-card__avatar {
+.astro-expert-card__media-btn {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.astrologers-page .astro-expert-card__avatar,
+.astrologers-page .jg-product-img-fallback.astro-expert-card__avatar {
   display: block;
   width: 120px !important;
   height: 120px !important;
@@ -266,7 +297,7 @@
   max-width: none !important;
   border-radius: 50% !important;
   object-fit: cover !important;
-  object-position: top center;
+  object-position: top center !important;
   border: 4px solid #ffffff;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
   background: #e8e8e8;

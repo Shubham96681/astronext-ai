@@ -1,109 +1,65 @@
 import { useEffect, useRef, useState } from 'react';
 import { Send, Star, X } from 'lucide-react';
 import astrologersHeroHands from '../assets/generated/astrologers-hero-hands.png';
+import { ASTROLOGERS, formatSessionPrice, type Astrologer } from '../content/astrologersData';
 import { HeroStardust } from './HeroStardust';
 import { HERO_TICKER_TEXT, TESTIMONIALS } from '../content/siteCopy';
-
-export interface Astrologer {
-  id: number;
-  name: string;
-  specialty: string;
-  bio: string;
-  rating: number;
-  reviews: number;
-  exp: number;
-  price: number;
-  online: boolean;
-  avatar: string;
-}
-
-const ASTROLOGERS: Astrologer[] = [
-  {
-    id: 301,
-    name: 'Acharya Vidyabhushan',
-    specialty: 'Vedic Astrology & Kundali Expert',
-    bio: 'Guiding seekers with precise chart readings, dasha analysis, and practical remedies rooted in classical Vedic tradition.',
-    rating: 4.95,
-    reviews: 1420,
-    exp: 18,
-    price: 45,
-    online: true,
-    avatar: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=400&h=400',
-  },
-  {
-    id: 302,
-    name: 'Priya Chawla',
-    specialty: 'Tarot Reading & Relationship Guide',
-    bio: 'Specializing in relationship clarity, emotional healing, and intuitive Tarot spreads for life-changing decisions.',
-    rating: 4.88,
-    reviews: 890,
-    exp: 8,
-    price: 25,
-    online: true,
-    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400&h=400',
-  },
-  {
-    id: 303,
-    name: 'Shastri Govind Dev',
-    specialty: 'KP System & Gemology Guru',
-    bio: 'Expert in KP astrology, gemstone recommendations, and sub-lord techniques for accurate timing of events.',
-    rating: 4.91,
-    reviews: 1105,
-    exp: 15,
-    price: 35,
-    online: true,
-    avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&q=80&w=400&h=400',
-  },
-  {
-    id: 304,
-    name: 'Kabir Vats',
-    specialty: 'Vedic Numerology & Astro-Vastu',
-    bio: 'Blending numerology with Vastu principles to harmonize your home, career path, and personal name vibrations.',
-    rating: 4.85,
-    reviews: 640,
-    exp: 10,
-    price: 30,
-    online: true,
-    avatar: 'https://images.unsplash.com/photo-1628157582853-a796fa650a6a?auto=format&fit=crop&q=80&w=400&h=400',
-  },
-  {
-    id: 305,
-    name: 'Dr. Meera Iyer',
-    specialty: 'Palmistry & Prashna Shastra',
-    bio: 'Offering palmistry insights and Prashna readings for immediate answers to pressing life questions.',
-    rating: 4.92,
-    reviews: 756,
-    exp: 12,
-    price: 32,
-    online: true,
-    avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=400&h=400',
-  },
-  {
-    id: 306,
-    name: 'Pandit Ramesh Joshi',
-    specialty: 'Muhurat & Ritual Astrology',
-    bio: 'Calculating auspicious Muhurats and prescribing sacred rituals for weddings, ventures, and spiritual milestones.',
-    rating: 4.89,
-    reviews: 980,
-    exp: 22,
-    price: 50,
-    online: true,
-    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400&h=400',
-  },
-];
+import { useScrollReveal } from '../hooks/useScrollReveal';
+import AstrologerDetail from './AstrologerDetail';
+import JgProductImage from './JgProductImage';
 
 type ChatMessage = { sender: 'user' | 'bot'; text: string };
 
-function formatSessionPrice(perMin: number): string {
-  return `Rs. ${(perMin * 11).toFixed(2)}`;
+function ExpertCard({
+  astro,
+  onView,
+  onChat,
+}: {
+  astro: Astrologer;
+  onView: () => void;
+  onChat: () => void;
+}) {
+  return (
+    <article className="astro-expert-card">
+      <div className="astro-expert-card__body">
+        <div className="astro-expert-card__avatar-wrap">
+          <button type="button" className="astro-expert-card__media-btn" onClick={onView} aria-label={`View ${astro.name}`}>
+            <JgProductImage src={astro.avatar} alt={astro.name} className="astro-expert-card__avatar" loading="lazy" />
+          </button>
+        </div>
+        <h3 className="astro-expert-card__name">
+          <button type="button" className="astro-expert-card__name-btn" onClick={onView}>
+            {astro.name}
+          </button>
+        </h3>
+        <p className="astro-expert-card__specialty">{astro.specialty}</p>
+        <p className="astro-expert-card__bio">{astro.bio}</p>
+        <div className="astro-expert-card__footer">
+          <span className="astro-expert-card__price">{formatSessionPrice(astro.pricePerMinute)}</span>
+          <button type="button" className="astro-expert-card__cta" onClick={onChat}>
+            Get Expert Advice
+          </button>
+        </div>
+      </div>
+    </article>
+  );
 }
 
-export default function AstrologersPage() {
+type AstrologersPageProps = {
+  onNavigateHome?: () => void;
+};
+
+export default function AstrologersPage({ onNavigateHome }: AstrologersPageProps) {
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const [activeChat, setActiveChat] = useState<Astrologer | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const selected = selectedId ? ASTROLOGERS.find((a) => a.id === selectedId) : null;
+
+  useScrollReveal([selectedId, activeChat?.id]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -151,81 +107,10 @@ export default function AstrologersPage() {
     }, 1400);
   };
 
-  return (
-    <div className="astrologers-page">
-      <section className="astrologers-hero">
-        <HeroStardust />
-        <div className="astrologers-hero__grid">
-          <div className="astrologers-hero__copy">
-            <h1 className="astrologers-hero__title">
-              When the Stars Speak,
-              <br />
-              We Help You Listen
-            </h1>
-            <p className="astrologers-hero__desc">
-              Discover guidance from some of the most trusted and highly experienced astrologers
-            </p>
-          </div>
-          <div className="astrologers-hero__visual">
-            <img
-              src={astrologersHeroHands}
-              alt="Astrologer reviewing birth charts and writing notes"
-              className="astrologers-hero__img"
-            />
-          </div>
-        </div>
-      </section>
-
-      <div className="hero-ticker-bar astrologers-ticker">
-        <p className="hero-ticker-text">{HERO_TICKER_TEXT}</p>
-      </div>
-
-      <section className="astrologers-intro">
-        <h2 className="astrologers-intro__title">Connect with India&apos;s Best Astrologers</h2>
-        <p className="astrologers-intro__tagline">Experts You Can Trust. Insights You Can Act On</p>
-        <div className="astrologers-intro__divider" aria-hidden="true" />
-        <p className="astrologers-intro__text">
-          Discover guidance from some of the most trusted and highly experienced astrologers, each
-          specializing in powerful systems like{' '}
-          <strong>
-            Vedic Astrology, KP Astrology, Numerology, Tarot, Vastu,
-          </strong>{' '}
-          and more.
-        </p>
-        <p className="astrologers-intro__text">
-          Our experts combine deep spiritual insight with scientific accuracy to help you find
-          clarity, make informed decisions, and align with your true path. Whether you&apos;re
-          seeking predictions, remedies, or life guidance—you&apos;re in the right hands.
-        </p>
-      </section>
-
-      <section className="astrologers-main">
-        {!activeChat ? (
-          <div className="astrologers-experts-grid">
-            {ASTROLOGERS.map((astro) => (
-              <article className="astro-expert-card" key={astro.id}>
-                <div className="astro-expert-card__body">
-                  <div className="astro-expert-card__avatar-wrap">
-                    <img src={astro.avatar} alt={astro.name} className="astro-expert-card__avatar" />
-                  </div>
-                  <h3 className="astro-expert-card__name">{astro.name}</h3>
-                  <p className="astro-expert-card__specialty">{astro.specialty}</p>
-                  <p className="astro-expert-card__bio">{astro.bio}</p>
-                  <div className="astro-expert-card__footer">
-                    <span className="astro-expert-card__price">{formatSessionPrice(astro.price)}</span>
-                    <button
-                      type="button"
-                      className="astro-expert-card__cta"
-                      onClick={() => startChat(astro)}
-                    >
-                      Get Expert Advice
-                    </button>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        ) : (
+  if (activeChat) {
+    return (
+      <div className="astrologers-page astrologers-page--chat">
+        <section className="astrologers-main astrologers-main--chat-only">
           <div className="astrologers-chat-panel">
             <div className="astrologers-chat-panel__header">
               <div className="astrologers-chat-panel__profile">
@@ -275,15 +160,95 @@ export default function AstrologersPage() {
               </button>
             </form>
           </div>
-        )}
+        </section>
+      </div>
+    );
+  }
+
+  if (selected) {
+    return (
+      <div className="astrologers-page astrologers-page--detail">
+        <AstrologerDetail
+          astrologer={selected}
+          onBack={() => setSelectedId(null)}
+          onHome={onNavigateHome}
+          onSelect={setSelectedId}
+          onChat={(astro) => {
+            setSelectedId(null);
+            startChat(astro);
+          }}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="astrologers-page">
+      <section className="astrologers-hero">
+        <HeroStardust />
+        <div className="astrologers-hero__grid">
+          <div className="astrologers-hero__copy" data-reveal="fade-up" data-reveal-immediate>
+            <h1 className="astrologers-hero__title">
+              When the Stars Speak,
+              <br />
+              We Help You Listen
+            </h1>
+            <p className="astrologers-hero__desc">
+              Discover guidance from some of the most trusted and highly experienced astrologers
+            </p>
+          </div>
+          <div className="astrologers-hero__visual">
+            <img
+              src={astrologersHeroHands}
+              alt="Astrologer reviewing birth charts and writing notes"
+              className="astrologers-hero__img"
+            />
+          </div>
+        </div>
       </section>
 
-      <section className="astrologers-testimonials">
+      <div className="hero-ticker-bar astrologers-ticker">
+        <p className="hero-ticker-text">{HERO_TICKER_TEXT}</p>
+      </div>
+
+      <section className="astrologers-intro" data-reveal="fade-up">
+        <h2 className="astrologers-intro__title">Connect with India&apos;s Best Astrologers</h2>
+        <p className="astrologers-intro__tagline">Experts You Can Trust. Insights You Can Act On</p>
+        <div className="astrologers-intro__divider" aria-hidden="true" />
+        <p className="astrologers-intro__text">
+          Discover guidance from some of the most trusted and highly experienced astrologers, each
+          specializing in powerful systems like{' '}
+          <strong>
+            Vedic Astrology, KP Astrology, Numerology, Tarot, Vastu,
+          </strong>{' '}
+          and more.
+        </p>
+        <p className="astrologers-intro__text">
+          Our experts combine deep spiritual insight with scientific accuracy to help you find
+          clarity, make informed decisions, and align with your true path. Whether you&apos;re
+          seeking predictions, remedies, or life guidance—you&apos;re in the right hands.
+        </p>
+      </section>
+
+      <section className="astrologers-main">
+        <div className="astrologers-experts-grid" data-reveal="fade-up" data-reveal-stagger>
+          {ASTROLOGERS.map((astro) => (
+            <ExpertCard
+              key={astro.id}
+              astro={astro}
+              onView={() => setSelectedId(astro.id)}
+              onChat={() => startChat(astro)}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section className="astrologers-testimonials" data-reveal="fade-up">
         <h2 className="astrologers-testimonials__title">What Our Clients Say</h2>
         <p className="astrologers-testimonials__subtitle">
           Trusted by thousands seeking clarity through our verified astrologers
         </p>
-        <div className="astrologers-testimonials__grid">
+        <div className="astrologers-testimonials__grid" data-reveal="fade-up" data-reveal-delay="80ms" data-reveal-stagger>
           {TESTIMONIALS.map((t) => (
             <blockquote className="astrologers-testimonial-card" key={t.name}>
               <span className="astrologers-testimonial-card__quote-icon" aria-hidden="true">

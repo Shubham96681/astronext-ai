@@ -1,0 +1,63 @@
+/* Site logo */
+
+.logo-container {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  flex-shrink: 0;
+  min-width: 0;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  line-height: 0;
+}
+
+.site-logo-img {
+  display: block;
+  object-fit: contain;
+  object-position: left center;
+  background: transparent !important;
+  border: none;
+}
+
+/* Header — horizontal lockup, height-driven */
+.site-logo--header .site-logo-img,
+.nav-header .site-logo--header .site-logo-img,
+.logo-container .site-logo--header .site-logo-img {
+  height: var(--nav-logo-height, 3.5rem) !important;
+  width: auto !important;
+  max-width: var(--nav-logo-max-width, 16.25rem) !important;
+  min-height: 3rem;
+}
+
+.nav-header.scrolled .site-logo--header .site-logo-img,
+.site-logo--header.site-logo--compact .site-logo-img {
+  height: var(--nav-logo-height-compact, 3.25rem) !important;
+}
+
+.site-logo--phone .site-logo-img {
+  height: clamp(2rem, 10vw, 2.5rem);
+  width: auto;
+  max-width: min(12rem, 85%);
+}
+
+.site-logo--footer {
+  display: block;
+  width: 100%;
+}
+
+.site-logo--footer .site-logo-img {
+  width: 100%;
+  height: auto;
+  object-position: left top;
+}
+
+.app-container:has(.auth-page) .nav-header .logo-container {
+  align-self: center;
+  margin: 0 !important;
+}

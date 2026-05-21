@@ -41,43 +41,30 @@ body {
 }
 
 /* —— Header —— */
-.nav-header {
+.nav-header--inner {
   padding: 0.85rem 4%;
-  background: #fff !important;
-  backdrop-filter: none !important;
-  border-bottom: 1px solid rgba(10, 10, 36, 0.06);
-  box-shadow: 0 1px 0 rgba(10, 10, 36, 0.04);
 }
 
-.nav-header.scrolled {
+.nav-header--inner.scrolled {
   padding: 0.65rem 4%;
 }
 
-.nav-header .logo-container .site-logo-img {
-  height: 110px !important;
-  max-width: 320px !important;
-}
-
-.nav-header.scrolled .logo-container .site-logo-img {
-  height: 80px !important;
-  max-width: 280px !important;
-}
-
-.nav-menu {
-  gap: 0.35rem;
-}
+/* Logo sizes — see site-logo.css (home uses .nav-header--home rules) */
 
 .nav-link {
-  font-size: 0.875rem;
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  color: #3d3560;
+  font-size: 0.95rem;
+  padding: 0.35rem 0;
+  border-radius: 0;
+  color: #2a2540;
 }
 
 .nav-link.active {
-  background: var(--astro-purple-btn);
-  color: #fff;
+  background: transparent;
+  color: #110729;
   box-shadow: none;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  padding: 0.35rem 0;
 }
 
 /* —— Hero —— */
@@ -333,94 +320,7 @@ body {
   font-size: 0.95rem;
 }
 
-/* Footer pixel layout */
-.mega-footer {
-  background: #06061a;
-  padding: 0;
-}
-
-.footer-top-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
-  padding: 1.25rem 4%;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.footer-top-row img {
-  height: 40px;
-}
-
-.footer-legal-inline {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-  list-style: none;
-}
-
-.footer-legal-inline a {
-  color: rgba(255, 255, 255, 0.55);
-  text-decoration: none;
-  font-size: 0.8rem;
-}
-
-.footer-legal-inline a:hover {
-  color: var(--astro-gold-light);
-}
-
-.footer-grid {
-  max-width: var(--astro-container);
-  padding: 3rem 4% 2rem;
-}
-
-.footer-grid--design {
-  grid-template-columns: 1.2fr 1fr 1fr;
-}
-
-.footer-contact-line {
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.65);
-  margin-bottom: 0.5rem;
-}
-
-.footer-success-msg {
-  color: var(--astro-gold-light);
-  font-size: 0.9rem;
-}
-
-.footer-social-row {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-
-.footer-social-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  text-decoration: none;
-  color: #fff;
-}
-
-.footer-social-btn--wa { background: #25d366; }
-.footer-social-btn--yt { background: #ff0000; }
-.footer-social-btn--fb { background: #1877f2; }
-.footer-social-btn--ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-
-.footer-bottom {
-  flex-direction: column;
-  text-align: center;
-  padding: 1.25rem 4% 2rem;
-  font-size: 0.75rem;
-}
+/* Footer — canonical layout in footer-section.css */
 
 @media (max-width: 1024px) {
   .hero-section {

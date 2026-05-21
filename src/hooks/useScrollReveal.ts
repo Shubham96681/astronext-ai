@@ -22,9 +22,10 @@ function initRevealElements(root: ParentNode = document) {
  */
 export function useScrollReveal(deps: unknown[] = []) {
   useEffect(() => {
+    const reduced = window.matchMedia(REDUCED_MOTION).matches;
     initRevealElements();
 
-    if (window.matchMedia(REDUCED_MOTION).matches) {
+    if (reduced) {
       document.querySelectorAll('[data-reveal]').forEach((el) => {
         el.classList.add('reveal-visible');
       });
