@@ -1919,8 +1919,9 @@ body {
     max-width: 420px;
   }
   
-  .hero-woman-fg {
-    max-width: 320px;
+  .hero-woman-layer .hero-woman-fg,
+  .hero-woman-layer .hero-woman-fg--generated {
+    max-width: none;
   }
 
   .landing-section, .landing-section.reverse {

@@ -31,7 +31,10 @@
   .hero-section {
     min-height: auto !important;
     padding: 5rem 1.25rem 0 !important;
-    gap: 1.25rem !important;
+    grid-template-columns: 1fr !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    row-gap: 2.5rem !important;
   }
 
   .hero-left {
@@ -41,8 +44,11 @@
     width: 100%;
     padding-left: 0 !important;
     padding-right: 0 !important;
-    padding-bottom: 0.5rem !important;
+    padding-bottom: 1.75rem !important;
+    margin-bottom: 0 !important;
     text-align: center !important;
+    position: relative;
+    z-index: 3;
   }
 
   .hero-title,
@@ -52,7 +58,13 @@
   }
 
   .hero-section .whatsapp-badge-wrapper {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+    max-width: min(20rem, calc(100vw - 2.5rem)) !important;
     margin-inline: auto !important;
+    margin-top: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
   }
 
   .hero-title {
@@ -62,45 +74,97 @@
 
   .hero-subtitle {
     font-size: 0.95rem !important;
-    margin-bottom: 1.5rem !important;
+    margin-bottom: 1.25rem !important;
     max-width: 100% !important;
   }
 
-  .hero-section .whatsapp-badge-wrapper {
-    margin-top: 0.75rem !important;
+  /* In-flow icon + label — no overlapping bubble on narrow screens */
+  .hero-section .whatsapp-badge {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 0.65rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 3.25rem !important;
+    padding: 0.55rem 1rem 0.55rem 0.65rem !important;
+    box-sizing: border-box !important;
   }
 
-  .hero-section .whatsapp-badge {
-    width: min(16.375rem, calc(100vw - 2.5rem));
-    max-width: 100%;
-    justify-content: center;
+  .hero-section .whatsapp-icon-circle {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    flex-shrink: 0 !important;
+    width: 2.75rem !important;
+    height: 2.75rem !important;
+    border-width: 2px !important;
+  }
+
+  .hero-section .whatsapp-icon-circle svg {
+    width: 1.35rem !important;
+    height: 1.35rem !important;
+  }
+
+  .hero-section .whatsapp-badge-text {
+    margin-left: 0 !important;
+    white-space: normal !important;
+    text-align: left !important;
+    font-size: clamp(0.8125rem, 3.6vw, 0.9375rem) !important;
+    line-height: 1.3 !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
   }
 
   .hero-right {
     min-height: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 0.5rem !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    position: relative;
+    z-index: 1;
   }
 
   .hero-visual-stack {
-    max-width: min(17.5rem, 72vw);
-    margin-inline: auto;
+    width: min(100%, 26rem) !important;
+    max-width: min(26rem, 96vw) !important;
+    min-height: clamp(340px, 98vw, 420px) !important;
+    margin-inline: auto !important;
+    margin-top: 0.75rem !important;
+    padding-top: 1rem !important;
+    padding-bottom: 0.25rem !important;
+    align-items: end !important;
   }
 
+  /* Wheel sits lower so the ring stays below the CTA */
   .hero-zodiac-spin {
-    width: min(88%, 15rem);
-    max-width: 15rem;
-    top: 36%;
+    width: min(96%, 22rem) !important;
+    max-width: 22rem !important;
+    top: 54% !important;
   }
 
   .hero-visual-stack::before {
-    width: min(16rem, 82vw);
-    top: 34%;
+    width: min(20rem, 86vw) !important;
+    top: 50% !important;
+  }
+
+  .hero-woman-layer {
+    align-self: end !important;
+    width: 100% !important;
   }
 
   .hero-woman-layer .hero-woman-fg,
   .hero-woman-layer .hero-woman-fg--generated {
-    width: 100% !important;
-    max-width: 100% !important;
-    transform: scale(1) translateZ(0) !important;
+    width: 135% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    transform: scale(1.3) translateZ(0) !important;
+    transform-origin: bottom center !important;
+    margin-top: auto !important;
   }
 
   .hero-ticker-bar {
