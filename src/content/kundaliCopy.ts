@@ -1,7 +1,7 @@
 /** Kundali Patra page — copy from kundalipatra.svg (1440×5156) */
 
 export const KUNDALI_TICKER_TEXT =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
+  'Precise Vedic calculations — personalised Kundli Patra delivered digitally in minutes';
 
 export const KUNDALI_HERO_TITLE = 'Kundli Patra';
 export const KUNDALI_HERO_SUBTITLE = 'A Divine Guide of Life';
@@ -19,14 +19,14 @@ export const KUNDALI_BASIC_DESC =
   'Your Kundli Patra is a sacred map of the heavens at the moment of your birth. Our AI blends classical Vedic rules with precise calculations to reveal your strengths, challenges, and timing.';
 
 export const KUNDALI_BASIC_FEATURES = [
-  'Lorem ipsum dolor sit amet',
-  'Lorem ipsum dolor sit amet',
-  'Lorem ipsum dolor sit amet',
-  'Lorem ipsum dolor sit amet',
-  'Lorem ipsum dolor sit amet',
-  'Lorem ipsum dolor sit amet',
-  'Lorem ipsum dolor sit amet',
-  'Lorem ipsum dolor sit amet',
+  'Accurate lagna kundli with planetary positions',
+  'House-wise strengths, challenges & life themes',
+  'Mahadasha & antardasha timing overview',
+  'Career, wealth & business indicators',
+  'Marriage, relationships & compatibility cues',
+  'Health tendencies & wellness guidance',
+  'Remedies aligned with your birth chart',
+  'Instant digital delivery — share or print anytime',
 ] as const;
 
 export const KUNDALI_DETAIL_TITLE = 'Detailed Report';

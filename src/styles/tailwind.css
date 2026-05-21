@@ -1,0 +1,18 @@
+@import 'tailwindcss';
+
+/* AstroNext brand tokens — use as bg-astro-primary, text-astro-gold, etc. */
+@theme {
+  --color-astro-primary: #251545;
+  --color-astro-primary-light: #3e266f;
+  --color-astro-purple: #552c83;
+  --color-astro-gold: #d4af37;
+  --color-astro-navy: #110729;
+  --color-astro-navy-deep: #0b0b2a;
+  --color-astro-accent: #25d366;
+  --color-astro-orange: #f15a24;
+  --color-astro-cream: #fdf9f3;
+
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+}

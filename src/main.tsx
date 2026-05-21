@@ -7,34 +7,19 @@ preloadLogo.rel = 'preload'
 preloadLogo.as = 'image'
 preloadLogo.href = logoUrl
 document.head.appendChild(preloadLogo)
+import './styles/tailwind.css'
 import './index.css'
-import './styles/home-pixel.css'
-import './styles/cosmic-section.css'
-import './styles/mockups.css'
-import './styles/hero-reference.css'
-import './styles/section-typography.css'
-import './styles/why-app-section.css'
-import './styles/motion.css'
-import './styles/motion-interactive.css'
-import './styles/footer-section.css'
-import './styles/devotion-section.css'
-import './styles/puja-promo-section.css'
-import './styles/astrologers-page.css'
-import './styles/detail-reference.css'
-import './styles/astrologer-detail-page.css'
-import './styles/jg-detail-readmore.css'
-import './styles/kundali-page.css'
-import './styles/jagannath-store-page.css'
-import './styles/auth-page.css'
-import './styles/site-logo.css'
-import './styles/site-shell.css'
-import './styles/nav-header.css'
-import './styles/whatsapp-chat-btn.css'
-import './styles/whatsapp-chat-widget.css'
+import './styles/page-styles.ts'
+import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
+import AppThemeProvider from './theme/AppThemeProvider.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <AppThemeProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </AppThemeProvider>
   </StrictMode>,
 )

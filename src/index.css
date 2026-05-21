@@ -1944,9 +1944,7 @@ body {
     gap: 2.5rem;
   }
   
-  .nav-menu {
-    display: none; /* Collapsed on mobile */
-  }
+  /* Mobile links — hamburger drawer in nav-mobile.css */
 }
 
 @media (max-width: 768px) {

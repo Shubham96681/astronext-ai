@@ -1,0 +1,415 @@
+/* Extra motion & interactivity — layers on motion.css + motion-interactive.css */
+
+:root {
+  --motion-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+/* —— Route / page enter —— */
+.page-view {
+  animation: pageViewIn 0.55s var(--motion-ease) both;
+}
+
+@keyframes pageViewIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* —— Subtle ambient motion (heroes) —— */
+.hero-section .hero-woman-layer {
+  transition: transform 0.6s var(--motion-ease);
+}
+
+.hero-section:hover .hero-woman-layer {
+  transform: translateY(-4px);
+}
+
+/* —— Buttons & CTAs —— */
+.cosmic-cta-btn,
+.puja-promo-btn,
+.devotion-cta,
+.kundali-btn,
+.footer-submit-btn,
+.auth-submit,
+.add-cart-text-btn,
+.book-puja-btn,
+.jg-product-card__cart,
+.astro-expert-card__cta {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform var(--motion-base) var(--motion-ease),
+    box-shadow var(--motion-base) ease,
+    background var(--motion-fast) ease,
+    filter var(--motion-fast) ease;
+}
+
+.cosmic-cta-btn::after,
+.puja-promo-btn::after,
+.devotion-cta::after,
+.kundali-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 62%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+
+.cosmic-cta-btn:hover::after,
+.puja-promo-btn:hover::after,
+.devotion-cta:hover::after,
+.kundali-btn:hover::after {
+  transform: translateX(130%);
+}
+
+.cosmic-cta-btn:hover,
+.puja-promo-btn:hover,
+.devotion-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(37, 21, 69, 0.18);
+}
+
+button:not(:disabled):active,
+.interactive-press:active {
+  transform: scale(0.97) !important;
+}
+
+/* —— Cards & tiles —— */
+.interactive-card,
+.product-card--pdf,
+.puja-card,
+.section-header {
+  transition:
+    transform var(--motion-base) var(--motion-ease),
+    box-shadow var(--motion-base) ease;
+}
+
+.puja-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 22px 48px rgba(37, 21, 69, 0.14);
+}
+
+.puja-benefit-item {
+  transition:
+    transform var(--motion-fast) ease,
+    color var(--motion-fast) ease;
+}
+
+.puja-card:hover .puja-benefit-item {
+  transform: translateX(4px);
+}
+
+/* —— FAQ smooth open —— */
+.faq-item-content {
+  animation: faqSlideOpen 0.45s var(--motion-ease) both;
+}
+
+@keyframes faqSlideOpen {
+  from {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    max-height: 400px;
+    transform: translateY(0);
+  }
+}
+
+.faq-item-header {
+  transition: background 0.25s ease;
+}
+
+.faq-item-card:hover .faq-item-header {
+  background: rgba(125, 127, 209, 0.06);
+}
+
+/* —— Nav & mobile drawer —— */
+.nav-hamburger {
+  transition:
+    transform var(--motion-base) var(--motion-ease),
+    background var(--motion-fast) ease,
+    border-color var(--motion-fast) ease;
+}
+
+.nav-hamburger:active {
+  transform: scale(0.92);
+}
+
+.nav-mobile-drawer--open .nav-mobile-menu li {
+  animation: mobileNavItemIn 0.45s var(--motion-ease) both;
+}
+
+.nav-mobile-drawer--open .nav-mobile-menu li:nth-child(1) {
+  animation-delay: 0.04s;
+}
+.nav-mobile-drawer--open .nav-mobile-menu li:nth-child(2) {
+  animation-delay: 0.09s;
+}
+.nav-mobile-drawer--open .nav-mobile-menu li:nth-child(3) {
+  animation-delay: 0.14s;
+}
+.nav-mobile-drawer--open .nav-mobile-menu li:nth-child(4) {
+  animation-delay: 0.19s;
+}
+
+.nav-mobile-drawer--open .nav-mobile-action {
+  animation: mobileNavItemIn 0.45s var(--motion-ease) both;
+}
+
+.nav-mobile-drawer--open .nav-mobile-action:nth-child(1) {
+  animation-delay: 0.22s;
+}
+.nav-mobile-drawer--open .nav-mobile-action:nth-child(2) {
+  animation-delay: 0.27s;
+}
+.nav-mobile-drawer--open .nav-mobile-action:nth-child(3) {
+  animation-delay: 0.32s;
+}
+
+@keyframes mobileNavItemIn {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.nav-mobile-link {
+  transition:
+    transform var(--motion-fast) var(--motion-ease),
+    background var(--motion-fast) ease,
+    color var(--motion-fast) ease;
+}
+
+.nav-mobile-link:active {
+  transform: scale(0.98);
+}
+
+/* —— Ticker bars —— */
+.hero-ticker-bar {
+  animation: tickerFadeIn 0.8s var(--motion-ease) 0.2s both;
+}
+
+@keyframes tickerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* —— Detail pages —— */
+.detail-ref-page__media,
+.astro-detail-hero__frame {
+  transition:
+    transform var(--motion-slow) var(--motion-ease),
+    box-shadow var(--motion-base) ease;
+}
+
+.detail-ref-page__media:hover,
+.astro-detail-hero__frame:hover {
+  transform: scale(1.02);
+  box-shadow: 0 16px 40px rgba(26, 43, 76, 0.1);
+}
+
+.jg-detail-readmore__img {
+  transition: transform var(--motion-slow) var(--motion-ease);
+}
+
+.jg-detail-readmore__media:hover .jg-detail-readmore__img {
+  transform: scale(1.03);
+}
+
+/* —— Footer & social —— */
+.footer-top-nav a,
+.footer-legal-inline a {
+  transition:
+    color var(--motion-fast) ease,
+    transform var(--motion-fast) ease,
+    opacity var(--motion-fast) ease;
+}
+
+.footer-top-nav a:hover,
+.footer-legal-inline a:hover {
+  transform: translateY(-1px);
+}
+
+.footer-social-btn {
+  transition:
+    transform var(--motion-base) var(--motion-spring),
+    filter var(--motion-fast) ease,
+    box-shadow var(--motion-base) ease;
+}
+
+.footer-social-btn:hover {
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* —— Modal —— */
+.modal-overlay {
+  animation: overlayIn 0.35s ease both;
+}
+
+.modal-content {
+  animation: modalIn 0.45s var(--motion-ease) both;
+}
+
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* —— Chat panel —— */
+.astrologers-chat-panel {
+  animation: chatPanelIn 0.4s var(--motion-ease) both;
+}
+
+@keyframes chatPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* —— Scroll reveal: blur-in variant —— */
+.reveal--blur-in {
+  filter: blur(8px);
+}
+
+.reveal-visible.reveal--blur-in {
+  filter: none;
+}
+
+/* —— Stagger: extend to 12 children —— */
+[data-reveal-stagger].reveal-visible > *:nth-child(9) {
+  transition-delay: 540ms;
+}
+[data-reveal-stagger].reveal-visible > *:nth-child(10) {
+  transition-delay: 630ms;
+}
+[data-reveal-stagger].reveal-visible > *:nth-child(11) {
+  transition-delay: 720ms;
+}
+[data-reveal-stagger].reveal-visible > *:nth-child(12) {
+  transition-delay: 810ms;
+}
+
+/* —— Filter chips (store) —— */
+.jg-store-filter-btn,
+.jg-clear-filters {
+  transition:
+    transform var(--motion-fast) var(--motion-ease),
+    background var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    color var(--motion-fast) ease;
+}
+
+.jg-store-filter-btn:hover,
+.jg-clear-filters:hover {
+  transform: translateY(-2px);
+}
+
+.jg-stock-pill {
+  transition: transform var(--motion-fast) ease;
+}
+
+.jg-product-card:hover .jg-stock-pill {
+  transform: scale(1.05);
+}
+
+/* —— Floating WhatsApp —— */
+.wa-chat-widget--floating {
+  animation: waFloatPulse 4s ease-in-out infinite;
+}
+
+@keyframes waFloatPulse {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.wa-chat-widget--floating .whatsapp-chat-btn {
+  transition:
+    transform var(--motion-base) var(--motion-ease),
+    box-shadow var(--motion-base) ease;
+}
+
+.wa-chat-widget--floating .whatsapp-chat-btn:hover {
+  animation: none;
+  transform: translateY(-4px) scale(1.04);
+}
+
+/* —— Cosmic section checks —— */
+.cosmic-check {
+  display: inline-block;
+  transition: transform 0.35s var(--motion-spring);
+}
+
+.cosmic-features li:hover .cosmic-check {
+  transform: scale(1.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-view,
+  .hero-ticker-bar,
+  .modal-overlay,
+  .modal-content,
+  .astrologers-chat-panel,
+  .nav-mobile-drawer--open .nav-mobile-menu li,
+  .nav-mobile-drawer--open .nav-mobile-action,
+  .wa-chat-widget--floating {
+    animation: none !important;
+  }
+
+  .faq-item-content {
+    animation: none;
+  }
+
+  button:not(:disabled):active {
+    transform: none !important;
+  }
+}

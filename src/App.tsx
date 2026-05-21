@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
+import { Link, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { 
-  Search, 
   User, 
   ShoppingCart, 
   X, 
@@ -23,15 +23,18 @@ import WhatsAppChatButton from './components/WhatsAppChatButton';
 import FooterSocialLinks from './components/FooterSocialLinks';
 import ZodiacWheel from './components/ZodiacWheel';
 import AppQrMockup from './components/AppQrMockup';
-import SiteLogo from './components/SiteLogo';
+import SiteHeader from './components/SiteHeader';
 import logoFooterImg from './assets/logos/logo-footer.svg';
-import { getNavLogoTheme, type AppTab } from './content/logoThemes';
+import { getNavLogoThemeFromPath } from './content/logoThemes';
+import { isDetailSubRoute, isHeroOverlayPath, pathnameToTab, ROUTES } from './routes/paths';
+import ScrollToTop from './components/ScrollToTop';
 import AstrologersPage from './components/AstrologersPage';
 import KundaliPatraPage from './components/KundaliPatraPage';
 import JagannathStorePage from './components/JagannathStorePage';
 import AuthPage from './components/AuthPage';
 import {
   HERO_TICKER_TEXT,
+  HOME_HERO_SUBTITLE,
   TESTIMONIALS,
   WHY_ASTRONEXT_FEATURES,
   FAQ_ITEMS,
@@ -67,10 +70,12 @@ interface Puja {
 }
 
 function App() {
-  const [activeTab, setActiveTab] = useState<AppTab>('home');
-  const navLogoTheme = getNavLogoTheme(activeTab);
-  const isHeroOverlayPage =
-    activeTab === 'jgstore' || activeTab === 'kundali' || activeTab === 'astrologers';
+  const location = useLocation();
+  const navigate = useNavigate();
+  const activeTab = pathnameToTab(location.pathname);
+  const navLogoTheme = getNavLogoThemeFromPath(location.pathname);
+  const isDetailPage = isDetailSubRoute(location.pathname);
+  const isHeroOverlayPage = !isDetailPage && isHeroOverlayPath(location.pathname);
   const [cartCount, setCartCount] = useState<number>(0);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const navHeaderClass = [
@@ -114,15 +119,11 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Start at top when switching pages (home, kundali, store, etc.)
   useEffect(() => {
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
     setIsScrolled(false);
-  }, [activeTab]);
+  }, [location.pathname]);
 
-  useScrollReveal([activeTab]);
+  useScrollReveal([location.pathname]);
 
   // E-Store Products (Updated with exact names/prices/discounts from PDF)
   const estoreProducts: Product[] = [
@@ -244,66 +245,18 @@ function App() {
   };
 
   return (
-    <div className="app-container">
+    <div className="app-container interactive-page min-h-screen font-sans antialiased">
+      <ScrollToTop />
       {/* Background Starry Particles */}
       <div className="space-sparkles"></div>
 
-      {/* Premium Navigation Header */}
-      <header className={navHeaderClass}>
-        <div className="site-shell nav-header__shell">
-          <a href="#home" className="logo-container" onClick={() => setActiveTab('home')}>
-            <SiteLogo
-              compact={isScrolled && !isHeroOverlayPage}
-              theme={navLogoTheme}
-              priority={activeTab === 'home' || isHeroOverlayPage}
-            />
-          </a>
-
-          <div className="nav-right-container">
-            <nav aria-label="Main">
-              <ul className="nav-menu">
-                <li>
-                  <span className={`nav-link ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
-                    Home
-                  </span>
-                </li>
-                <li>
-                  <span className={`nav-link ${activeTab === 'kundali' ? 'active' : ''}`} onClick={() => setActiveTab('kundali')}>
-                    Kundali Patra
-                  </span>
-                </li>
-                <li>
-                  <span className={`nav-link ${activeTab === 'astrologers' ? 'active' : ''}`} onClick={() => setActiveTab('astrologers')}>
-                    Astrologers
-                  </span>
-                </li>
-                <li>
-                  <span className={`nav-link ${activeTab === 'jgstore' ? 'active' : ''}`} onClick={() => setActiveTab('jgstore')}>
-                    Divine Store
-                  </span>
-                </li>
-              </ul>
-            </nav>
-
-            <div className="nav-actions">
-              <button className="action-btn" title="Search stars...">
-                <Search size={22} strokeWidth={1.75} />
-              </button>
-              <button
-                className="action-btn"
-                title="Login / Sign Up"
-                onClick={() => setActiveTab('login')}
-              >
-                <User size={22} strokeWidth={1.75} />
-              </button>
-              <button className="action-btn" title="Remedies Cart">
-                <ShoppingCart size={22} strokeWidth={1.75} />
-                {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <SiteHeader
+        headerClassName={navHeaderClass}
+        logoTheme={navLogoTheme}
+        logoCompact={isScrolled && !isHeroOverlayPage}
+        logoPriority={activeTab === 'home' || isHeroOverlayPage}
+        cartCount={cartCount}
+      />
 
       {/* Main Workspace */}
       <main
@@ -313,9 +266,11 @@ function App() {
             : ''
         } ${isHeroOverlayPage ? 'main-content--hero-overlay' : ''}`}
       >
-        <div key={activeTab} className="page-view">
-        {/* ==================== HOME / HERO VIEW (DETAILED PDF SCROLLING LAYOUT) ==================== */}
-        {activeTab === 'home' && (
+        <div key={location.pathname} className="page-view">
+        <Routes>
+        <Route
+          path={ROUTES.home}
+          element={
           <div className="page-section">
             
             {/* Section 1: Hero Section */}
@@ -327,9 +282,7 @@ function App() {
                   <br />
                   <span className="hero-title-second">let Pandit Jee answer...</span>
                 </h2>
-                <p className="hero-subtitle">
-                  At AstroNext, We specialise in empowering Vedic Astrology through generation of Kundlipatra
-                </p>
+                <p className="hero-subtitle">{HOME_HERO_SUBTITLE}</p>
                 <a 
                   href="https://wa.me/919999999999?text=Namaste%20Pandit%20Jee,%20please%20generate%20my%20Kundli!" 
                   target="_blank" 
@@ -441,7 +394,7 @@ function App() {
                     <li><span className="cosmic-check" aria-hidden="true">✓</span> Instant digital delivery</li>
                     <li><span className="cosmic-check" aria-hidden="true">✓</span> Different reports as per your need</li>
                   </ul>
-                  <button type="button" className="cosmic-cta-btn" onClick={() => setActiveTab('kundali')}>
+                  <button type="button" className="cosmic-cta-btn" onClick={() => navigate(ROUTES.kundali)}>
                     Create Kundli Patra
                   </button>
                 </div>
@@ -456,7 +409,7 @@ function App() {
               <p className="puja-promo-body">
                 Bring sacred rituals to your doorstep with our customized puja services. Led by experienced priests, each ceremony is rooted in ancient traditions and thoughtfully tailored to your spiritual needs.
               </p>
-              <button type="button" className="puja-promo-btn" onClick={() => setActiveTab('puja')}>
+              <button type="button" className="puja-promo-btn" onClick={() => navigate(ROUTES.puja)}>
                 Book Your Puja
               </button>
               <div className="puja-promo-visual">
@@ -603,12 +556,15 @@ function App() {
             </section>
 
           </div>
-        )}
+          }
+        />
 
-        {activeTab === 'kundali' && <KundaliPatraPage />}
+        <Route path={ROUTES.kundali} element={<KundaliPatraPage />} />
 
         {/* ==================== E-STORE VIEW ==================== */}
-        {activeTab === 'estore' && (
+        <Route
+          path={ROUTES.estore}
+          element={
           <div className="page-section">
             <div className="section-header" data-reveal="fade-up">
               <h2 className="section-title">Vedic <span>E-Remedies</span> Store</h2>
@@ -644,14 +600,22 @@ function App() {
               ))}
             </div>
           </div>
-        )}
+          }
+        />
 
-        {activeTab === 'jgstore' && (
-          <JagannathStorePage onAddToCart={handleAddToCart} addedItems={addedItems} />
-        )}
+        <Route
+          path={`${ROUTES.divineStore}/product/:productId`}
+          element={<JagannathStorePage onAddToCart={handleAddToCart} addedItems={addedItems} />}
+        />
+        <Route
+          path={ROUTES.divineStore}
+          element={<JagannathStorePage onAddToCart={handleAddToCart} addedItems={addedItems} />}
+        />
 
         {/* ==================== BOOK MY PUJA VIEW ==================== */}
-        {activeTab === 'puja' && (
+        <Route
+          path={ROUTES.puja}
+          element={
           <div className="page-section">
             <div className="section-header" data-reveal="fade-up">
               <h2 className="section-title">Book <span>Vedic Pujas</span> Live</h2>
@@ -684,18 +648,17 @@ function App() {
               ))}
             </div>
           </div>
-        )}
+          }
+        />
 
-        {activeTab === 'astrologers' && (
-          <AstrologersPage onNavigateHome={() => setActiveTab('home')} />
-        )}
+        <Route path={`${ROUTES.astrologers}/:astrologerId`} element={<AstrologersPage />} />
+        <Route path={ROUTES.astrologers} element={<AstrologersPage />} />
 
-        {(activeTab === 'login' || activeTab === 'signup') && (
-          <AuthPage
-            mode={activeTab}
-            onSwitchMode={(mode) => setActiveTab(mode)}
-          />
-        )}
+        <Route path={ROUTES.login} element={<AuthPage mode="login" />} />
+        <Route path={ROUTES.signup} element={<AuthPage mode="signup" />} />
+
+        <Route path="*" element={<Navigate to={ROUTES.home} replace />} />
+        </Routes>
 
         </div>
       </main>
@@ -703,11 +666,7 @@ function App() {
       <footer className="mega-footer" data-reveal="fade-up">
         <div className="footer-inner">
           <div className="footer-top-row" data-reveal="fade" data-reveal-delay="60ms">
-            <a
-              href="#home"
-              className="footer-top-logo"
-              onClick={(e) => { e.preventDefault(); setActiveTab('home'); window.scrollTo(0, 0); }}
-            >
+            <Link to={ROUTES.home} className="footer-top-logo">
               <img
                 src={logoFooterImg}
                 alt="Astronext.ai — THE NEXT-GEN AI OF ASTROLOGY"
@@ -717,16 +676,16 @@ function App() {
                 loading="lazy"
                 decoding="async"
               />
-            </a>
+            </Link>
             <nav className="footer-top-nav" aria-label="Footer navigation">
               <ul className="footer-legal-inline">
                 <li><a href="#privacy">Privacy Policy</a></li>
                 <li><a href="#refund">Refund Policy</a></li>
                 <li><a href="#terms">Terms of Service</a></li>
-                <li><a href="#home" onClick={(e) => { e.preventDefault(); setActiveTab('home'); window.scrollTo(0, 0); }}>Home</a></li>
-                <li><a href="#kundali" onClick={(e) => { e.preventDefault(); setActiveTab('kundali'); window.scrollTo(0, 0); }}>Kundali Patra</a></li>
-                <li><a href="#astrologers" onClick={(e) => { e.preventDefault(); setActiveTab('astrologers'); window.scrollTo(0, 0); }}>Astrologers</a></li>
-                <li><a href="#jgstore" onClick={(e) => { e.preventDefault(); setActiveTab('jgstore'); window.scrollTo(0, 0); }}>Divine Store</a></li>
+                <li><Link to={ROUTES.home}>Home</Link></li>
+                <li><Link to={ROUTES.kundali}>Kundali Patra</Link></li>
+                <li><Link to={ROUTES.astrologers}>Astrologers</Link></li>
+                <li><Link to={ROUTES.divineStore}>Divine Store</Link></li>
               </ul>
             </nav>
           </div>

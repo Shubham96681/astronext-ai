@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
+import { ROUTES } from '../routes/paths';
 import authZodiacWheel from '../assets/auth-zodiac-wheel.png';
 import { AUTH_HERO_SUBTITLE, AUTH_HERO_TITLE } from '../content/siteCopy';
 import { useScrollReveal } from '../hooks/useScrollReveal';
@@ -8,7 +10,6 @@ type AuthMode = 'login' | 'signup';
 
 type Props = {
   mode: AuthMode;
-  onSwitchMode: (mode: AuthMode) => void;
 };
 
 function PasswordField({
@@ -54,7 +55,8 @@ function PasswordField({
   );
 }
 
-export default function AuthPage({ mode, onSwitchMode }: Props) {
+export default function AuthPage({ mode }: Props) {
+  const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [signupForm, setSignupForm] = useState({
     name: '',
@@ -133,7 +135,7 @@ export default function AuthPage({ mode, onSwitchMode }: Props) {
 
                   <p className="auth-card__switch">
                     Don&apos;t have an account?{' '}
-                    <button type="button" className="auth-card__switch-link" onClick={() => onSwitchMode('signup')}>
+                    <button type="button" className="auth-card__switch-link" onClick={() => navigate(ROUTES.signup)}>
                       Sign Up
                     </button>
                   </p>
@@ -192,7 +194,7 @@ export default function AuthPage({ mode, onSwitchMode }: Props) {
 
                   <p className="auth-card__switch">
                     Already have an account?{' '}
-                    <button type="button" className="auth-card__switch-link" onClick={() => onSwitchMode('login')}>
+                    <button type="button" className="auth-card__switch-link" onClick={() => navigate(ROUTES.login)}>
                       Login
                     </button>
                   </p>

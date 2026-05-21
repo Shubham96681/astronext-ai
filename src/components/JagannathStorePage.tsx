@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { divineStoreProductPath, parseRouteId, ROUTES } from '../routes/paths';
 import { ArrowLeft, Check, ChevronDown, Minus, Plus, ShoppingCart, Star, X } from 'lucide-react';
 import JgProductImage from './JgProductImage';
+import { HeroStardust } from './HeroStardust';
 import heroJagannathTriad from '../assets/generated/hero-jagannath-triad.png';
 import {
   JG_STORE_HERO_SUBTITLE,
@@ -206,7 +209,7 @@ function ProductDetail({
           </div>
         </div>
 
-        <section className="jg-detail-readmore__related">
+        <section className="jg-detail-readmore__related" data-reveal="fade-up" data-reveal-delay="120ms">
           <h2 className="detail-ref-page__related-title">Related Products</h2>
           <div className="jg-store-grid">
             {related.map((p) => (
@@ -228,6 +231,7 @@ function ProductDetail({
 function JagannathStoreHero() {
   return (
     <section className="jg-store-hero" aria-labelledby="jg-store-hero-title" data-reveal="fade-up" data-reveal-immediate>
+      <HeroStardust />
       <div className="jg-store-hero__left" data-reveal="fade-right" data-reveal-immediate data-reveal-delay="60ms">
         <h1 id="jg-store-hero-title" className="jg-store-hero__title">
           {JG_STORE_HERO_TITLE}
@@ -267,7 +271,7 @@ function StoreListingControls({
   onClearFilters: () => void;
 }) {
   return (
-    <div className="jg-store-controls">
+    <div className="jg-store-controls" data-reveal="fade-up" data-reveal-delay="80ms">
       <div className="jg-store-controls__row">
         <div className="jg-store-controls__filters">
           <span className="jg-store-controls__label">Filter:</span>
@@ -374,7 +378,9 @@ function StoreListingControls({
 }
 
 export default function JagannathStorePage({ onAddToCart, addedItems }: Props) {
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const { productId: productIdParam } = useParams<{ productId?: string }>();
+  const navigate = useNavigate();
+  const selectedId = parseRouteId(productIdParam);
   const [availabilityFilter, setAvailabilityFilter] = useState<AvailabilityFilter>('all');
   const [priceFilter, setPriceFilter] = useState<PriceFilter>('all');
   const [sortBy, setSortBy] = useState<SortOption>('best');
@@ -387,7 +393,13 @@ export default function JagannathStorePage({ onAddToCart, addedItems }: Props) {
 
   const hasActiveFilters = availabilityFilter !== 'all' || priceFilter !== 'all';
 
-  useScrollReveal([selectedId]);
+  useScrollReveal([productIdParam ?? 'listing']);
+
+  useEffect(() => {
+    if (productIdParam && !selected) {
+      navigate(ROUTES.divineStore, { replace: true });
+    }
+  }, [productIdParam, selected, navigate]);
 
   useEffect(() => {
     if (selected) {
@@ -397,6 +409,9 @@ export default function JagannathStorePage({ onAddToCart, addedItems }: Props) {
     }
     return () => document.body.classList.remove('jg-store-detail-active');
   }, [selected]);
+
+  const goToProduct = (id: number) => navigate(divineStoreProductPath(id));
+  const goToStore = () => navigate(ROUTES.divineStore);
 
   const clearFilters = () => {
     setAvailabilityFilter('all');
@@ -411,8 +426,8 @@ export default function JagannathStorePage({ onAddToCart, addedItems }: Props) {
             <div className="jg-store-inner jg-store-inner--detail">
               <ProductDetail
               product={selected}
-              onBack={() => setSelectedId(null)}
-              onSelectProduct={setSelectedId}
+              onBack={goToStore}
+              onSelectProduct={goToProduct}
               onAddToCart={onAddToCart}
               added={!!addedItems[selected.id]}
               addedItems={addedItems}
@@ -457,7 +472,7 @@ export default function JagannathStorePage({ onAddToCart, addedItems }: Props) {
               <ProductCard
                 key={product.id}
                 product={product}
-                onSelect={() => setSelectedId(product.id)}
+                onSelect={() => goToProduct(product.id)}
                 onAddToCart={() => onAddToCart(product.id)}
                 added={!!addedItems[product.id]}
               />

@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { astrologerDetailPath, parseRouteId, ROUTES } from '../routes/paths';
 import { Send, Star, X } from 'lucide-react';
 import astrologersHeroHands from '../assets/generated/astrologers-hero-hands.png';
 import { ASTROLOGERS, formatSessionPrice, type Astrologer } from '../content/astrologersData';
 import { HeroStardust } from './HeroStardust';
-import { HERO_TICKER_TEXT, TESTIMONIALS } from '../content/siteCopy';
+import { ASTROLOGERS_HERO_DESC, HERO_TICKER_TEXT, TESTIMONIALS } from '../content/siteCopy';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import AstrologerDetail from './AstrologerDetail';
 import JgProductImage from './JgProductImage';
@@ -45,12 +47,10 @@ function ExpertCard({
   );
 }
 
-type AstrologersPageProps = {
-  onNavigateHome?: () => void;
-};
-
-export default function AstrologersPage({ onNavigateHome }: AstrologersPageProps) {
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+export default function AstrologersPage() {
+  const navigate = useNavigate();
+  const { astrologerId: astrologerIdParam } = useParams<{ astrologerId?: string }>();
+  const selectedId = parseRouteId(astrologerIdParam);
   const [activeChat, setActiveChat] = useState<Astrologer | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState('');
@@ -62,8 +62,17 @@ export default function AstrologersPage({ onNavigateHome }: AstrologersPageProps
   useScrollReveal([selectedId, activeChat?.id]);
 
   useEffect(() => {
+    if (astrologerIdParam && !selected) {
+      navigate(ROUTES.astrologers, { replace: true });
+    }
+  }, [astrologerIdParam, selected, navigate]);
+
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
+
+  const goToAstrologer = (id: number) => navigate(astrologerDetailPath(id));
+  const goToListing = () => navigate(ROUTES.astrologers);
 
   const startChat = (astro: Astrologer) => {
     setActiveChat(astro);
@@ -170,11 +179,11 @@ export default function AstrologersPage({ onNavigateHome }: AstrologersPageProps
       <div className="astrologers-page astrologers-page--detail">
         <AstrologerDetail
           astrologer={selected}
-          onBack={() => setSelectedId(null)}
-          onHome={onNavigateHome}
-          onSelect={setSelectedId}
+          onBack={goToListing}
+          onHome={() => navigate(ROUTES.home)}
+          onSelect={goToAstrologer}
           onChat={(astro) => {
-            setSelectedId(null);
+            navigate(ROUTES.astrologers);
             startChat(astro);
           }}
         />
@@ -193,9 +202,7 @@ export default function AstrologersPage({ onNavigateHome }: AstrologersPageProps
               <br />
               We Help You Listen
             </h1>
-            <p className="astrologers-hero__desc">
-              Discover guidance from some of the most trusted and highly experienced astrologers
-            </p>
+            <p className="astrologers-hero__desc">{ASTROLOGERS_HERO_DESC}</p>
           </div>
           <div className="astrologers-hero__visual">
             <img
@@ -236,7 +243,7 @@ export default function AstrologersPage({ onNavigateHome }: AstrologersPageProps
             <ExpertCard
               key={astro.id}
               astro={astro}
-              onView={() => setSelectedId(astro.id)}
+              onView={() => goToAstrologer(astro.id)}
               onChat={() => startChat(astro)}
             />
           ))}

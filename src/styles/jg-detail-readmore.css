@@ -123,9 +123,11 @@
   padding: 0;
 }
 
-/* Divine Store product detail — header + ticker aligned with site shell */
-body.jg-store-detail-active .nav-header--overlay {
+/* Divine Store product detail — sticky header + mobile hamburger */
+body.jg-store-detail-active .nav-header {
   position: sticky !important;
+  top: 0;
+  z-index: 1000;
   background: rgba(255, 255, 255, 0.98) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
@@ -133,8 +135,13 @@ body.jg-store-detail-active .nav-header--overlay {
   box-shadow: 0 1px 0 rgba(26, 43, 76, 0.04) !important;
 }
 
-body.jg-store-detail-active .main-content--hero-overlay {
-  padding-top: 0 !important;
+body.jg-store-detail-active .nav-header--overlay .nav-link,
+body.jg-store-detail-active .nav-header--inner .nav-link {
+  color: #110729 !important;
+}
+
+body.jg-store-detail-active .nav-header .action-btn {
+  color: #110729 !important;
 }
 
 body.jg-store-detail-active .nav-header__shell {
@@ -151,6 +158,16 @@ body.jg-store-detail-active .nav-header__shell {
 
 .jg-store-page--detail .jg-store-listing--detail {
   padding-top: 0;
+}
+
+@media (max-width: 1024px) {
+  .jg-store-page--detail .jg-detail-readmore__inner.site-shell {
+    padding-top: clamp(0.75rem, 2vw, 1.25rem);
+  }
+
+  .jg-store-page--detail .detail-ref-page__back {
+    margin-top: 0.25rem;
+  }
 }
 
 @media (max-width: 900px) {

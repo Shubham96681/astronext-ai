@@ -4,9 +4,13 @@
 export const HERO_TICKER_TEXT =
   'The next-gen AI of astrology — trusted guidance for your life, career, and spiritual path';
 
-/** Home hero mock — dark banner copy */
-export const HOME_HERO_TICKER_TEXT =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
+/** Home hero — subhead under main headline */
+export const HOME_HERO_SUBTITLE =
+  'At AstroNext, we specialise in empowering Vedic astrology through personalised Kundli Patra generation.';
+
+/** Astrologers listing hero */
+export const ASTROLOGERS_HERO_DESC =
+  'Discover guidance from some of the most trusted and highly experienced astrologers — live sessions tailored to your chart, goals, and spiritual path.';
 
 /** Login / Sign Up page copy */
 export const AUTH_HERO_TITLE = 'Step into your guided Vedic journey with AstroNext';

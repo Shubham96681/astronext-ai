@@ -18,10 +18,12 @@ import {
   KUNDALI_HERO_TITLE,
   KUNDALI_TICKER_TEXT,
 } from '../content/kundaliCopy';
+import { useLocation } from 'react-router-dom';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function KundaliPatraPage() {
-  useScrollReveal([]);
+  const location = useLocation();
+  useScrollReveal([location.pathname]);
   const handleSampleReport = () => {
     document.getElementById('kundali-detail')?.scrollIntoView({ behavior: 'smooth' });
   };
