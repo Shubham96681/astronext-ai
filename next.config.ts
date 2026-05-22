@@ -10,10 +10,20 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
-  /** Avoid corrupt .pack.gz cache on Windows during dev (fixes missing chunk 611.js errors) */
+  /**
+   * Dev: keep webpack cache ON (faster repeat navigations).
+   * compression: false avoids corrupt .pack.gz on some Windows setups.
+   * If you see missing chunk / routes-manifest errors: npm run dev:reset
+   */
   webpack: (config, { dev }) => {
     if (dev) {
-      config.cache = false;
+      config.cache = {
+        type: 'filesystem',
+        compression: false,
+        buildDependencies: {
+          config: [__filename],
+        },
+      };
     }
     return config;
   },

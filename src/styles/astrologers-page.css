@@ -209,10 +209,22 @@
   color: #333333;
 }
 
-/* —— Expert cards (overlapping avatar, orange name) —— */
+/* —— Expert cards (Movie Blocks grid) —— */
 .astrologers-main {
   padding: 0 var(--astro-gutter) clamp(3.5rem, 6vw, 5rem);
   background: #ffffff;
+}
+
+.astrologers-blocks-heading {
+  max-width: var(--astro-content-max);
+  margin: 0 auto 1.25rem;
+  padding-top: 0.5rem;
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 700;
+  color: var(--astro-navy);
+  text-align: center;
+  text-transform: none;
 }
 
 .astrologers-main--chat-only {
@@ -567,13 +579,11 @@
   margin: 0 auto 2.75rem !important;
 }
 
+/* Grid layout — testimonial-quote-grid in testimonial-card.css */
 .astrologers-testimonials__grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, var(--astro-card-w)));
-  justify-content: center;
-  gap: var(--astro-card-gap);
   max-width: var(--astro-content-max);
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   padding-bottom: 2.5rem;
   overflow: visible;
 }
@@ -654,9 +664,8 @@
 }
 
 @media (max-width: 1280px) {
-  .astrologers-page .astrologers-experts-grid,
-  .astrologers-testimonials__grid {
-    grid-template-columns: repeat(2, minmax(280px, var(--astro-card-w)));
+  .astrologer-blocks-grid {
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
   }
 }
 
@@ -748,9 +757,8 @@
     padding-bottom: 3rem;
   }
 
-  .astrologers-page .astrologers-experts-grid,
-  .astrologers-testimonials__grid {
+  .astrologer-blocks-grid {
     grid-template-columns: 1fr;
-    max-width: min(var(--astro-card-w), calc(100% - 2.5rem));
+    max-width: min(400px, calc(100% - 2.5rem));
   }
 }

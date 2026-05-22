@@ -2,71 +2,38 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { astrologerDetailPath, parseRouteId, ROUTES } from '@/routes/paths';
-import { Send, Star, X } from 'lucide-react';
+import { astrologerDetailPath, parseAstrologerParam, ROUTES } from '@/routes/paths';
+import { Send, X } from 'lucide-react';
 import astrologersHeroHands from '@/assets/generated/astrologers-hero-hands.png';
 import { imageSrc } from '@/lib/imageSrc';
-import { ASTROLOGERS, formatSessionPrice, type Astrologer } from '../content/astrologersData';
+import { ASTROLOGERS, type Astrologer } from '../content/astrologersData';
 import { HeroStardust } from './HeroStardust';
 import { ASTROLOGERS_HERO_DESC, HERO_TICKER_TEXT, TESTIMONIALS } from '../content/siteCopy';
-import { useScrollReveal } from '../hooks/useScrollReveal';
+import AstrologerBlockCard from './AstrologerBlockCard';
 import AstrologerDetail from './AstrologerDetail';
-import JgProductImage from './JgProductImage';
+import TextReveal from '@/components/TextReveal';
+import TestimonialCard from '@/components/TestimonialCard';
 
 type ChatMessage = { sender: 'user' | 'bot'; text: string };
-
-function ExpertCard({
-  astro,
-  onView,
-  onChat,
-}: {
-  astro: Astrologer;
-  onView: () => void;
-  onChat: () => void;
-}) {
-  return (
-    <article className="astro-expert-card">
-      <div className="astro-expert-card__body">
-        <div className="astro-expert-card__avatar-wrap">
-          <button type="button" className="astro-expert-card__media-btn" onClick={onView} aria-label={`View ${astro.name}`}>
-            <JgProductImage src={astro.avatar} alt={astro.name} className="astro-expert-card__avatar" loading="lazy" />
-          </button>
-        </div>
-        <h3 className="astro-expert-card__name">
-          <button type="button" className="astro-expert-card__name-btn" onClick={onView}>
-            {astro.name}
-          </button>
-        </h3>
-        <p className="astro-expert-card__specialty">{astro.specialty}</p>
-        <p className="astro-expert-card__bio">{astro.bio}</p>
-        <div className="astro-expert-card__footer">
-          <span className="astro-expert-card__price">{formatSessionPrice(astro.pricePerMinute)}</span>
-          <button type="button" className="astro-expert-card__cta" onClick={onChat}>
-            Get Expert Advice
-          </button>
-        </div>
-      </div>
-    </article>
-  );
-}
 
 export default function AstrologersPage() {
   const router = useRouter();
   const { astrologerId: astrologerIdParam } = useParams<{ astrologerId?: string }>();
-  const selectedId = parseRouteId(astrologerIdParam);
+  const selected = parseAstrologerParam(astrologerIdParam);
   const [activeChat, setActiveChat] = useState<Astrologer | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const selected = selectedId ? ASTROLOGERS.find((a) => a.id === selectedId) : null;
-
-  useScrollReveal([selectedId, activeChat?.id]);
-
   useEffect(() => {
-    if (astrologerIdParam && !selected) {
+    if (!astrologerIdParam) return;
+    if (!selected) {
       router.replace(ROUTES.astrologers);
+      return;
+    }
+    if (/^\d+$/.test(astrologerIdParam) && selected.slug !== astrologerIdParam) {
+      router.replace(astrologerDetailPath(selected));
     }
   }, [astrologerIdParam, selected, router]);
 
@@ -74,7 +41,7 @@ export default function AstrologersPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  const goToAstrologer = (id: number) => router.push(astrologerDetailPath(id));
+  const goToAstrologer = (astro: Astrologer) => router.push(astrologerDetailPath(astro));
   const goToListing = () => router.push(ROUTES.astrologers);
 
   const startChat = (astro: Astrologer) => {
@@ -205,9 +172,11 @@ export default function AstrologersPage() {
               <br />
               We Help You Listen
             </h1>
-            <p className="astrologers-hero__desc">{ASTROLOGERS_HERO_DESC}</p>
+            <TextReveal as="p" className="astrologers-hero__desc" immediate>
+              {ASTROLOGERS_HERO_DESC}
+            </TextReveal>
           </div>
-          <div className="astrologers-hero__visual">
+          <div className="astrologers-hero__visual" data-reveal="fade-left" data-reveal-immediate data-reveal-delay="100ms">
             <img
               src={imageSrc(astrologersHeroHands)}
               alt="Astrologer reviewing birth charts and writing notes"
@@ -225,28 +194,27 @@ export default function AstrologersPage() {
         <h2 className="astrologers-intro__title">Connect with India&apos;s Best Astrologers</h2>
         <p className="astrologers-intro__tagline">Experts You Can Trust. Insights You Can Act On</p>
         <div className="astrologers-intro__divider" aria-hidden="true" />
-        <p className="astrologers-intro__text">
-          Discover guidance from some of the most trusted and highly experienced astrologers, each
-          specializing in powerful systems like{' '}
-          <strong>
-            Vedic Astrology, KP Astrology, Numerology, Tarot, Vastu,
-          </strong>{' '}
-          and more.
-        </p>
-        <p className="astrologers-intro__text">
-          Our experts combine deep spiritual insight with scientific accuracy to help you find
-          clarity, make informed decisions, and align with your true path. Whether you&apos;re
-          seeking predictions, remedies, or life guidance—you&apos;re in the right hands.
-        </p>
+        <TextReveal as="p" className="astrologers-intro__text">
+          Discover guidance from some of the most trusted and highly experienced astrologers, each specializing in
+          powerful systems like Vedic Astrology, KP Astrology, Numerology, Tarot, Vastu, and more.
+        </TextReveal>
+        <TextReveal as="p" className="astrologers-intro__text">
+          Our experts combine deep spiritual insight with scientific accuracy to help you find clarity, make informed
+          decisions, and align with your true path. Whether you&apos;re seeking predictions, remedies, or life
+          guidance—you&apos;re in the right hands.
+        </TextReveal>
       </section>
 
       <section className="astrologers-main">
-        <div className="astrologers-experts-grid" data-reveal="fade-up" data-reveal-stagger>
-          {ASTROLOGERS.map((astro) => (
-            <ExpertCard
+        <h2 className="astrologers-blocks-heading" data-reveal="fade-up">
+          Choose your guide
+        </h2>
+        <div className="astrologer-blocks-grid" data-reveal="fade-up" data-reveal-stagger>
+          {ASTROLOGERS.map((astro, index) => (
+            <AstrologerBlockCard
               key={astro.id}
               astro={astro}
-              onView={() => goToAstrologer(astro.id)}
+              themeIndex={index}
               onChat={() => startChat(astro)}
             />
           ))}
@@ -258,33 +226,15 @@ export default function AstrologersPage() {
         <p className="astrologers-testimonials__subtitle">
           Trusted by thousands seeking clarity through our verified astrologers
         </p>
-        <div className="astrologers-testimonials__grid" data-reveal="fade-up" data-reveal-delay="80ms" data-reveal-stagger>
+        <div className="testimonial-quote-grid astrologers-testimonials__grid" data-reveal="fade-up" data-reveal-delay="80ms" data-reveal-stagger>
           {TESTIMONIALS.map((t) => (
-            <blockquote className="astrologers-testimonial-card" key={t.name}>
-              <span className="astrologers-testimonial-card__quote-icon" aria-hidden="true">
-                <svg width="56" height="40" viewBox="0 0 56 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M14 0C6.268 0 0 6.268 0 14c0 9.5 6.5 18 14 26V14H0V0h14zm28 0c-7.732 0-14 6.268-14 14 0 9.5 6.5 18 14 26V14H28V0h14z"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    fill="none"
-                  />
-                </svg>
-              </span>
-              <p className="astrologers-testimonial-card__text">{t.text}</p>
-              <footer className="astrologers-testimonial-card__footer">
-                <img
-                  src={t.avatar}
-                  alt={t.name}
-                  className="astrologers-testimonial-card__avatar-img"
-                />
-                <div className="astrologers-testimonial-card__stars" aria-label={`${t.rating} out of 5 stars`}>
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} size={14} fill="#e8b84a" stroke="#e8b84a" strokeWidth={1} />
-                  ))}
-                </div>
-              </footer>
-            </blockquote>
+            <TestimonialCard
+              key={t.name}
+              name={t.name}
+              text={t.text}
+              avatar={t.avatar}
+              initial={t.initial}
+            />
           ))}
         </div>
       </section>

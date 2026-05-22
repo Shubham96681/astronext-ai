@@ -4,22 +4,6 @@
   --motion-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
-/* —— Route / page enter —— */
-.page-view {
-  animation: pageViewIn 0.55s var(--motion-ease) both;
-}
-
-@keyframes pageViewIn {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 /* —— Subtle ambient motion (heroes) —— */
 .hero-section .hero-woman-layer {
   transition: transform 0.6s var(--motion-ease);
@@ -316,8 +300,13 @@ button:not(:disabled):active,
   filter: blur(8px);
 }
 
-.reveal-visible.reveal--blur-in {
+.reveal-visible.reveal--blur-in,
+.reveal-visible.reveal--glow-in {
   filter: none;
+}
+
+.reveal-visible.reveal--flip-in {
+  transform: none;
 }
 
 /* —— Stagger: extend to 12 children —— */

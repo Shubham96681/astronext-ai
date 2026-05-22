@@ -3,8 +3,12 @@ export type AstroSpeciality = {
   description: string;
 };
 
+import { astrologerShareSlug } from '@/lib/astrologerSlug';
+
 export type Astrologer = {
   id: number;
+  /** Shareable profile URL segment, e.g. acharya-vidyabhushan-ab0000012d */
+  slug: string;
   name: string;
   specialty: string;
   title: string;
@@ -53,7 +57,7 @@ const IMG = {
   },
 } as const;
 
-export const ASTROLOGERS: Astrologer[] = [
+const ASTROLOGER_ROWS = [
   {
     id: 301,
     name: 'Acharya Vidyabhushan',
@@ -211,7 +215,29 @@ export const ASTROLOGERS: Astrologer[] = [
     avatar: IMG.ramesh.avatar,
     portrait: IMG.ramesh.portrait,
   },
-];
+] as const;
+
+export const ASTROLOGERS: Astrologer[] = ASTROLOGER_ROWS.map((row) => ({
+  ...row,
+  slug: astrologerShareSlug(row.name, row.id),
+}));
+
+export function getAstrologerById(id: number): Astrologer | undefined {
+  return ASTROLOGERS.find((a) => a.id === id);
+}
+
+export function getAstrologerBySlug(slug: string): Astrologer | undefined {
+  return ASTROLOGERS.find((a) => a.slug === slug);
+}
+
+export function resolveAstrologerParam(param: string | undefined): Astrologer | undefined {
+  if (!param) return undefined;
+  const bySlug = getAstrologerBySlug(param);
+  if (bySlug) return bySlug;
+  const n = Number(param);
+  if (Number.isInteger(n) && n > 0) return getAstrologerById(n);
+  return undefined;
+}
 
 export function formatPerMinutePrice(perMin: number): string {
   return `Rs. ${perMin.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;

@@ -9,14 +9,14 @@ import {
   languagesList,
   type Astrologer,
 } from '../content/astrologersData';
-import { useScrollReveal } from '../hooks/useScrollReveal';
 import JgProductImage from './JgProductImage';
+import AstrologerCardShareButton from './AstrologerCardShareButton';
 
 type Props = {
   astrologer: Astrologer;
   onBack: () => void;
   onHome?: () => void;
-  onSelect: (id: number) => void;
+  onSelect: (astro: Astrologer) => void;
   onChat: (astro: Astrologer) => void;
 };
 
@@ -43,8 +43,6 @@ function AlsoLikeCard({
 export default function AstrologerDetail({ astrologer, onBack, onHome, onSelect, onChat }: Props) {
   const related = ASTROLOGERS.filter((a) => a.id !== astrologer.id).slice(0, 4);
   const bioParagraphs = astrologer.bioLong.split(/\n\n+/).filter(Boolean);
-
-  useScrollReveal([astrologer.id]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -100,6 +98,7 @@ export default function AstrologerDetail({ astrologer, onBack, onHome, onSelect,
 
           <div className="astro-detail-hero__visual" data-reveal="fade-left" data-reveal-immediate data-reveal-delay="140ms">
             <div className="astro-detail-hero__frame">
+              <AstrologerCardShareButton astrologer={astrologer} variant="frame" />
               {astrologer.online && (
                 <span className="astro-detail-hero__live">
                   <span className="astro-detail-hero__live-dot" aria-hidden />
@@ -182,7 +181,7 @@ export default function AstrologerDetail({ astrologer, onBack, onHome, onSelect,
           <h2 className="astro-detail-also__title">You may also like</h2>
           <div className="astro-detail-also__grid" data-reveal="fade-up" data-reveal-stagger>
             {related.map((a) => (
-              <AlsoLikeCard key={a.id} astro={a} onSelect={() => onSelect(a.id)} />
+              <AlsoLikeCard key={a.id} astro={a} onSelect={() => onSelect(a)} />
             ))}
           </div>
         </section>

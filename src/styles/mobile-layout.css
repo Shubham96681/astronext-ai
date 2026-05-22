@@ -177,7 +177,8 @@
   }
 
   /* —— Home: horizontal card rails (reference peek layout) —— */
-  .testimonials-section--dark .testimonial-grid {
+  .testimonials-section--dark .testimonial-grid,
+  .testimonials-section--dark .testimonial-quote-grid {
     display: flex;
     flex-wrap: nowrap;
     justify-content: flex-start;
@@ -191,9 +192,13 @@
     scrollbar-width: thin;
   }
 
-  .testimonials-section--dark .testimonial-card--dark {
+  .testimonials-section--dark .testimonial-card--dark,
+  .testimonials-section--dark .testimonial-quote-grid > * {
     flex: 0 0 min(17.625rem, 78vw);
     scroll-snap-align: start;
+  }
+
+  .testimonials-section--dark .testimonial-quote-card {
     min-height: 17.5rem;
   }
 
@@ -362,6 +367,7 @@
     padding-inline: 1.25rem;
   }
 
+  .astrologers-testimonials__grid.testimonial-quote-grid,
   .astrologers-testimonials__grid {
     display: flex;
     flex-wrap: nowrap;
@@ -374,10 +380,14 @@
     padding-bottom: 2.5rem;
   }
 
-  .astrologers-testimonial-card {
+  .astrologers-testimonials__grid > * {
     flex: 0 0 min(17.625rem, 78vw);
     scroll-snap-align: start;
+  }
+
+  .astrologers-testimonials__grid .testimonial-quote-card {
     min-height: 17.5rem;
+    max-width: none;
   }
 
   /* —— Astrologer detail —— */

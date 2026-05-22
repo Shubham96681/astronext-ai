@@ -159,7 +159,7 @@ body {
   color: var(--astro-gold-light);
 }
 
-.testimonial-grid {
+.testimonial-grid:not(.testimonial-quote-grid) {
   max-width: var(--astro-container);
   gap: 1.5rem;
 }

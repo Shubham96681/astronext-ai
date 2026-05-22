@@ -11,10 +11,16 @@
 @import '../styles/motion.css';
 @import '../styles/motion-interactive.css';
 @import '../styles/motion-enhanced.css';
+@import '../styles/motion-polish.css';
+@import '../styles/motion-pages.css';
 @import '../styles/footer-section.css';
 @import '../styles/devotion-section.css';
 @import '../styles/puja-promo-section.css';
 @import '../styles/astrologers-page.css';
+@import '../styles/astrologer-movie-blocks.css';
+@import '../styles/shop-product-card.css';
+@import '../styles/text-reveal.css';
+@import '../styles/testimonial-card.css';
 @import '../styles/detail-reference.css';
 @import '../styles/astrologer-detail-page.css';
 @import '../styles/jg-detail-readmore.css';

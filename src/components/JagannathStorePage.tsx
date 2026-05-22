@@ -3,8 +3,9 @@
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { divineStoreProductPath } from '@/routes/paths';
-import { Check, ChevronDown, ShoppingCart, Star, X } from 'lucide-react';
-import JgProductImage from './JgProductImage';
+import { ChevronDown, X } from 'lucide-react';
+import ShopProductCard from './ShopProductCard';
+import TextReveal from '@/components/TextReveal';
 import { HeroStardust } from './HeroStardust';
 import heroJagannathTriad from '@/assets/generated/hero-jagannath-triad.png';
 import { useCart } from '@/context/CartContext';
@@ -17,7 +18,6 @@ import {
   JG_STORE_TICKER_TEXT,
 } from '../content/siteCopy';
 import { JG_STORE_PRODUCTS, type JgProduct } from '../content/jgStoreProducts';
-import { useScrollReveal } from '../hooks/useScrollReveal';
 
 type AvailabilityFilter = 'all' | 'in' | 'out';
 type PriceFilter = 'all' | 'under1000' | '1000-4000' | 'over4000';
@@ -53,56 +53,6 @@ function filterAndSortProducts(
   }
 
   return list;
-}
-
-function ProductCard({
-  product,
-  onSelect,
-  onAddToCart,
-  added,
-}: {
-  product: JgProduct;
-  onSelect: () => void;
-  onAddToCart: () => void;
-  added: boolean;
-}) {
-  return (
-    <article className="jg-product-card">
-      <div className="jg-product-card__top">
-        <button type="button" className="jg-product-card__media" onClick={onSelect} aria-label={`View ${product.name}`}>
-          <div className="jg-product-card__img-wrap">
-            <JgProductImage src={product.image} alt={product.name} className="jg-product-card__img" loading="lazy" />
-          </div>
-        </button>
-        <span className={`jg-stock-pill ${product.inStock ? 'jg-stock-pill--in' : 'jg-stock-pill--out'}`}>
-          {product.inStock ? 'In Stock' : 'Out of Stock'}
-        </span>
-      </div>
-      <div className="jg-product-card__body">
-        <p className="jg-product-card__category">{product.category}</p>
-        <h3 className="jg-product-card__name">
-          <button type="button" className="jg-product-card__name-btn" onClick={onSelect}>
-            {product.name}
-          </button>
-        </h3>
-        <div className="jg-product-card__rating">
-          <Star size={14} fill="currentColor" stroke="none" />
-          <span>{product.rating.toFixed(1)}</span>
-          <span className="jg-product-card__reviews">({product.reviews})</span>
-        </div>
-        <p className="jg-product-card__price">₹ {product.price.toLocaleString('en-IN')}</p>
-        <button
-          type="button"
-          className="jg-product-card__cart"
-          onClick={onAddToCart}
-          disabled={!product.inStock || added}
-        >
-          {added ? <Check size={18} /> : <ShoppingCart size={18} />}
-          Add to Cart
-        </button>
-      </div>
-    </article>
-  );
 }
 
 function JagannathStoreHero() {
@@ -268,8 +218,6 @@ export default function JagannathStorePage() {
 
   const hasActiveFilters = availabilityFilter !== 'all' || priceFilter !== 'all';
 
-  useScrollReveal(['listing']);
-
   const goToProduct = (id: number) => router.push(divineStoreProductPath(id));
 
   const clearFilters = () => {
@@ -290,7 +238,9 @@ export default function JagannathStorePage() {
           <h2 id="jg-store-section-title" className="jg-store-section-title">
             {JG_STORE_SECTION_TITLE}
           </h2>
-          <p className="jg-store-section-desc">{JG_STORE_SECTION_DESC}</p>
+          <TextReveal as="p" className="jg-store-section-desc">
+            {JG_STORE_SECTION_DESC}
+          </TextReveal>
         </header>
 
         <div className="jg-store-inner">
@@ -305,14 +255,20 @@ export default function JagannathStorePage() {
             onClearFilters={clearFilters}
           />
 
-          <div className="jg-store-grid" role="list" data-reveal="fade-up" data-reveal-stagger>
-            {filteredProducts.map((product) => (
-              <ProductCard
+          <h3 className="title-shop">Shop</h3>
+          <div className="shop-cards-grid jg-store-grid" role="list" data-reveal="fade-up" data-reveal-stagger>
+            {filteredProducts.map((product, index) => (
+              <ShopProductCard
                 key={product.id}
-                product={product}
+                name={product.name}
+                category={product.category}
+                price={product.price}
+                image={product.image}
+                themeIndex={index}
+                inStock={product.inStock}
+                added={!!addedItems[product.id]}
                 onSelect={() => goToProduct(product.id)}
                 onAddToCart={() => onAddToCart(product.id)}
-                added={!!addedItems[product.id]}
               />
             ))}
           </div>

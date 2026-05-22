@@ -7,7 +7,6 @@ import { divineStoreProductPath, parseRouteId, ROUTES } from '@/routes/paths';
 import JgProductImage from './JgProductImage';
 import { useCart } from '@/context/CartContext';
 import { JG_STORE_PRODUCTS, type JgProduct } from '@/content/jgStoreProducts';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 function RelatedProductCard({
   product,
@@ -48,8 +47,6 @@ function ProductDetailView({
   const [readMore, setReadMore] = useState(false);
   const related = JG_STORE_PRODUCTS.filter((p) => p.id !== product.id).slice(0, 4);
   const aboutParagraphs = product.descLong.split(/\n\n+/).filter(Boolean);
-
-  useScrollReveal([product.id]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });

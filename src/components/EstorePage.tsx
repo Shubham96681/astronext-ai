@@ -1,65 +1,63 @@
 'use client';
 
-import { Check, ShoppingCart } from 'lucide-react';
+import PageHero from '@/components/PageHero';
+import ShopProductCard from '@/components/ShopProductCard';
 import { estoreProducts } from '@/content/estoreProducts';
 import { useCart } from '@/context/CartContext';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
+
+const ESTORE_STRIP = [
+  { icon: '✦', label: 'Lab certified gems' },
+  { icon: '☸', label: 'Energized yantras' },
+  { icon: '📿', label: 'Blessed malas' },
+  { icon: '🔮', label: 'Expert guidance' },
+] as const;
 
 export default function EstorePage() {
   const { addedItems, handleAddToCart } = useCart();
-  useScrollReveal(['/estore']);
 
   return (
-    <div className="page-section">
-      <div className="section-header" data-reveal="fade-up">
-        <h2 className="section-title">
-          Vedic <span>E-Remedies</span> Store
-        </h2>
-        <p className="section-desc">
-          100% natural, certified, and chemically verified gemstones, spiritual malas, and energized Yantras designed
-          to correct astrological imbalances.
-        </p>
+    <div className="page-section page-section--estore">
+      <PageHero
+        variant="store"
+        subtitle="Sacred remedies"
+        title={
+          <>
+            Vedic <span>E-Remedies</span> Store
+          </>
+        }
+        description="100% natural, certified gemstones, spiritual malas, and energized Yantras designed to correct astrological imbalances."
+      />
+
+      <div className="inner-feature-strip" data-reveal="fade-up" data-reveal-stagger>
+        {ESTORE_STRIP.map((item) => (
+          <div className="inner-feature-strip__item" key={item.label}>
+            <span className="inner-feature-strip__icon" aria-hidden>
+              {item.icon}
+            </span>
+            <span className="inner-feature-strip__label">{item.label}</span>
+          </div>
+        ))}
       </div>
 
-      <div className="store-grid" data-reveal="fade-up" data-reveal-stagger>
-        {estoreProducts.map((prod) => (
-          <div className="product-card" key={prod.id}>
-            <div className="product-img-wrapper">
-              <div
-                style={{
-                  width: '90px',
-                  height: '90px',
-                  borderRadius: '24px',
-                  background: prod.iconBg,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '2.5rem',
-                  boxShadow: '0 8px 20px rgba(0,0,0,0.1)',
-                }}
-              >
-                {prod.iconText}
-              </div>
-              <span className="product-badge">{prod.category}</span>
-            </div>
-            <div className="product-info">
-              <span className="product-category">{prod.category}</span>
-              <h3 className="product-name">{prod.name}</h3>
-              <p className="product-desc">{prod.desc}</p>
-              <div className="product-footer">
-                <span className="product-price">Rs. {prod.price}</span>
-                <button
-                  className="add-cart-btn"
-                  onClick={() => handleAddToCart(prod.id)}
-                  disabled={addedItems[prod.id]}
-                  title="Add to sacred cart"
-                  type="button"
-                >
-                  {addedItems[prod.id] ? <Check size={18} /> : <ShoppingCart size={18} />}
-                </button>
-              </div>
-            </div>
-          </div>
+      <h2 className="title-shop" data-reveal="glow-in">
+        Shop
+      </h2>
+
+      <div className="shop-cards-grid" data-reveal="fade-up" data-reveal-stagger>
+        {estoreProducts.map((prod, index) => (
+          <ShopProductCard
+            key={prod.id}
+            name={prod.name}
+            category={prod.category}
+            price={prod.price}
+            originalPrice={prod.originalPrice}
+            image={prod.image}
+            iconText={prod.iconText}
+            iconBg={prod.iconBg}
+            themeIndex={index}
+            added={!!addedItems[prod.id]}
+            onAddToCart={() => handleAddToCart(prod.id)}
+          />
         ))}
       </div>
     </div>

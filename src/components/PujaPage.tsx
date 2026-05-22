@@ -1,29 +1,55 @@
 'use client';
 
 import { Calendar, Clock, User } from 'lucide-react';
+import PageHero from '@/components/PageHero';
 import { pujasList } from '@/content/pujasData';
 import { usePujaBooking } from '@/context/PujaBookingContext';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
+import TextReveal from '@/components/TextReveal';
+
+const PUJA_STRIP = [
+  { icon: '🪔', label: 'Live broadcast' },
+  { icon: '📜', label: 'Gotra-specific' },
+  { icon: '🙏', label: 'Licensed pandits' },
+  { icon: '✨', label: 'Prasad delivery' },
+] as const;
 
 export default function PujaPage() {
   const { openPujaModal } = usePujaBooking();
-  useScrollReveal(['/puja']);
 
   return (
-    <div className="page-section">
-      <div className="section-header" data-reveal="fade-up">
-        <h2 className="section-title">
-          Book <span>Vedic Pujas</span> Live
-        </h2>
-        <p className="section-desc">
-          Participate in customized, live broadcast Vedic Pujas performed specifically for your gotra and family details
-          by licensed high-scholastic pundits.
-        </p>
+    <div className="page-section page-section--puja">
+      <PageHero
+        variant="puja"
+        subtitle="Holy yajna"
+        title={
+          <>
+            Book <span>Vedic Pujas</span> Live
+          </>
+        }
+        description="Participate in customized, live broadcast Vedic Pujas performed for your gotra and family details by licensed high-scholastic pundits."
+      />
+
+      <div className="inner-feature-strip" data-reveal="fade-up" data-reveal-stagger>
+        {PUJA_STRIP.map((item) => (
+          <div className="inner-feature-strip__item" key={item.label}>
+            <span className="inner-feature-strip__icon" aria-hidden>
+              {item.icon}
+            </span>
+            <span className="inner-feature-strip__label">{item.label}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="section-header" data-reveal="flip-in">
+        <h2 className="section-title">Choose your sacred ritual</h2>
+        <TextReveal as="p" className="section-desc">
+          Each puja includes live darshan and personalized sankalp.
+        </TextReveal>
       </div>
 
       <div className="puja-grid" data-reveal="fade-up" data-reveal-stagger>
         {pujasList.map((puja) => (
-          <div className="puja-card" key={puja.id}>
+          <div className="puja-card interactive-card" key={puja.id}>
             <div className="puja-header">
               <div className="puja-icon-box">
                 <Calendar size={26} />

@@ -6,7 +6,6 @@ import { Eye, EyeOff } from 'lucide-react';
 import { ROUTES } from '../routes/paths';
 import { ZODIAC_WHEEL_SRC } from '@/lib/imageSrc';
 import { AUTH_HERO_SUBTITLE, AUTH_HERO_TITLE } from '../content/siteCopy';
-import { useScrollReveal } from '../hooks/useScrollReveal';
 
 type AuthMode = 'login' | 'signup';
 
@@ -69,8 +68,6 @@ export default function AuthPage({ mode }: Props) {
 
   const isLogin = mode === 'login';
 
-  useScrollReveal([mode]);
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
   };
@@ -98,7 +95,7 @@ export default function AuthPage({ mode }: Props) {
             />
           </div>
 
-          <div className={`auth-card ${!isLogin ? 'auth-card--signup' : ''}`} data-reveal="fade-left" data-reveal-immediate data-reveal-delay="140ms">
+          <div className={`auth-card interactive-card ${!isLogin ? 'auth-card--signup' : ''}`} data-reveal="flip-in" data-reveal-immediate data-reveal-delay="140ms">
             <h2 className="auth-card__title">{isLogin ? 'Login' : 'Sign Up'}</h2>
 
             <form className="auth-card__form" onSubmit={handleSubmit} noValidate>

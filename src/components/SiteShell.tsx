@@ -108,14 +108,14 @@ function SiteShellInner({ children }: { children: ReactNode }) {
             : ''
         } ${isHeroOverlayPage ? 'main-content--hero-overlay' : ''}`}
       >
-        <div key={pathname} className="page-view">
+        <div key={pathname} className={`page-view page-view--${activeTab}`}>
           {children}
         </div>
       </main>
 
-      <footer className="mega-footer" data-reveal="fade-up">
+      <footer className="mega-footer">
         <div className="footer-inner">
-          <div className="footer-top-row" data-reveal="fade" data-reveal-delay="60ms">
+          <div className="footer-top-row">
             <Link href={ROUTES.home} className="footer-top-logo">
               <img
                 src={imageSrc(logoFooterImg)}
@@ -127,7 +127,7 @@ function SiteShellInner({ children }: { children: ReactNode }) {
                 decoding="async"
               />
             </Link>
-            <nav className="footer-top-nav" aria-label="Footer navigation">
+            <nav className="footer-top-nav" aria-label="Legal policies">
               <ul className="footer-legal-inline">
                 <li>
                   <a href="#privacy">Privacy Policy</a>
@@ -138,23 +138,11 @@ function SiteShellInner({ children }: { children: ReactNode }) {
                 <li>
                   <a href="#terms">Terms of Service</a>
                 </li>
-                <li>
-                  <Link href={ROUTES.home}>Home</Link>
-                </li>
-                <li>
-                  <Link href={ROUTES.kundali}>Kundali Patra</Link>
-                </li>
-                <li>
-                  <Link href={ROUTES.astrologers}>Astrologers</Link>
-                </li>
-                <li>
-                  <Link href={ROUTES.divineStore}>Divine Store</Link>
-                </li>
               </ul>
             </nav>
           </div>
 
-          <div className="footer-grid" data-reveal="fade-up" data-reveal-delay="120ms" data-reveal-stagger>
+          <div className="footer-grid">
             <div className="footer-col footer-col--brand">
               <h4>About Astro AI</h4>
               <p>{FOOTER_ABOUT}</p>

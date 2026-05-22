@@ -19,13 +19,10 @@ import {
   KUNDALI_HERO_TITLE,
   KUNDALI_TICKER_TEXT,
 } from '../content/kundaliCopy';
-import { usePathname } from 'next/navigation';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { imageSrc, ZODIAC_WHEEL_LIGHT_SRC, ZODIAC_WHEEL_SRC } from '@/lib/imageSrc';
+import TextReveal from '@/components/TextReveal';
 
 export default function KundaliPatraPage() {
-  const pathname = usePathname();
-  useScrollReveal([pathname]);
   const handleSampleReport = () => {
     document.getElementById('kundali-detail')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -39,7 +36,9 @@ export default function KundaliPatraPage() {
               {KUNDALI_HERO_TITLE}
             </h1>
             <p className="kundali-hero__tagline">{KUNDALI_HERO_SUBTITLE}</p>
-            <p className="kundali-hero__desc">{KUNDALI_HERO_DESC}</p>
+            <TextReveal as="p" className="kundali-hero__desc" immediate>
+              {KUNDALI_HERO_DESC}
+            </TextReveal>
           </div>
           <div className="kundali-hero__visual" aria-hidden="true">
             <img
@@ -59,13 +58,15 @@ export default function KundaliPatraPage() {
         <p className="hero-ticker-text">{KUNDALI_TICKER_TEXT}</p>
       </div>
 
-      <section className="kundali-cosmic" aria-labelledby="kundali-cosmic-title" data-reveal="fade-up">
+      <section className="kundali-cosmic" aria-labelledby="kundali-cosmic-title" data-reveal="float-up">
         <div className="kundali-cosmic__inner">
           <h2 id="kundali-cosmic-title" className="kundali-cosmic__title">
             {KUNDALI_COSMIC_TITLE}
           </h2>
           <p className="kundali-cosmic__subtitle">{KUNDALI_COSMIC_SUBTITLE}</p>
-          <p className="kundali-cosmic__desc">{KUNDALI_COSMIC_DESC}</p>
+          <TextReveal as="p" className="kundali-cosmic__desc">
+            {KUNDALI_COSMIC_DESC}
+          </TextReveal>
           <figure className="kundali-cosmic__art-wrap">
             <img
               src={imageSrc(kundaliCosmicArt)}
@@ -80,7 +81,7 @@ export default function KundaliPatraPage() {
         </div>
       </section>
 
-      <section className="kundali-basic" aria-labelledby="kundali-basic-title" data-reveal="fade-up">
+      <section className="kundali-basic" aria-labelledby="kundali-basic-title" data-reveal="glow-in">
         <div className="kundali-basic__grid">
           <div className="kundali-basic__wheel-wrap" aria-hidden="true">
             <img
@@ -99,7 +100,9 @@ export default function KundaliPatraPage() {
             </h2>
             <p className="kundali-basic__subtitle">{KUNDALI_BASIC_SUBTITLE}</p>
             <hr className="kundali-basic__rule" />
-            <p className="kundali-basic__desc">{KUNDALI_BASIC_DESC}</p>
+            <TextReveal as="p" className="kundali-basic__desc">
+              {KUNDALI_BASIC_DESC}
+            </TextReveal>
             <ul className="kundali-basic__features">
               {KUNDALI_BASIC_FEATURES.map((item, i) => (
                 <li key={i} className="kundali-basic__feature">
@@ -115,14 +118,16 @@ export default function KundaliPatraPage() {
         </div>
       </section>
 
-      <section id="kundali-detail" className="kundali-detail" aria-labelledby="kundali-detail-title" data-reveal="fade-up">
+      <section id="kundali-detail" className="kundali-detail" aria-labelledby="kundali-detail-title" data-reveal="flip-in">
         <img src={imageSrc(kundaliWaves)} alt="" className="kundali-detail__waves" aria-hidden="true" />
         <div className="kundali-detail__inner">
           <h2 id="kundali-detail-title" className="kundali-detail__title">
             {KUNDALI_DETAIL_TITLE}
           </h2>
           <p className="kundali-detail__subtitle">{KUNDALI_DETAIL_SUBTITLE}</p>
-          <p className="kundali-detail__desc">{KUNDALI_DETAIL_DESC}</p>
+          <TextReveal as="p" className="kundali-detail__desc">
+            {KUNDALI_DETAIL_DESC}
+          </TextReveal>
           <button type="button" className="kundali-btn kundali-btn--navy" onClick={handleSampleReport}>
             Get Sample Report
           </button>

@@ -188,6 +188,40 @@ body.astro-detail-active .nav-header .action-btn {
   box-shadow: 0 12px 40px rgba(176, 92, 111, 0.12);
 }
 
+.astro-detail-hero__share-btn {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--astro-detail-navy, #1a2b4c);
+  box-shadow: 0 4px 14px rgba(26, 43, 76, 0.2);
+  cursor: pointer;
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.astro-detail-hero__share-btn:hover {
+  transform: scale(1.06);
+  background: var(--astro-detail-navy, #1a2b4c);
+  color: #fff;
+}
+
+.astro-detail-hero__share-btn--done {
+  background: var(--astro-detail-green, #22c55e);
+  color: #fff;
+}
+
 .astro-detail-hero__live {
   position: absolute;
   top: 1.25rem;

@@ -1,5 +1,7 @@
 /** URL paths — used with Next.js App Router */
 
+import { getAstrologerById, resolveAstrologerParam } from '@/content/astrologersData';
+
 export const ROUTES = {
   home: '/',
   kundali: '/kundali',
@@ -32,8 +34,13 @@ export function divineStoreProductPath(productId: number): string {
   return `${ROUTES.divineStore}/product/${productId}`;
 }
 
-export function astrologerDetailPath(astrologerId: number): string {
-  return `${ROUTES.astrologers}/${astrologerId}`;
+/** Canonical shareable profile URL (slug-based) */
+export function astrologerDetailPath(astrologerOrId: { slug: string } | number): string {
+  if (typeof astrologerOrId === 'number') {
+    const astro = getAstrologerById(astrologerOrId);
+    return astro ? `${ROUTES.astrologers}/${astro.slug}` : `${ROUTES.astrologers}/${astrologerOrId}`;
+  }
+  return `${ROUTES.astrologers}/${astrologerOrId.slug}`;
 }
 
 export function parseRouteId(param: string | undefined): number | null {
@@ -43,13 +50,17 @@ export function parseRouteId(param: string | undefined): number | null {
   return n;
 }
 
+export function parseAstrologerParam(param: string | undefined) {
+  return resolveAstrologerParam(param);
+}
+
 export function isDivineStoreProductPath(pathname: string): boolean {
   return /^\/divine-store\/product\/\d+$/.test(normalizePath(pathname));
 }
 
 export function isAstrologerDetailPath(pathname: string): boolean {
   const path = normalizePath(pathname);
-  return /^\/astrologers\/\d+$/.test(path) && path !== ROUTES.astrologers;
+  return /^\/astrologers\/[^/]+$/.test(path) && path !== ROUTES.astrologers;
 }
 
 export function pathnameToTab(pathname: string): AppTab {

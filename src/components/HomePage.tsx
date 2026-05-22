@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Star } from 'lucide-react';
 import { HeroStardust } from '@/components/HeroStardust';
 import heroWoman from '@/assets/generated/hero-woman.png';
 import meditationWoman from '@/assets/generated/meditation-woman.png';
@@ -19,17 +18,16 @@ import {
   FAQ_ITEMS,
 } from '@/content/siteCopy';
 import { estoreProducts } from '@/content/estoreProducts';
+import ShopProductCard from '@/components/ShopProductCard';
 import { ROUTES } from '@/routes/paths';
 import { useCart } from '@/context/CartContext';
 import { imageSrc } from '@/lib/imageSrc';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
-
+import TextReveal from '@/components/TextReveal';
+import TestimonialCard from '@/components/TestimonialCard';
 export default function HomePage() {
   const router = useRouter();
   const { addedItems, handleAddToCart } = useCart();
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
-
-  useScrollReveal(['/']);
 
   return (
     <div className="page-section">
@@ -41,7 +39,9 @@ export default function HomePage() {
             <br />
             <span className="hero-title-second">let Pandit Jee answer...</span>
           </h2>
-          <p className="hero-subtitle">{HOME_HERO_SUBTITLE}</p>
+          <TextReveal as="p" className="hero-subtitle" immediate>
+            {HOME_HERO_SUBTITLE}
+          </TextReveal>
           <a
             href="https://wa.me/919999999999?text=Namaste%20Pandit%20Jee,%20please%20generate%20my%20Kundli!"
             target="_blank"
@@ -88,9 +88,9 @@ export default function HomePage() {
         <h2 className="devotion-title">Ask with devotion</h2>
         <p className="devotion-subtitle">let Pandit Jee offer spiritual light</p>
         <div className="devotion-divider" aria-hidden="true" />
-        <p className="devotion-body">
+        <TextReveal as="p" className="devotion-body">
           Got a question? What&apos;s next in life, career, relationship, health. Just ask PanditJee on WhatsApp!
-        </p>
+        </TextReveal>
         <div className="devotion-phone-stage">
           <div className="devotion-phone-wrap">
             <div className="devotion-phone-backdrop" aria-hidden="true">
@@ -141,9 +141,9 @@ export default function HomePage() {
             <h2 className="cosmic-headline">Align with the Universe</h2>
             <h3 className="cosmic-subhead">Discover Your Cosmic Connections</h3>
             <div className="cosmic-divider" aria-hidden="true" />
-            <p className="cosmic-lead">
+            <TextReveal as="p" className="cosmic-lead">
               Discover the blueprint of your destiny with Kundli Patra, your personalized astrology report.
-            </p>
+            </TextReveal>
             <ul className="cosmic-features">
               <li>
                 <span className="cosmic-check" aria-hidden="true">
@@ -181,10 +181,10 @@ export default function HomePage() {
         <h2 className="puja-promo-title">Embrace Divine Grace</h2>
         <p className="puja-promo-subtitle">Book Your Home Puja Today</p>
         <div className="puja-promo-divider" aria-hidden="true" />
-        <p className="puja-promo-body">
+        <TextReveal as="p" className="puja-promo-body">
           Bring sacred rituals to your doorstep with our customized puja services. Led by experienced priests, each
           ceremony is rooted in ancient traditions and thoughtfully tailored to your spiritual needs.
-        </p>
+        </TextReveal>
         <button type="button" className="puja-promo-btn" onClick={() => router.push(ROUTES.puja)}>
           Book Your Puja
         </button>
@@ -204,21 +204,15 @@ export default function HomePage() {
         <h2 className="section-heading section-heading--dark section-heading--center">
           Trusted by thousands seeking clarity
         </h2>
-        <div className="testimonial-grid" data-reveal="fade-up" data-reveal-stagger>
+        <div className="testimonial-grid testimonial-quote-grid" data-reveal="fade-up" data-reveal-stagger>
           {TESTIMONIALS.map((t) => (
-            <div className="testimonial-card testimonial-card--dark" key={t.name}>
-              <span className="quote-icon">&quot;</span>
-              <p className="testimonial-text testimonial-text--light">{t.text}</p>
-              <div className="testimonial-author-wrapper">
-                <div className="author-initial testimonial-avatar-fallback">{t.initial}</div>
-                <span className="testimonial-author-name">{t.name}</span>
-              </div>
-              <div className="testimonial-stars">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={14} fill="var(--secondary)" stroke="var(--secondary)" />
-                ))}
-              </div>
-            </div>
+            <TestimonialCard
+              key={t.name}
+              name={t.name}
+              text={t.text}
+              avatar={t.avatar}
+              initial={t.initial}
+            />
           ))}
         </div>
       </section>
@@ -227,44 +221,32 @@ export default function HomePage() {
         <div className="product-section-header">
           <h2 className="section-heading section-heading--center">Our Divine Products</h2>
           <p className="section-subline section-subline--center">Explore our exclusive range of Divine Products</p>
-          <p className="section-body section-body--center" style={{ maxWidth: '750px', margin: '0 auto' }}>
-            Discover our curated Divine Products — sacred items and meaningful gifts designed to inspire peace,
-            positivity, and spiritual connection. Elevate your space and soul with tradition.
-          </p>
+          <div style={{ maxWidth: '750px', margin: '0 auto' }}>
+            <TextReveal as="p" className="section-body section-body--center">
+              Discover our curated Divine Products — sacred items and meaningful gifts designed to inspire peace,
+              positivity, and spiritual connection. Elevate your space and soul with tradition.
+            </TextReveal>
+          </div>
         </div>
 
-        <div className="products-slider-grid products-slider-grid--pdf" data-reveal="fade-up" data-reveal-stagger>
-          {estoreProducts.map((prod) => (
-            <div className="product-card product-card--pdf" key={prod.id}>
-              <div className="product-img-wrapper">
-                {prod.image ? (
-                  <img src={prod.image} alt={prod.name} className="product-photo" loading="lazy" decoding="async" />
-                ) : (
-                  <div className="product-photo-fallback" style={{ background: prod.iconBg }}>
-                    {prod.iconText}
-                  </div>
-                )}
-                <span className="hot-tag">New</span>
-                {prod.discount && <span className="discount-tag discount-tag--pdf">{prod.discount}</span>}
-              </div>
-              <div className="product-info">
-                <h3 className="product-name">{prod.name}</h3>
-                <div className="product-footer product-footer--pdf">
-                  <div className="product-price-wrapper">
-                    {prod.originalPrice && <span className="original-price">Rs. {prod.originalPrice}</span>}
-                    <span className="product-price">Rs. {prod.price}</span>
-                  </div>
-                  <button
-                    type="button"
-                    className="add-cart-text-btn"
-                    onClick={() => handleAddToCart(prod.id)}
-                    disabled={addedItems[prod.id]}
-                  >
-                    {addedItems[prod.id] ? 'Added' : 'Add to cart'}
-                  </button>
-                </div>
-              </div>
-            </div>
+        <h3 className="title-shop title-shop--center" data-reveal="fade-up">
+          Shop
+        </h3>
+        <div className="shop-cards-grid products-slider-grid--pdf" data-reveal="fade-up" data-reveal-stagger>
+          {estoreProducts.map((prod, index) => (
+            <ShopProductCard
+              key={prod.id}
+              name={prod.name}
+              category={prod.category}
+              price={prod.price}
+              originalPrice={prod.originalPrice}
+              image={prod.image}
+              iconText={prod.iconText}
+              iconBg={prod.iconBg}
+              themeIndex={index}
+              added={!!addedItems[prod.id]}
+              onAddToCart={() => handleAddToCart(prod.id)}
+            />
           ))}
         </div>
       </section>
@@ -310,11 +292,28 @@ export default function HomePage() {
         <div className="faq-list-wrapper">
           {FAQ_ITEMS.map((item, idx) => (
             <div className="faq-item-card" key={idx}>
-              <div className="faq-item-header" onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}>
+              <div
+                className="faq-item-header"
+                role="button"
+                tabIndex={0}
+                onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActiveFaq(activeFaq === idx ? null : idx);
+                  }
+                }}
+              >
                 <span>{item.q}</span>
-                <span className={`faq-toggle-icon ${activeFaq === idx ? 'active' : ''}`}>▶</span>
+                <span className={`faq-toggle-icon ${activeFaq === idx ? 'active' : ''}`} aria-hidden>
+                  ▶
+                </span>
               </div>
-              {activeFaq === idx && <div className="faq-item-content">{item.a}</div>}
+              <div className={`faq-item-content-wrap ${activeFaq === idx ? 'is-open' : ''}`}>
+                <div className="faq-item-content">
+                  <div className="faq-item-content-inner">{item.a}</div>
+                </div>
+              </div>
             </div>
           ))}
         </div>
