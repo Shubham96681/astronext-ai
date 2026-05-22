@@ -22,7 +22,7 @@ export type Astrologer = {
   pricePerMinute: number;
   online: boolean;
   languages: string;
-  specialities: AstroSpeciality[];
+  specialities: readonly AstroSpeciality[];
   avatar: string;
   portrait: string;
 };
