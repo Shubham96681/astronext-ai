@@ -1,5 +1,8 @@
+'use client';
+
 import { useEffect, useState } from 'react';
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { Menu, Search, ShoppingCart, User, X } from 'lucide-react';
 import SiteLogo from './SiteLogo';
 import type { LogoTheme } from '../content/logoThemes';
@@ -13,7 +16,13 @@ type SiteHeaderProps = {
   cartCount: number;
 };
 
-const navLinkClass = ({ isActive }: { isActive: boolean }) => `nav-link${isActive ? ' active' : ''}`;
+function isNavActive(pathname: string, href: string, end?: boolean) {
+  return end ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function navLinkClass(pathname: string, href: string, end?: boolean) {
+  return `nav-link${isNavActive(pathname, href, end) ? ' active' : ''}`;
+}
 
 const NAV_ITEMS = [
   { to: ROUTES.home, label: 'Home', end: true },
@@ -30,12 +39,12 @@ export default function SiteHeader({
   cartCount,
 }: SiteHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     setMenuOpen(false);
-  }, [location.pathname]);
+  }, [pathname]);
 
   useEffect(() => {
     document.body.classList.toggle('nav-menu-open', menuOpen);
@@ -55,7 +64,7 @@ export default function SiteHeader({
   return (
     <header className={headerClassName}>
       <div className="site-shell nav-header__shell">
-        <Link to={ROUTES.home} className="logo-container" onClick={closeMenu}>
+        <Link href={ROUTES.home} className="logo-container" onClick={closeMenu}>
           <SiteLogo compact={logoCompact} theme={logoTheme} priority={logoPriority} />
         </Link>
 
@@ -64,9 +73,12 @@ export default function SiteHeader({
             <ul className="nav-menu">
               {NAV_ITEMS.map((item) => (
                 <li key={item.to}>
-                  <NavLink to={item.to} className={navLinkClass} end={'end' in item ? item.end : undefined}>
+                  <Link
+                    href={item.to}
+                    className={navLinkClass(pathname, item.to, 'end' in item ? item.end : undefined)}
+                  >
                     {item.label}
-                  </NavLink>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -80,7 +92,7 @@ export default function SiteHeader({
               type="button"
               className="action-btn"
               title="Login / Sign Up"
-              onClick={() => navigate(ROUTES.login)}
+              onClick={() => router.push(ROUTES.login)}
             >
               <User size={22} strokeWidth={1.75} />
             </button>
@@ -127,20 +139,19 @@ export default function SiteHeader({
         <ul className="nav-mobile-menu">
           {NAV_ITEMS.map((item) => (
             <li key={item.to}>
-              <NavLink
-                to={item.to}
-                className={({ isActive }) => `nav-mobile-link${isActive ? ' active' : ''}`}
-                end={'end' in item ? item.end : undefined}
+              <Link
+                href={item.to}
+                className={`nav-mobile-link${isNavActive(pathname, item.to, 'end' in item ? item.end : undefined) ? ' active' : ''}`}
                 onClick={closeMenu}
               >
                 {item.label}
-              </NavLink>
+              </Link>
             </li>
           ))}
         </ul>
 
         <div className="nav-mobile-drawer__actions">
-          <button type="button" className="nav-mobile-action" onClick={() => { closeMenu(); navigate(ROUTES.login); }}>
+          <button type="button" className="nav-mobile-action" onClick={() => { closeMenu(); router.push(ROUTES.login); }}>
             <User size={20} strokeWidth={1.75} />
             Login / Sign Up
           </button>

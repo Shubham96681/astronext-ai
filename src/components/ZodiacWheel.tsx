@@ -77,13 +77,18 @@ const CY = 260;
 const PATTERN_RADIUS = 172;
 const PATTERN_SCALE = 52;
 
+/** Stable SVG numbers — avoids server/client float formatting hydration mismatches */
+function r(n: number): number {
+  return Math.round(n * 100) / 100;
+}
+
 function segmentToXY(segmentIndex: number, localX: number, localY: number): [number, number] {
   const midDeg = segmentIndex * 30 + 15 - 90;
   const midRad = (midDeg * Math.PI) / 180;
-  const r = PATTERN_RADIUS + localY * PATTERN_SCALE;
-  const x = CX + r * Math.cos(midRad) - localX * PATTERN_SCALE * Math.sin(midRad);
-  const y = CY + r * Math.sin(midRad) + localX * PATTERN_SCALE * Math.cos(midRad);
-  return [x, y];
+  const rDist = PATTERN_RADIUS + localY * PATTERN_SCALE;
+  const x = CX + rDist * Math.cos(midRad) - localX * PATTERN_SCALE * Math.sin(midRad);
+  const y = CY + rDist * Math.sin(midRad) + localX * PATTERN_SCALE * Math.cos(midRad);
+  return [r(x), r(y)];
 }
 
 type WheelMetrics = {
@@ -144,10 +149,10 @@ function ConstellationPattern({
         return (
           <line
             key={`link-${segmentIndex}-${i}`}
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
+            x1={r(x1)}
+            y1={r(y1)}
+            x2={r(x2)}
+            y2={r(y2)}
             stroke="currentColor"
             strokeWidth={metrics.link}
             strokeLinecap="round"
@@ -197,10 +202,10 @@ export default function ZodiacWheel({ className = '' }: { className?: string }) 
         const rad = (deg * Math.PI) / 180;
         const rDot = 252;
         const rInner = i % 6 === 0 ? 238 : 242;
-        const xOuter = CX + rDot * Math.cos(rad);
-        const yOuter = CY + rDot * Math.sin(rad);
-        const xInner = CX + rInner * Math.cos(rad);
-        const yInner = CY + rInner * Math.sin(rad);
+        const xOuter = r(CX + rDot * Math.cos(rad));
+        const yOuter = r(CY + rDot * Math.sin(rad));
+        const xInner = r(CX + rInner * Math.cos(rad));
+        const yInner = r(CY + rInner * Math.sin(rad));
         return (
           <g key={`tick-${i}`} opacity="0.78">
             <line
@@ -222,10 +227,10 @@ export default function ZodiacWheel({ className = '' }: { className?: string }) 
       {[...Array(12)].map((_, i) => {
         const deg = i * 30 - 90;
         const rad = (deg * Math.PI) / 180;
-        const x1 = CX + 108 * Math.cos(rad);
-        const y1 = CY + 108 * Math.sin(rad);
-        const x2 = CX + 248 * Math.cos(rad);
-        const y2 = CY + 248 * Math.sin(rad);
+        const x1 = r(CX + 108 * Math.cos(rad));
+        const y1 = r(CY + 108 * Math.sin(rad));
+        const x2 = r(CX + 248 * Math.cos(rad));
+        const y2 = r(CY + 248 * Math.sin(rad));
         return (
           <line
             key={`spoke-${i}`}
@@ -249,8 +254,8 @@ export default function ZodiacWheel({ className = '' }: { className?: string }) 
       {SIGNS.map((name, i) => {
         const labelDeg = i * 30 + 15;
         const rad = ((labelDeg - 90) * Math.PI) / 180;
-        const x = CX + 222 * Math.cos(rad);
-        const y = CY + 222 * Math.sin(rad);
+        const x = r(CX + 222 * Math.cos(rad));
+        const y = r(CY + 222 * Math.sin(rad));
         let rot = labelDeg;
         if (rot > 90 && rot < 270) rot += 180;
         return (
@@ -266,7 +271,7 @@ export default function ZodiacWheel({ className = '' }: { className?: string }) 
             fontWeight="700"
             fontFamily="'Playfair Display', 'Cormorant Garamond', Georgia, serif"
             letterSpacing="0.12em"
-            transform={`rotate(${rot}, ${x}, ${y})`}
+            transform={`rotate(${r(rot)}, ${x}, ${y})`}
           >
             {name}
           </text>

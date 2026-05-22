@@ -1,0 +1,32 @@
+/* Vintage zodiac wheel image (public/zodiac-wheel.svg) — stronger contrast on light pink heroes */
+
+.zodiac-wheel-asset {
+  filter: contrast(1.75) saturate(1.45) brightness(0.72)
+    drop-shadow(0 6px 20px rgba(35, 22, 5, 0.35));
+}
+
+/* Dark band (kundali basic) — uses zodiac-wheel-light.svg (light gold fills) */
+.zodiac-wheel-asset--on-dark {
+  filter: contrast(1.25) saturate(1.4) brightness(1.08)
+    drop-shadow(0 0 32px rgba(212, 175, 55, 0.45))
+    drop-shadow(0 8px 24px rgba(0, 0, 0, 0.35));
+}
+
+.kundali-basic__wheel-wrap {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(212, 175, 55, 0.14) 0%,
+    rgba(212, 175, 55, 0.04) 45%,
+    transparent 70%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zodiac-wheel-asset {
+    filter: contrast(1.45) saturate(1.2) brightness(0.85);
+  }
+
+  .zodiac-wheel-asset--on-dark {
+    filter: contrast(1.2) saturate(1.25) brightness(1.05);
+  }
+}

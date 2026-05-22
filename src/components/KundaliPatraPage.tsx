@@ -1,4 +1,5 @@
-import authZodiacWheel from '../assets/auth-zodiac-wheel.png';
+'use client';
+
 import kundaliChart from '../assets/generated/kundali/image3_404_21208.png';
 import kundaliCosmicArt from '../assets/generated/kundali/kundali-cosmic-art.png';
 import kundaliWaves from '../assets/generated/kundali/image2_404_21208.png';
@@ -18,12 +19,13 @@ import {
   KUNDALI_HERO_TITLE,
   KUNDALI_TICKER_TEXT,
 } from '../content/kundaliCopy';
-import { useLocation } from 'react-router-dom';
-import { useScrollReveal } from '../hooks/useScrollReveal';
+import { usePathname } from 'next/navigation';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
+import { imageSrc, ZODIAC_WHEEL_LIGHT_SRC, ZODIAC_WHEEL_SRC } from '@/lib/imageSrc';
 
 export default function KundaliPatraPage() {
-  const location = useLocation();
-  useScrollReveal([location.pathname]);
+  const pathname = usePathname();
+  useScrollReveal([pathname]);
   const handleSampleReport = () => {
     document.getElementById('kundali-detail')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -41,11 +43,11 @@ export default function KundaliPatraPage() {
           </div>
           <div className="kundali-hero__visual" aria-hidden="true">
             <img
-              src={authZodiacWheel}
+              src={ZODIAC_WHEEL_SRC}
               alt=""
-              className="kundali-hero__wheel"
-              width={602}
-              height={586}
+              className="kundali-hero__wheel zodiac-wheel-asset"
+              width={1000}
+              height={1000}
               loading="eager"
               decoding="async"
             />
@@ -66,7 +68,7 @@ export default function KundaliPatraPage() {
           <p className="kundali-cosmic__desc">{KUNDALI_COSMIC_DESC}</p>
           <figure className="kundali-cosmic__art-wrap">
             <img
-              src={kundaliCosmicArt}
+              src={imageSrc(kundaliCosmicArt)}
               alt=""
               className="kundali-cosmic__art"
               width={909}
@@ -82,11 +84,11 @@ export default function KundaliPatraPage() {
         <div className="kundali-basic__grid">
           <div className="kundali-basic__wheel-wrap" aria-hidden="true">
             <img
-              src={authZodiacWheel}
+              src={ZODIAC_WHEEL_LIGHT_SRC}
               alt=""
-              className="kundali-basic__wheel"
-              width={480}
-              height={467}
+              className="kundali-basic__wheel zodiac-wheel-asset zodiac-wheel-asset--on-dark"
+              width={1000}
+              height={1000}
               loading="lazy"
               decoding="async"
             />
@@ -114,7 +116,7 @@ export default function KundaliPatraPage() {
       </section>
 
       <section id="kundali-detail" className="kundali-detail" aria-labelledby="kundali-detail-title" data-reveal="fade-up">
-        <img src={kundaliWaves} alt="" className="kundali-detail__waves" aria-hidden="true" />
+        <img src={imageSrc(kundaliWaves)} alt="" className="kundali-detail__waves" aria-hidden="true" />
         <div className="kundali-detail__inner">
           <h2 id="kundali-detail-title" className="kundali-detail__title">
             {KUNDALI_DETAIL_TITLE}
@@ -126,7 +128,7 @@ export default function KundaliPatraPage() {
           </button>
           <div className="kundali-detail__chart-wrap">
             <img
-              src={kundaliChart}
+              src={imageSrc(kundaliChart)}
               alt="Sample North Indian style Kundli chart"
               className="kundali-detail__chart"
               width={585}

@@ -10,6 +10,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+.next
+out
 *.local
 
 # Editor directories and files
@@ -22,3 +24,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local / generated artifacts
+Astronext Logo.zip
+scripts/_test-*.png
+scripts/_tmp.svg
+scripts/_kundali-wheel-export.svg

@@ -1,9 +1,10 @@
-import heroJagannathTriad from '../assets/generated/hero-jagannath-triad.png';
-import pujaItems from '../assets/generated/puja-items.png';
-import productChakra from '../assets/generated/product-chakra-bracelet.png';
-import productVedic from '../assets/generated/product-vedic-remedy.png';
-import productGoldWomen from '../assets/generated/product-gold-bracelet-women.png';
-import productGoldMen from '../assets/generated/product-gold-bracelet-men.png';
+import heroJagannathTriad from '@/assets/generated/hero-jagannath-triad.png';
+import pujaItems from '@/assets/generated/puja-items.png';
+import productChakra from '@/assets/generated/product-chakra-bracelet.png';
+import productVedic from '@/assets/generated/product-vedic-remedy.png';
+import productGoldWomen from '@/assets/generated/product-gold-bracelet-women.png';
+import productGoldMen from '@/assets/generated/product-gold-bracelet-men.png';
+import { imageSrc } from '@/lib/imageSrc';
 
 export type JgProduct = {
   id: number;
@@ -30,7 +31,7 @@ export const JG_STORE_PRODUCTS: JgProduct[] = [
     rating: 5.0,
     reviews: 284,
     inStock: true,
-    image: pujaItems,
+    image: imageSrc(pujaItems),
   },
   {
     id: 102,
@@ -43,7 +44,7 @@ export const JG_STORE_PRODUCTS: JgProduct[] = [
     rating: 4.9,
     reviews: 156,
     inStock: true,
-    image: heroJagannathTriad,
+    image: imageSrc(heroJagannathTriad),
   },
   {
     id: 103,
@@ -56,7 +57,7 @@ export const JG_STORE_PRODUCTS: JgProduct[] = [
     rating: 4.8,
     reviews: 92,
     inStock: false,
-    image: productVedic,
+    image: imageSrc(productVedic),
   },
   {
     id: 104,
@@ -69,7 +70,7 @@ export const JG_STORE_PRODUCTS: JgProduct[] = [
     rating: 4.9,
     reviews: 67,
     inStock: true,
-    image: productGoldWomen,
+    image: imageSrc(productGoldWomen),
   },
   {
     id: 105,
@@ -82,7 +83,7 @@ export const JG_STORE_PRODUCTS: JgProduct[] = [
     rating: 4.7,
     reviews: 118,
     inStock: true,
-    image: productChakra,
+    image: imageSrc(productChakra),
   },
   {
     id: 106,
@@ -95,6 +96,6 @@ export const JG_STORE_PRODUCTS: JgProduct[] = [
     rating: 4.8,
     reviews: 203,
     inStock: true,
-    image: productGoldMen,
+    image: imageSrc(productGoldMen),
   },
 ];

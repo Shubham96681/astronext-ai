@@ -99,12 +99,12 @@
   padding-right: clamp(0, 2vw, 1.5rem);
 }
 
-/* Vintage wheel — rendered from kundalipatra.svg (12 signs, one Leo) */
+/* Vintage zodiac wheel SVG (zodiac-wheel.svg) — see zodiac-wheel-asset.css */
 .kundali-hero__wheel {
   display: block;
-  width: min(100%, 520px);
+  width: min(100%, 540px);
   height: auto;
-  max-width: 520px;
+  max-width: 540px;
   object-fit: contain;
   object-position: right center;
   background: transparent !important;
@@ -112,11 +112,11 @@
 
 .kundali-basic__wheel {
   display: block;
-  width: min(100%, 480px);
+  width: min(100%, 520px);
   height: auto;
   margin: 0 auto;
-  filter: invert(1) brightness(1.12) contrast(1.02);
-  opacity: 0.95;
+  object-fit: contain;
+  opacity: 1;
 }
 
 /* —— Ticker (rect y=563, h=63, #1C064F) —— */

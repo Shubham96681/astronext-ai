@@ -1,0 +1,106 @@
+/* Divine Store product detail — extends astro-detail-page */
+
+.jg-product-detail .astro-detail-hero__portrait,
+.jg-product-detail .astro-detail-hero__frame .jg-product-img-fallback {
+  object-fit: contain;
+  object-position: center center;
+  background: #ffffff;
+}
+
+.jg-product-detail .astro-detail-hero__live--stock {
+  background: var(--astro-detail-green, #22c55e);
+}
+
+.jg-product-detail .astro-detail-hero__live--out {
+  background: #9ca3af;
+}
+
+.jg-product-detail__cta-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.jg-product-detail__qty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.4rem;
+}
+
+.jg-product-detail__qty-label {
+  margin: 0;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  opacity: 0.7;
+}
+
+.jg-product-detail__stepper {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.jg-product-detail__stepper button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.jg-product-detail__stepper button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.jg-product-detail__stepper span {
+  min-width: 2.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-align: center;
+  color: #ffffff;
+}
+
+.jg-product-detail__read-more {
+  margin-top: 0.5rem;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--astro-detail-mauve, #b05c6f);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.jg-product-detail__read-more:hover {
+  color: var(--astro-detail-navy, #1a2b4c);
+}
+
+@media (max-width: 1024px) {
+  .jg-product-detail__cta-actions {
+    grid-column: 1 / -1;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .jg-product-detail__qty {
+    align-items: flex-start;
+  }
+
+  .jg-product-detail .astro-detail-cta-bar__btn {
+    width: 100%;
+  }
+}

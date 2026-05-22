@@ -1,15 +1,16 @@
-import logoHeader from '../assets/logos/logo-header.png';
-import logoOnDark from '../assets/logos/logo-on-dark.svg';
-import logoFooter from '../assets/logos/logo-footer.svg';
-import type { LogoTheme } from '../content/logoThemes';
+import logoHeader from '@/assets/logos/logo-header.png';
+import logoOnDark from '@/assets/logos/logo-on-dark.svg';
+import logoFooter from '@/assets/logos/logo-footer.svg';
+import type { LogoTheme } from '@/content/logoThemes';
+import { imageSrc } from '@/lib/imageSrc';
 
 /** Nav: horizontal lockup PNG. Footer: brand SVG from zip. */
 const LOGO_SRC: Record<LogoTheme, string> = {
-  light: logoHeader,
-  'on-dark': logoOnDark,
-  purple: logoHeader,
-  gold: logoHeader,
-  footer: logoFooter,
+  light: imageSrc(logoHeader),
+  'on-dark': imageSrc(logoOnDark),
+  purple: imageSrc(logoHeader),
+  gold: imageSrc(logoHeader),
+  footer: imageSrc(logoFooter),
 };
 
 type SiteLogoProps = {

@@ -1,5 +1,6 @@
 import SiteLogo from './SiteLogo';
 import qrCodeImg from '../assets/app-qr-code.svg';
+import { imageSrc } from '@/lib/imageSrc';
 
 /** Phone frame with logo + QR — bottom cropped like reference mockup. */
 export default function AppQrMockup() {
@@ -16,7 +17,7 @@ export default function AppQrMockup() {
             </div>
             <div className="app-qr-code">
               <img
-                src={qrCodeImg}
+                src={imageSrc(qrCodeImg)}
                 alt=""
                 className="app-qr-image"
                 width={148}

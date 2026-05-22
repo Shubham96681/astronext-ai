@@ -1,9 +1,11 @@
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+'use client';
 
-/** Scroll to top on route change (replaces activeTab scroll effect). */
+import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+
+/** Scroll to top on route change. */
 export default function ScrollToTop() {
-  const { pathname } = useLocation();
+  const pathname = usePathname();
 
   useEffect(() => {
     window.scrollTo(0, 0);

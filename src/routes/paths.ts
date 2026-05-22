@@ -1,4 +1,4 @@
-/** URL paths — used with React Router (BrowserRouter) */
+/** URL paths — used with Next.js App Router */
 
 export const ROUTES = {
   home: '/',

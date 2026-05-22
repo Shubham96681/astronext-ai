@@ -1,8 +1,11 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { astrologerDetailPath, parseRouteId, ROUTES } from '../routes/paths';
+import { useParams, useRouter } from 'next/navigation';
+import { astrologerDetailPath, parseRouteId, ROUTES } from '@/routes/paths';
 import { Send, Star, X } from 'lucide-react';
-import astrologersHeroHands from '../assets/generated/astrologers-hero-hands.png';
+import astrologersHeroHands from '@/assets/generated/astrologers-hero-hands.png';
+import { imageSrc } from '@/lib/imageSrc';
 import { ASTROLOGERS, formatSessionPrice, type Astrologer } from '../content/astrologersData';
 import { HeroStardust } from './HeroStardust';
 import { ASTROLOGERS_HERO_DESC, HERO_TICKER_TEXT, TESTIMONIALS } from '../content/siteCopy';
@@ -48,7 +51,7 @@ function ExpertCard({
 }
 
 export default function AstrologersPage() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { astrologerId: astrologerIdParam } = useParams<{ astrologerId?: string }>();
   const selectedId = parseRouteId(astrologerIdParam);
   const [activeChat, setActiveChat] = useState<Astrologer | null>(null);
@@ -63,16 +66,16 @@ export default function AstrologersPage() {
 
   useEffect(() => {
     if (astrologerIdParam && !selected) {
-      navigate(ROUTES.astrologers, { replace: true });
+      router.replace(ROUTES.astrologers);
     }
-  }, [astrologerIdParam, selected, navigate]);
+  }, [astrologerIdParam, selected, router]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  const goToAstrologer = (id: number) => navigate(astrologerDetailPath(id));
-  const goToListing = () => navigate(ROUTES.astrologers);
+  const goToAstrologer = (id: number) => router.push(astrologerDetailPath(id));
+  const goToListing = () => router.push(ROUTES.astrologers);
 
   const startChat = (astro: Astrologer) => {
     setActiveChat(astro);
@@ -180,10 +183,10 @@ export default function AstrologersPage() {
         <AstrologerDetail
           astrologer={selected}
           onBack={goToListing}
-          onHome={() => navigate(ROUTES.home)}
+          onHome={() => router.push(ROUTES.home)}
           onSelect={goToAstrologer}
           onChat={(astro) => {
-            navigate(ROUTES.astrologers);
+            router.push(ROUTES.astrologers);
             startChat(astro);
           }}
         />
@@ -206,7 +209,7 @@ export default function AstrologersPage() {
           </div>
           <div className="astrologers-hero__visual">
             <img
-              src={astrologersHeroHands}
+              src={imageSrc(astrologersHeroHands)}
               alt="Astrologer reviewing birth charts and writing notes"
               className="astrologers-hero__img"
             />

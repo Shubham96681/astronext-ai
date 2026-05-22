@@ -1,10 +1,14 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { divineStoreProductPath, parseRouteId, ROUTES } from '../routes/paths';
-import { ArrowLeft, Check, ChevronDown, Minus, Plus, ShoppingCart, Star, X } from 'lucide-react';
+'use client';
+
+import { useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { divineStoreProductPath } from '@/routes/paths';
+import { Check, ChevronDown, ShoppingCart, Star, X } from 'lucide-react';
 import JgProductImage from './JgProductImage';
 import { HeroStardust } from './HeroStardust';
-import heroJagannathTriad from '../assets/generated/hero-jagannath-triad.png';
+import heroJagannathTriad from '@/assets/generated/hero-jagannath-triad.png';
+import { useCart } from '@/context/CartContext';
+import { imageSrc } from '@/lib/imageSrc';
 import {
   JG_STORE_HERO_SUBTITLE,
   JG_STORE_HERO_TITLE,
@@ -50,11 +54,6 @@ function filterAndSortProducts(
 
   return list;
 }
-
-type Props = {
-  onAddToCart: (id: number) => void;
-  addedItems: Record<number, boolean>;
-};
 
 function ProductCard({
   product,
@@ -106,128 +105,6 @@ function ProductCard({
   );
 }
 
-function ProductDetail({
-  product,
-  onBack,
-  onSelectProduct,
-  onAddToCart,
-  added,
-  addedItems,
-}: {
-  product: JgProduct;
-  onBack: () => void;
-  onSelectProduct: (id: number) => void;
-  onAddToCart: (id: number) => void;
-  added: boolean;
-  addedItems: Record<number, boolean>;
-}) {
-  const [qty, setQty] = useState(1);
-  const [readMore, setReadMore] = useState(false);
-  const related = JG_STORE_PRODUCTS.filter((p) => p.id !== product.id).slice(0, 3);
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setReadMore(false);
-  }, [product.id]);
-
-  return (
-    <div className="detail-ref-page jg-detail-readmore">
-      <div className="detail-ref-page__inner site-shell jg-detail-readmore__inner" data-reveal="fade-up" data-reveal-immediate>
-        <button type="button" className="detail-ref-page__back" onClick={onBack}>
-          <ArrowLeft size={18} />
-          Back to Store
-        </button>
-
-        <div className="detail-ref-page__profile">
-          <div className="detail-ref-page__media jg-detail-readmore__media">
-            <JgProductImage
-              src={product.image}
-              alt={product.name}
-              className="jg-detail-readmore__img"
-              loading="eager"
-              fetchPriority="high"
-            />
-          </div>
-
-          <div className="detail-ref-page__info">
-            <span className={`detail-ref-page__stock ${product.inStock ? '' : ' detail-ref-page__stock--out'}`}>
-              {product.inStock ? 'In Stock' : 'Out of Stock'}
-            </span>
-            <p className="detail-ref-page__category">{product.category}</p>
-            <h1 className="detail-ref-page__title">{product.name}</h1>
-
-            <hr className="detail-ref-page__dash" />
-
-            <div className="detail-ref-page__rating">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <Star key={i} size={18} fill={i <= Math.round(product.rating) ? '#d4af37' : 'none'} stroke="#d4af37" />
-              ))}
-              <span>
-                {product.rating.toFixed(1)} ({product.reviews} reviews)
-              </span>
-            </div>
-
-            <hr className="detail-ref-page__dash" />
-
-            <p className="detail-ref-page__price">₹ {product.price.toLocaleString('en-IN')}</p>
-            <p className="detail-ref-page__desc">{product.desc}</p>
-            {readMore && <p className="detail-ref-page__desc detail-ref-page__desc--long">{product.descLong}</p>}
-
-            <div className="detail-ref-page__actions">
-              <button
-                type="button"
-                className="detail-ref-page__cta detail-ref-page__cta--outline"
-                onClick={() => setReadMore((v) => !v)}
-              >
-                {readMore ? 'Show Less' : 'Read More'}
-              </button>
-
-              {product.inStock && (
-                <div className="jg-detail-readmore__qty">
-                  <span className="detail-ref-page__qty-label">Quantity</span>
-                  <div className="jg-detail-readmore__stepper">
-                    <button type="button" aria-label="Decrease" onClick={() => setQty((q) => Math.max(1, q - 1))}>
-                      <Minus size={16} />
-                    </button>
-                    <span>{qty}</span>
-                    <button type="button" aria-label="Increase" onClick={() => setQty((q) => q + 1)}>
-                      <Plus size={16} />
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              <button
-                type="button"
-                className="detail-ref-page__cta"
-                disabled={!product.inStock || added}
-                onClick={() => onAddToCart(product.id)}
-              >
-                {added ? 'Added to Cart' : product.inStock ? 'Add to Cart' : 'Out of Stock'}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <section className="jg-detail-readmore__related" data-reveal="fade-up" data-reveal-delay="120ms">
-          <h2 className="detail-ref-page__related-title">Related Products</h2>
-          <div className="jg-store-grid">
-            {related.map((p) => (
-              <ProductCard
-                key={p.id}
-                product={p}
-                onSelect={() => onSelectProduct(p.id)}
-                onAddToCart={() => onAddToCart(p.id)}
-                added={!!addedItems[p.id]}
-              />
-            ))}
-          </div>
-        </section>
-      </div>
-    </div>
-  );
-}
-
 function JagannathStoreHero() {
   return (
     <section className="jg-store-hero" aria-labelledby="jg-store-hero-title" data-reveal="fade-up" data-reveal-immediate>
@@ -241,7 +118,7 @@ function JagannathStoreHero() {
       <div className="jg-store-hero__right" data-reveal="fade-left" data-reveal-immediate data-reveal-delay="120ms">
         <div className="jg-store-hero__visual">
           <img
-            src={heroJagannathTriad}
+            src={imageSrc(heroJagannathTriad)}
             className="jg-store-hero__deities"
             alt="Balabhadra, Subhadra, and Jagannath"
           />
@@ -377,14 +254,12 @@ function StoreListingControls({
   );
 }
 
-export default function JagannathStorePage({ onAddToCart, addedItems }: Props) {
-  const { productId: productIdParam } = useParams<{ productId?: string }>();
-  const navigate = useNavigate();
-  const selectedId = parseRouteId(productIdParam);
+export default function JagannathStorePage() {
+  const router = useRouter();
+  const { handleAddToCart: onAddToCart, addedItems } = useCart();
   const [availabilityFilter, setAvailabilityFilter] = useState<AvailabilityFilter>('all');
   const [priceFilter, setPriceFilter] = useState<PriceFilter>('all');
   const [sortBy, setSortBy] = useState<SortOption>('best');
-  const selected = selectedId ? JG_STORE_PRODUCTS.find((p) => p.id === selectedId) : null;
 
   const filteredProducts = useMemo(
     () => filterAndSortProducts(JG_STORE_PRODUCTS, availabilityFilter, priceFilter, sortBy),
@@ -393,51 +268,14 @@ export default function JagannathStorePage({ onAddToCart, addedItems }: Props) {
 
   const hasActiveFilters = availabilityFilter !== 'all' || priceFilter !== 'all';
 
-  useScrollReveal([productIdParam ?? 'listing']);
+  useScrollReveal(['listing']);
 
-  useEffect(() => {
-    if (productIdParam && !selected) {
-      navigate(ROUTES.divineStore, { replace: true });
-    }
-  }, [productIdParam, selected, navigate]);
-
-  useEffect(() => {
-    if (selected) {
-      document.body.classList.add('jg-store-detail-active');
-    } else {
-      document.body.classList.remove('jg-store-detail-active');
-    }
-    return () => document.body.classList.remove('jg-store-detail-active');
-  }, [selected]);
-
-  const goToProduct = (id: number) => navigate(divineStoreProductPath(id));
-  const goToStore = () => navigate(ROUTES.divineStore);
+  const goToProduct = (id: number) => router.push(divineStoreProductPath(id));
 
   const clearFilters = () => {
     setAvailabilityFilter('all');
     setPriceFilter('all');
   };
-
-  if (selected) {
-    return (
-      <div className="jg-store-page jg-store-page--detail">
-        <div className="jg-store-detail-shell site-shell">
-          <section className="jg-store-listing jg-store-listing--detail">
-            <div className="jg-store-inner jg-store-inner--detail">
-              <ProductDetail
-              product={selected}
-              onBack={goToStore}
-              onSelectProduct={goToProduct}
-              onAddToCart={onAddToCart}
-              added={!!addedItems[selected.id]}
-              addedItems={addedItems}
-              />
-            </div>
-          </section>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="jg-store-page">

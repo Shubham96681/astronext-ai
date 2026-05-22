@@ -93,12 +93,12 @@
   overflow: visible;
 }
 
-/* Generated zodiac wheel — transparent PNG, no edge clipping */
+/* Vintage zodiac wheel SVG (zodiac-wheel.svg) — see zodiac-wheel-asset.css */
 .auth-zodiac-wheel-img {
   display: block;
-  width: min(100%, 460px);
+  width: min(100%, 480px);
   height: auto;
-  max-width: 460px;
+  max-width: 480px;
   object-fit: contain;
   object-position: left center;
   background: transparent !important;

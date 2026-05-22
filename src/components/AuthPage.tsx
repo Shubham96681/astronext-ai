@@ -1,8 +1,10 @@
+'use client';
+
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { Eye, EyeOff } from 'lucide-react';
 import { ROUTES } from '../routes/paths';
-import authZodiacWheel from '../assets/auth-zodiac-wheel.png';
+import { ZODIAC_WHEEL_SRC } from '@/lib/imageSrc';
 import { AUTH_HERO_SUBTITLE, AUTH_HERO_TITLE } from '../content/siteCopy';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
@@ -56,7 +58,7 @@ function PasswordField({
 }
 
 export default function AuthPage({ mode }: Props) {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [signupForm, setSignupForm] = useState({
     name: '',
@@ -86,11 +88,11 @@ export default function AuthPage({ mode }: Props) {
         <div className="auth-hero__grid">
           <div className="auth-hero__visual" aria-hidden="true" data-reveal="fade-right" data-reveal-immediate data-reveal-delay="80ms">
             <img
-              src={authZodiacWheel}
+              src={ZODIAC_WHEEL_SRC}
               alt=""
-              className="auth-zodiac-wheel-img"
-              width={460}
-              height={460}
+              className="auth-zodiac-wheel-img zodiac-wheel-asset"
+              width={1000}
+              height={1000}
               loading="eager"
               decoding="async"
             />
@@ -135,7 +137,7 @@ export default function AuthPage({ mode }: Props) {
 
                   <p className="auth-card__switch">
                     Don&apos;t have an account?{' '}
-                    <button type="button" className="auth-card__switch-link" onClick={() => navigate(ROUTES.signup)}>
+                    <button type="button" className="auth-card__switch-link" onClick={() => router.push(ROUTES.signup)}>
                       Sign Up
                     </button>
                   </p>
@@ -194,7 +196,7 @@ export default function AuthPage({ mode }: Props) {
 
                   <p className="auth-card__switch">
                     Already have an account?{' '}
-                    <button type="button" className="auth-card__switch-link" onClick={() => navigate(ROUTES.login)}>
+                    <button type="button" className="auth-card__switch-link" onClick={() => router.push(ROUTES.login)}>
                       Login
                     </button>
                   </p>
