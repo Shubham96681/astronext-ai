@@ -37,7 +37,7 @@ body.astro-detail-active .nav-header {
   position: sticky !important;
   top: 0;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.98) !important;
+  background: var(--nav-header-bg-solid, rgba(255, 255, 255, 0.99)) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
   border-bottom: 1px solid rgba(26, 43, 76, 0.08) !important;

@@ -116,7 +116,7 @@ body {
   display: block;
   padding: var(--nav-padding-y, 1.25rem) 0;
   min-height: var(--nav-height, 6.5rem);
-  background: rgba(255, 255, 255, 0.45);
+  background: var(--nav-header-bg, rgba(255, 255, 255, 0.92));
   backdrop-filter: blur(16px) saturate(120%);
   -webkit-backdrop-filter: blur(16px) saturate(120%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.4);
@@ -127,7 +127,7 @@ body {
 .nav-header.scrolled {
   padding-block: 1rem;
   min-height: var(--nav-height-compact, 5.5rem);
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--nav-header-bg-scrolled, rgba(255, 255, 255, 0.98));
   box-shadow: 0 10px 30px rgba(119, 78, 171, 0.07);
 }
 
