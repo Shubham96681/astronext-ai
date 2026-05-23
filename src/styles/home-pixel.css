@@ -242,7 +242,7 @@ body {
 }
 
 
-.products-slider-grid--pdf {
+.products-slider-grid--pdf:not(.shop-cards-grid) {
   max-width: var(--astro-container);
   grid-template-columns: repeat(4, 1fr);
   gap: 1.25rem;

@@ -202,7 +202,7 @@
     min-height: 17.5rem;
   }
 
-  .products-slider-grid--pdf {
+  .products-slider-grid--pdf:not(.shop-cards-grid) {
     display: flex;
     flex-wrap: nowrap;
     justify-content: flex-start;
@@ -214,7 +214,7 @@
     padding-bottom: 0.5rem;
   }
 
-  .products-slider-grid--pdf .product-card--pdf {
+  .products-slider-grid--pdf:not(.shop-cards-grid) .product-card--pdf {
     flex: 0 0 min(16.125rem, 72vw);
     scroll-snap-align: start;
   }
@@ -401,33 +401,51 @@
   }
 
   .astro-detail-hero {
-    grid-template-columns: minmax(0, 1fr) minmax(6.5rem, 34%);
-    gap: 0.75rem 0.65rem;
-    align-items: start;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+
+  .astro-detail-hero__copy {
+    order: 2;
   }
 
   .astro-detail-hero__visual {
-    order: 0;
-    justify-self: end;
-    align-self: start;
-    max-width: min(7.9375rem, 34vw);
+    order: 1;
+    justify-self: center;
+    align-self: center;
+    max-width: min(12.5rem, 72vw);
     width: 100%;
-    margin: 0;
+    margin: 0 auto;
   }
 
   .astro-detail-hero__frame {
-    padding: 0.4rem;
-    border-radius: 14px;
+    padding: 0.5rem;
+    border-radius: 16px;
+  }
+
+  .astro-detail-hero__share-btn {
+    top: 0.65rem;
+    right: 0.65rem;
+    left: auto;
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .astro-detail-hero__live {
+    top: 0.65rem;
+    left: 0.65rem;
+    right: auto;
   }
 
   .astro-detail-hero__portrait,
   .astro-detail-hero__frame .jg-product-img-fallback {
-    max-height: 11rem;
-    aspect-ratio: 127 / 177;
+    max-height: 16.5rem;
+    aspect-ratio: 3 / 4;
   }
 
   .astro-detail-hero__name {
-    font-size: clamp(1.5rem, 7vw, 1.85rem) !important;
+    font-size: clamp(1.65rem, 7.5vw, 2rem) !important;
   }
 
   .astro-detail-hero__tagline {
@@ -436,33 +454,29 @@
   }
 
   .astro-detail-cta-bar {
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-    align-items: center;
-    gap: 0.5rem 0.75rem;
-    padding: 1rem 1.15rem;
-    border-radius: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    padding: 1.15rem 1.25rem;
+    border-radius: 1.25rem;
+    text-align: center;
   }
 
-  .astro-detail-cta-bar__price-block {
-    grid-column: 1;
-    grid-row: 1;
-    text-align: left;
-  }
-
+  .astro-detail-cta-bar__price-block,
   .astro-detail-cta-bar__lang {
-    grid-column: 1;
-    grid-row: 2;
-    text-align: left;
+    text-align: center;
+  }
+
+  .astro-detail-cta-bar__lang-list {
+    white-space: normal;
   }
 
   .astro-detail-cta-bar__btn {
-    grid-column: 2;
-    grid-row: 1 / -1;
-    align-self: center;
-    width: auto;
-    padding: 0.75rem 1.1rem;
-    font-size: 0.7rem;
+    width: 100%;
+    max-width: 100%;
+    padding: 0.9rem 1.25rem;
+    font-size: 0.75rem;
   }
 
   .astro-detail-also__grid {

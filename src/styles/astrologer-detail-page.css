@@ -534,32 +534,52 @@ body.astro-detail-active .nav-header .action-btn {
 
 @media (max-width: 768px) {
   .astro-detail-hero {
-    grid-template-columns: minmax(0, 1fr) minmax(140px, 36%);
-    gap: 1rem 0.85rem;
-    align-items: start;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+
+  .astro-detail-hero__copy {
+    order: 2;
   }
 
   .astro-detail-hero__visual {
-    order: 0;
-    justify-self: end;
-    align-self: start;
-    max-width: min(200px, 38vw);
-    margin: 0;
+    order: 1;
+    justify-self: center;
+    align-self: center;
+    max-width: min(220px, 72vw);
+    margin: 0 auto;
+  }
+
+  .astro-detail-hero__share-btn {
+    top: 0.75rem;
+    right: 0.75rem;
+    left: auto;
+  }
+
+  .astro-detail-hero__live {
+    top: 0.75rem;
+    left: 0.75rem;
+    right: auto;
   }
 
   .astro-detail-cta-bar {
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-    align-items: center;
-    text-align: left;
-    border-radius: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    text-align: center;
+    border-radius: 1.25rem;
+  }
+
+  .astro-detail-cta-bar__price-block,
+  .astro-detail-cta-bar__lang {
+    text-align: center;
   }
 
   .astro-detail-cta-bar__btn {
-    grid-column: 2;
-    grid-row: 1 / -1;
-    align-self: center;
-    width: auto;
+    width: 100%;
+    max-width: 100%;
   }
 
   .astro-detail-cta-bar__lang-list {
