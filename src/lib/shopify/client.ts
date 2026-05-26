@@ -1,4 +1,5 @@
 import { resolveAdminAccessToken } from '@/lib/shopify/accessToken';
+import { SHOPIFY_DEFAULTS } from '@/lib/shopify/defaults';
 import {
   ADMIN_COLLECTION_PRODUCTS_QUERY,
   ADMIN_PRODUCT_BY_ID_QUERY,
@@ -19,16 +20,19 @@ import type {
 export type ShopifyApiMode = 'admin' | 'storefront' | 'storefront-json' | 'none';
 
 function getConfig() {
-  const storefrontDomain = process.env.SHOPIFY_STORE_DOMAIN ?? 'www.astronext.ai';
+  const storefrontDomain =
+    process.env.SHOPIFY_STORE_DOMAIN?.trim() || SHOPIFY_DEFAULTS.storeDomain;
   const shopDomain =
-    process.env.SHOPIFY_MYSHOPIFY_DOMAIN ??
-    process.env.SHOPIFY_SHOP_DOMAIN ??
-    '00mi0h-6k.myshopify.com';
+    process.env.SHOPIFY_MYSHOPIFY_DOMAIN?.trim() ||
+    process.env.SHOPIFY_SHOP_DOMAIN?.trim() ||
+    SHOPIFY_DEFAULTS.myshopifyDomain;
   const storefrontToken = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN?.trim() ?? '';
   const adminToken = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN?.trim() ?? '';
-  const apiVersion = process.env.SHOPIFY_API_VERSION ?? '2024-01';
+  const apiVersion = process.env.SHOPIFY_API_VERSION?.trim() || SHOPIFY_DEFAULTS.apiVersion;
   const collectionId =
-    process.env.SHOPIFY_COLLECTION_ID ?? 'gid://shopify/Collection/321156776094';
+    process.env.SHOPIFY_COLLECTION_ID?.trim() || SHOPIFY_DEFAULTS.collectionId;
+  const collectionHandle =
+    process.env.SHOPIFY_COLLECTION_HANDLE?.trim() || SHOPIFY_DEFAULTS.collectionHandle;
 
   return {
     storefrontDomain,
@@ -37,6 +41,7 @@ function getConfig() {
     adminToken,
     apiVersion,
     collectionId,
+    collectionHandle,
   };
 }
 
@@ -46,29 +51,32 @@ export function isValidAdminToken(token: string): boolean {
 }
 
 export function isShopifyConfigured(): boolean {
-  const { storefrontToken, adminToken, collectionId } = getConfig();
+  const { storefrontToken, adminToken, collectionId, storefrontDomain } = getConfig();
   const validAdmin = Boolean(adminToken && isValidAdminToken(adminToken));
   const validStorefront = Boolean(storefrontToken);
   const hasOAuthCreds = Boolean(
     process.env.SHOPIFY_API_KEY?.trim() && process.env.SHOPIFY_API_SECRET?.trim(),
   );
-  const hasPublicStore = Boolean(
-    process.env.SHOPIFY_STORE_DOMAIN?.trim() || process.env.SHOPIFY_SHOP_DOMAIN?.trim(),
-  );
-  return validAdmin || validStorefront || hasOAuthCreds || Boolean(collectionId && hasPublicStore);
+  // Use resolved config (includes production defaults), not raw process.env — required for Vercel.
+  const hasPublicStore = Boolean(storefrontDomain && collectionId);
+  return validAdmin || validStorefront || hasOAuthCreds || hasPublicStore;
 }
 
 export async function shopifyApiMode(): Promise<ShopifyApiMode> {
   const { adminToken, storefrontToken } = getConfig();
   if (adminToken && isValidAdminToken(adminToken)) return 'admin';
 
-  const resolved = await resolveAdminAccessToken();
-  if (resolved && isValidAdminToken(resolved)) return 'admin';
+  const hasOAuth = Boolean(
+    process.env.SHOPIFY_API_KEY?.trim() && process.env.SHOPIFY_API_SECRET?.trim(),
+  );
+  if (hasOAuth) {
+    const resolved = await resolveAdminAccessToken();
+    if (resolved && isValidAdminToken(resolved)) return 'admin';
+  }
 
   if (storefrontToken) return 'storefront';
-  if (process.env.SHOPIFY_COLLECTION_ID || process.env.SHOPIFY_STORE_DOMAIN) {
-    return 'storefront-json';
-  }
+  const { collectionId, storefrontDomain } = getConfig();
+  if (collectionId && storefrontDomain) return 'storefront-json';
   return 'none';
 }
 

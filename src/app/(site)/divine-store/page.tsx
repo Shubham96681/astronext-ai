@@ -1,9 +1,10 @@
 import JagannathStorePage from '@/components/JagannathStorePage';
 import { getDivineStoreProducts } from '@/lib/storeProducts';
 
-export const revalidate = 300;
+/** Always fetch fresh products on Vercel (avoids cached empty builds). */
+export const dynamic = 'force-dynamic';
 
 export default async function Page() {
-  const { products } = await getDivineStoreProducts();
-  return <JagannathStorePage products={products} />;
+  const { products, shopifyWarning } = await getDivineStoreProducts();
+  return <JagannathStorePage products={products} shopifyWarning={shopifyWarning} />;
 }

@@ -5,9 +5,13 @@ type TokenCache = {
 
 let cached: TokenCache | null = null;
 
+import { SHOPIFY_DEFAULTS } from '@/lib/shopify/defaults';
+
 function shopMyshopifyHost(): string | null {
-  const raw = process.env.SHOPIFY_MYSHOPIFY_DOMAIN?.trim() || process.env.SHOPIFY_SHOP_DOMAIN?.trim();
-  if (!raw) return null;
+  const raw =
+    process.env.SHOPIFY_MYSHOPIFY_DOMAIN?.trim() ||
+    process.env.SHOPIFY_SHOP_DOMAIN?.trim() ||
+    SHOPIFY_DEFAULTS.myshopifyDomain;
   const host = raw.replace(/^https?:\/\//, '').replace(/\/$/, '');
   if (host.includes('.myshopify.com')) return host;
   return null;

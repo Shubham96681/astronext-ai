@@ -7,6 +7,7 @@ import {
   shopifyConfigWarning,
 } from '@/lib/shopify/client';
 import { mapShopifyToEstoreProduct, mapShopifyToJgProduct } from '@/lib/shopify/mapProduct';
+import { SHOPIFY_DEFAULTS } from '@/lib/shopify/defaults';
 
 export type StoreSource = 'shopify' | 'static';
 
@@ -27,8 +28,8 @@ export type EstorePayload = {
 function estoreCollectionId(): string {
   return (
     process.env.SHOPIFY_ESTORE_COLLECTION_ID?.trim() ||
-    process.env.SHOPIFY_COLLECTION_ID ||
-    'gid://shopify/Collection/321156776094'
+    process.env.SHOPIFY_COLLECTION_ID?.trim() ||
+    SHOPIFY_DEFAULTS.collectionId
   );
 }
 

@@ -205,9 +205,10 @@ function StoreListingControls({
 
 type Props = {
   products?: JgProduct[];
+  shopifyWarning?: string | null;
 };
 
-export default function JagannathStorePage({ products = [] }: Props) {
+export default function JagannathStorePage({ products = [], shopifyWarning = null }: Props) {
   const router = useRouter();
   const { handleAddToCart: onAddToCart, addedItems } = useCart();
   const [availabilityFilter, setAvailabilityFilter] = useState<AvailabilityFilter>('all');
@@ -260,7 +261,10 @@ export default function JagannathStorePage({ products = [] }: Props) {
 
           <h3 className="title-shop">Shop</h3>
           {products.length === 0 ? (
-            <p className="jg-store-section-desc">Loading products from the store…</p>
+            <p className="jg-store-section-desc" role="status">
+              {shopifyWarning ??
+                'Products could not be loaded. Check Shopify env vars in Vercel and redeploy.'}
+            </p>
           ) : null}
           {filteredProducts.length === 0 && products.length > 0 ? (
             <p className="jg-store-section-desc">No products match your filters.</p>

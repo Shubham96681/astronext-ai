@@ -1,3 +1,4 @@
+import { SHOPIFY_DEFAULTS } from '@/lib/shopify/defaults';
 import type { ShopifyProductNode } from '@/lib/shopify/types';
 
 export type StorefrontJsonProduct = {
@@ -34,9 +35,9 @@ function stripHtml(html: string): string {
 
 export function getStoreBaseUrl(): string {
   const domain =
-    process.env.SHOPIFY_STORE_DOMAIN ??
-    process.env.SHOPIFY_SHOP_DOMAIN ??
-    'www.astronext.ai';
+    process.env.SHOPIFY_STORE_DOMAIN?.trim() ||
+    process.env.SHOPIFY_SHOP_DOMAIN?.trim() ||
+    SHOPIFY_DEFAULTS.storeDomain;
   const host = domain.replace(/^https?:\/\//, '').replace(/\/$/, '');
   return `https://${host}`;
 }
@@ -47,12 +48,14 @@ function collectionNumericId(collectionId: string): string {
 
 export async function resolveCollectionHandle(collectionId: string): Promise<string> {
   const defaultCollectionId =
-    process.env.SHOPIFY_COLLECTION_ID ?? 'gid://shopify/Collection/321156776094';
+    process.env.SHOPIFY_COLLECTION_ID?.trim() || SHOPIFY_DEFAULTS.collectionId;
   const estoreCollectionId =
     process.env.SHOPIFY_ESTORE_COLLECTION_ID?.trim() || defaultCollectionId;
 
-  if (collectionId === defaultCollectionId && process.env.SHOPIFY_COLLECTION_HANDLE?.trim()) {
-    return process.env.SHOPIFY_COLLECTION_HANDLE.trim();
+  if (collectionId === defaultCollectionId) {
+    return (
+      process.env.SHOPIFY_COLLECTION_HANDLE?.trim() || SHOPIFY_DEFAULTS.collectionHandle
+    );
   }
   if (collectionId === estoreCollectionId && process.env.SHOPIFY_ESTORE_COLLECTION_HANDLE?.trim()) {
     return process.env.SHOPIFY_ESTORE_COLLECTION_HANDLE.trim();
@@ -115,7 +118,10 @@ async function fetchCollectionProductsJson(
 ): Promise<{ collectionTitle: string; products: ShopifyProductNode[] }> {
   const base = getStoreBaseUrl();
   const res = await fetch(`${base}/collections/${collectionHandle}/products.json`, {
-    next: { revalidate: 300 },
+    headers: { Accept: 'application/json' },
+    ...(process.env.VERCEL
+      ? { cache: 'no-store' as const }
+      : { next: { revalidate: 300 } }),
   });
 
   if (!res.ok) {
