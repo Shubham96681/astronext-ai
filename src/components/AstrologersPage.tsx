@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { astrologerDetailPath, parseAstrologerParam, ROUTES } from '@/routes/paths';
+import { astrologerDetailPath, ROUTES } from '@/routes/paths';
 import { Send, X } from 'lucide-react';
 import astrologersHeroHands from '@/assets/generated/astrologers-hero-hands.png';
 import { imageSrc } from '@/lib/imageSrc';
-import { ASTROLOGERS, type Astrologer } from '../content/astrologersData';
+import type { Astrologer } from '../content/astrologersData';
+import { useAstrologers } from '@/hooks/useAstrologers';
+import { fetchAstrologerByParam } from '@/lib/astrologersApi';
 import { HeroStardust } from './HeroStardust';
 import { ASTROLOGERS_HERO_DESC, HERO_TICKER_TEXT, TESTIMONIALS } from '../content/siteCopy';
 import AstrologerBlockCard from './AstrologerBlockCard';
@@ -18,8 +20,9 @@ type ChatMessage = { sender: 'user' | 'bot'; text: string };
 
 export default function AstrologersPage() {
   const router = useRouter();
+  const { astrologers, loading: listLoading } = useAstrologers();
   const { astrologerId: astrologerIdParam } = useParams<{ astrologerId?: string }>();
-  const selected = parseAstrologerParam(astrologerIdParam);
+  const [selected, setSelected] = useState<Astrologer | undefined>(undefined);
   const [activeChat, setActiveChat] = useState<Astrologer | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState('');
@@ -27,11 +30,25 @@ export default function AstrologersPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!astrologerIdParam) return;
-    if (!selected) {
-      router.replace(ROUTES.astrologers);
+    if (!astrologerIdParam) {
+      setSelected(undefined);
       return;
     }
+    const fromList = astrologers.find(
+      (a) => a.slug === astrologerIdParam || String(a.id) === astrologerIdParam,
+    );
+    if (fromList) {
+      setSelected(fromList);
+      return;
+    }
+    fetchAstrologerByParam(astrologerIdParam).then((a) => {
+      if (!a) router.replace(ROUTES.astrologers);
+      else setSelected(a);
+    });
+  }, [astrologerIdParam, astrologers, router]);
+
+  useEffect(() => {
+    if (!astrologerIdParam || !selected) return;
     if (/^\d+$/.test(astrologerIdParam) && selected.slug !== astrologerIdParam) {
       router.replace(astrologerDetailPath(selected));
     }
@@ -210,7 +227,7 @@ export default function AstrologersPage() {
           Choose your guide
         </h2>
         <div className="astrologer-blocks-grid" data-reveal="fade-up" data-reveal-stagger>
-          {ASTROLOGERS.map((astro, index) => (
+          {astrologers.map((astro, index) => (
             <AstrologerBlockCard
               key={astro.id}
               astro={astro}

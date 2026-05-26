@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { ArrowRight, Minus, Plus, Star } from 'lucide-react';
-import { divineStoreProductPath, parseRouteId, ROUTES } from '@/routes/paths';
+import { divineStoreProductPath, ROUTES } from '@/routes/paths';
 import JgProductImage from './JgProductImage';
 import { useCart } from '@/context/CartContext';
-import { JG_STORE_PRODUCTS, type JgProduct } from '@/content/jgStoreProducts';
+import { type JgProduct } from '@/content/jgStoreProducts';
 
 function RelatedProductCard({
   product,
@@ -35,6 +35,7 @@ function ProductDetailView({
   onSelectProduct,
   onAddToCart,
   added,
+  catalog,
 }: {
   product: JgProduct;
   onBack: () => void;
@@ -42,10 +43,11 @@ function ProductDetailView({
   onSelectProduct: (id: number) => void;
   onAddToCart: (id: number) => void;
   added: boolean;
+  catalog: JgProduct[];
 }) {
   const [qty, setQty] = useState(1);
   const [readMore, setReadMore] = useState(false);
-  const related = JG_STORE_PRODUCTS.filter((p) => p.id !== product.id).slice(0, 4);
+  const related = catalog.filter((p) => p.id !== product.id).slice(0, 4);
   const aboutParagraphs = product.descLong.split(/\n\n+/).filter(Boolean);
 
   useEffect(() => {
@@ -211,7 +213,9 @@ function ProductDetailView({
                 <div>
                   <h3 className="astro-detail-spec-card__title">Devotee Rating</h3>
                   <p className="astro-detail-spec-card__desc">
-                    {product.rating.toFixed(1)} out of 5 based on {product.reviews.toLocaleString('en-IN')} verified reviews.
+                    {product.reviews > 0
+                      ? `${product.rating.toFixed(1)} out of 5 based on ${product.reviews.toLocaleString('en-IN')} verified reviews.`
+                      : `${product.rating.toFixed(1)} out of 5 — trusted devotional offering.`}
                   </p>
                 </div>
               </li>
@@ -251,13 +255,15 @@ function ProductDetailView({
   );
 }
 
+type Props = {
+  product: JgProduct | null;
+  catalog: JgProduct[];
+};
+
 /** Divine Store product detail — separate route bundle from listing page */
-export default function JgProductDetailPage() {
-  const { productId: productIdParam } = useParams<{ productId: string }>();
+export default function JgProductDetailPage({ product, catalog }: Props) {
   const router = useRouter();
   const { handleAddToCart, addedItems } = useCart();
-  const productId = parseRouteId(productIdParam);
-  const product = productId ? JG_STORE_PRODUCTS.find((p) => p.id === productId) : null;
 
   useEffect(() => {
     document.body.classList.add('astro-detail-active');
@@ -279,6 +285,7 @@ export default function JgProductDetailPage() {
       <div className="site-shell astro-detail-page__inner">
         <ProductDetailView
           product={product}
+          catalog={catalog}
           onBack={() => router.push(ROUTES.divineStore)}
           onHome={() => router.push(ROUTES.home)}
           onSelectProduct={(id) => router.push(divineStoreProductPath(id))}

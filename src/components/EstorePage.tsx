@@ -2,9 +2,8 @@
 
 import PageHero from '@/components/PageHero';
 import ShopProductCard from '@/components/ShopProductCard';
-import { estoreProducts } from '@/content/estoreProducts';
+import type { Product as EstoreProduct } from '@/content/estoreProducts';
 import { useCart } from '@/context/CartContext';
-
 const ESTORE_STRIP = [
   { icon: '✦', label: 'Lab certified gems' },
   { icon: '☸', label: 'Energized yantras' },
@@ -12,7 +11,11 @@ const ESTORE_STRIP = [
   { icon: '🔮', label: 'Expert guidance' },
 ] as const;
 
-export default function EstorePage() {
+type Props = {
+  products?: EstoreProduct[];
+};
+
+export default function EstorePage({ products = [] }: Props) {
   const { addedItems, handleAddToCart } = useCart();
 
   return (
@@ -42,9 +45,8 @@ export default function EstorePage() {
       <h2 className="title-shop" data-reveal="glow-in">
         Shop
       </h2>
-
       <div className="shop-cards-grid" data-reveal="fade-up" data-reveal-stagger>
-        {estoreProducts.map((prod, index) => (
+        {products.map((prod, index) => (
           <ShopProductCard
             key={prod.id}
             name={prod.name}

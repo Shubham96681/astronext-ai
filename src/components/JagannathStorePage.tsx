@@ -17,8 +17,7 @@ import {
   JG_STORE_SECTION_TITLE,
   JG_STORE_TICKER_TEXT,
 } from '../content/siteCopy';
-import { JG_STORE_PRODUCTS, type JgProduct } from '../content/jgStoreProducts';
-
+import type { JgProduct } from '../content/jgStoreProducts';
 type AvailabilityFilter = 'all' | 'in' | 'out';
 type PriceFilter = 'all' | 'under1000' | '1000-4000' | 'over4000';
 type SortOption = 'best' | 'price-asc' | 'price-desc' | 'rating';
@@ -204,7 +203,11 @@ function StoreListingControls({
   );
 }
 
-export default function JagannathStorePage() {
+type Props = {
+  products?: JgProduct[];
+};
+
+export default function JagannathStorePage({ products = [] }: Props) {
   const router = useRouter();
   const { handleAddToCart: onAddToCart, addedItems } = useCart();
   const [availabilityFilter, setAvailabilityFilter] = useState<AvailabilityFilter>('all');
@@ -212,8 +215,8 @@ export default function JagannathStorePage() {
   const [sortBy, setSortBy] = useState<SortOption>('best');
 
   const filteredProducts = useMemo(
-    () => filterAndSortProducts(JG_STORE_PRODUCTS, availabilityFilter, priceFilter, sortBy),
-    [availabilityFilter, priceFilter, sortBy],
+    () => filterAndSortProducts(products, availabilityFilter, priceFilter, sortBy),
+    [products, availabilityFilter, priceFilter, sortBy],
   );
 
   const hasActiveFilters = availabilityFilter !== 'all' || priceFilter !== 'all';
@@ -256,6 +259,12 @@ export default function JagannathStorePage() {
           />
 
           <h3 className="title-shop">Shop</h3>
+          {products.length === 0 ? (
+            <p className="jg-store-section-desc">Loading products from the store…</p>
+          ) : null}
+          {filteredProducts.length === 0 && products.length > 0 ? (
+            <p className="jg-store-section-desc">No products match your filters.</p>
+          ) : null}
           <div className="shop-cards-grid jg-store-grid" role="list" data-reveal="fade-up" data-reveal-stagger>
             {filteredProducts.map((product, index) => (
               <ShopProductCard

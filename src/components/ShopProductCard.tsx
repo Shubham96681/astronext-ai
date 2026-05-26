@@ -38,12 +38,24 @@ export default function ShopProductCard({
 }: ShopProductCardProps) {
   const [saved, setSaved] = useState(false);
   const theme = (themeIndex % 4) + 1;
-  const categoryLabel = category.length > 18 ? `${category.slice(0, 16)}…` : category;
+  const sideLabel = name.length > 48 ? `${name.slice(0, 46)}…` : name;
 
   return (
     <article className={`shop-card shop-card--theme-${theme}`}>
-      {onSelect ? (
-        <button type="button" className="shop-card__img-btn" onClick={onSelect} aria-label={`View ${name}`}>
+      <div className="shop-card__media">
+        {onSelect ? (
+          <button type="button" className="shop-card__img-btn" onClick={onSelect} aria-label={`View ${name}`}>
+            <div className="shop-card__img">
+              {image ? (
+                <img src={image} alt={name} loading="lazy" decoding="async" />
+              ) : (
+                <div className="shop-card__fallback" style={{ background: iconBg }}>
+                  <span aria-hidden>{iconText}</span>
+                </div>
+              )}
+            </div>
+          </button>
+        ) : (
           <div className="shop-card__img">
             {image ? (
               <img src={image} alt={name} loading="lazy" decoding="async" />
@@ -53,21 +65,11 @@ export default function ShopProductCard({
               </div>
             )}
           </div>
-        </button>
-      ) : (
-        <div className="shop-card__img">
-          {image ? (
-            <img src={image} alt={name} loading="lazy" decoding="async" />
-          ) : (
-            <div className="shop-card__fallback" style={{ background: iconBg }}>
-              <span aria-hidden>{iconText}</span>
-            </div>
-          )}
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="shop-card__name" aria-hidden>
-        <p>{categoryLabel}</p>
+        <p>{sideLabel}</p>
       </div>
 
       <div className="shop-card__precis">

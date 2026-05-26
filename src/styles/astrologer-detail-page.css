@@ -462,16 +462,22 @@ body.astro-detail-active .nav-header .action-btn {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(1rem, 2vw, 1.5rem);
+  align-items: stretch;
 }
 
 .astro-detail-also-card {
   margin: 0;
+  height: 100%;
+  display: flex;
+  perspective: 900px;
 }
 
 .astro-detail-also-card__btn {
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-height: 340px;
+  height: 100%;
   padding: 0;
   border: 1px solid rgba(26, 43, 76, 0.2);
   border-radius: 14px;
@@ -479,41 +485,76 @@ body.astro-detail-active .nav-header .action-btn {
   overflow: hidden;
   cursor: pointer;
   text-align: center;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transform-style: preserve-3d;
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease;
 }
 
 .astro-detail-also-card__btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(26, 43, 76, 0.1);
+  transform: rotateY(-7deg) rotateX(4deg) translateY(-6px);
+  box-shadow: 0 14px 32px rgba(26, 43, 76, 0.14);
 }
 
 .astro-detail-also-card__media {
-  aspect-ratio: 1;
+  flex: 0 0 200px;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   background: #f0ebe3;
 }
 
 .astro-detail-also-card__media img,
 .astro-detail-also-card__media .jg-product-img-fallback {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.astro-detail-also-card__btn:hover .astro-detail-also-card__media img,
+.astro-detail-also-card__btn:hover .astro-detail-also-card__media .jg-product-img-fallback {
+  transform: scale(1.04) rotate(-2deg);
 }
 
 .astro-detail-also-card__name {
+  flex: 1 1 auto;
   margin: 0.75rem 0.5rem 0.25rem;
+  min-height: 2.75em;
   font-family: var(--astro-detail-font-display);
   font-size: 0.9375rem;
   font-weight: 600;
+  line-height: 1.35;
   color: #2c5282;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .astro-detail-also-card__price {
-  margin: 0 0.75rem 1rem;
+  flex-shrink: 0;
+  margin: auto 0.75rem 1rem;
   font-size: 0.875rem;
   font-weight: 700;
   color: var(--astro-detail-navy);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .astro-detail-also-card__btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .astro-detail-also-card__btn:hover .astro-detail-also-card__media img,
+  .astro-detail-also-card__btn:hover .astro-detail-also-card__media .jg-product-img-fallback {
+    transform: none;
+  }
 }
 
 /* Responsive */

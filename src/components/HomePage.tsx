@@ -17,14 +17,18 @@ import {
   WHY_ASTRONEXT_FEATURES,
   FAQ_ITEMS,
 } from '@/content/siteCopy';
-import { estoreProducts } from '@/content/estoreProducts';
+import type { JgProduct } from '@/content/jgStoreProducts';
 import ShopProductCard from '@/components/ShopProductCard';
 import { ROUTES } from '@/routes/paths';
 import { useCart } from '@/context/CartContext';
 import { imageSrc } from '@/lib/imageSrc';
 import TextReveal from '@/components/TextReveal';
 import TestimonialCard from '@/components/TestimonialCard';
-export default function HomePage() {
+type HomePageProps = {
+  products?: JgProduct[];
+};
+
+export default function HomePage({ products = [] }: HomePageProps) {
   const router = useRouter();
   const { addedItems, handleAddToCart } = useCart();
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
@@ -233,21 +237,22 @@ export default function HomePage() {
           Shop
         </h3>
         <div className="shop-cards-grid products-slider-grid--pdf" data-reveal="fade-up" data-reveal-stagger>
-          {estoreProducts.map((prod, index) => (
-            <ShopProductCard
-              key={prod.id}
-              name={prod.name}
-              category={prod.category}
-              price={prod.price}
-              originalPrice={prod.originalPrice}
-              image={prod.image}
-              iconText={prod.iconText}
-              iconBg={prod.iconBg}
-              themeIndex={index}
-              added={!!addedItems[prod.id]}
-              onAddToCart={() => handleAddToCart(prod.id)}
-            />
-          ))}
+          {products.length === 0 ? (
+            <p className="section-body section-body--center">Products are loading from our store. Please check back shortly.</p>
+          ) : (
+            products.map((prod, index) => (
+              <ShopProductCard
+                key={prod.id}
+                name={prod.name}
+                category={prod.category}
+                price={prod.price}
+                image={prod.image}
+                themeIndex={index}
+                added={!!addedItems[prod.id]}
+                onAddToCart={() => handleAddToCart(prod.id)}
+              />
+            ))
+          )}
         </div>
       </section>
 

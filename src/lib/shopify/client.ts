@@ -1,0 +1,256 @@
+import { resolveAdminAccessToken } from '@/lib/shopify/accessToken';
+import {
+  ADMIN_COLLECTION_PRODUCTS_QUERY,
+  ADMIN_PRODUCT_BY_ID_QUERY,
+} from '@/lib/shopify/adminQueries';
+import { adminProductToStorefrontShape } from '@/lib/shopify/adminAdapter';
+import type { AdminCollectionResponse, AdminProductResponse } from '@/lib/shopify/adminTypes';
+import { COLLECTION_PRODUCTS_QUERY, PRODUCT_BY_ID_QUERY } from '@/lib/shopify/queries';
+import {
+  fetchCollectionProductsStorefrontJson,
+  fetchProductByIdStorefrontJson,
+} from '@/lib/shopify/storefrontJson';
+import type {
+  ShopifyCollectionResponse,
+  ShopifyProductNode,
+  ShopifyProductResponse,
+} from '@/lib/shopify/types';
+
+export type ShopifyApiMode = 'admin' | 'storefront' | 'storefront-json' | 'none';
+
+function getConfig() {
+  const storefrontDomain = process.env.SHOPIFY_STORE_DOMAIN ?? 'www.astronext.ai';
+  const shopDomain =
+    process.env.SHOPIFY_MYSHOPIFY_DOMAIN ??
+    process.env.SHOPIFY_SHOP_DOMAIN ??
+    '00mi0h-6k.myshopify.com';
+  const storefrontToken = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN?.trim() ?? '';
+  const adminToken = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN?.trim() ?? '';
+  const apiVersion = process.env.SHOPIFY_API_VERSION ?? '2024-01';
+  const collectionId =
+    process.env.SHOPIFY_COLLECTION_ID ?? 'gid://shopify/Collection/321156776094';
+
+  return {
+    storefrontDomain,
+    shopDomain,
+    storefrontToken,
+    adminToken,
+    apiVersion,
+    collectionId,
+  };
+}
+
+/** Admin access tokens start with shpat_; shpss_ is the API secret, not a valid access token. */
+export function isValidAdminToken(token: string): boolean {
+  return token.startsWith('shpat_');
+}
+
+export function isShopifyConfigured(): boolean {
+  const { storefrontToken, adminToken, collectionId } = getConfig();
+  const validAdmin = Boolean(adminToken && isValidAdminToken(adminToken));
+  const validStorefront = Boolean(storefrontToken);
+  const hasOAuthCreds = Boolean(
+    process.env.SHOPIFY_API_KEY?.trim() && process.env.SHOPIFY_API_SECRET?.trim(),
+  );
+  const hasPublicStore = Boolean(
+    process.env.SHOPIFY_STORE_DOMAIN?.trim() || process.env.SHOPIFY_SHOP_DOMAIN?.trim(),
+  );
+  return validAdmin || validStorefront || hasOAuthCreds || Boolean(collectionId && hasPublicStore);
+}
+
+export async function shopifyApiMode(): Promise<ShopifyApiMode> {
+  const { adminToken, storefrontToken } = getConfig();
+  if (adminToken && isValidAdminToken(adminToken)) return 'admin';
+
+  const resolved = await resolveAdminAccessToken();
+  if (resolved && isValidAdminToken(resolved)) return 'admin';
+
+  if (storefrontToken) return 'storefront';
+  if (process.env.SHOPIFY_COLLECTION_ID || process.env.SHOPIFY_STORE_DOMAIN) {
+    return 'storefront-json';
+  }
+  return 'none';
+}
+
+export function shopifyConfigWarning(): string | null {
+  const { adminToken } = getConfig();
+  if (adminToken && !isValidAdminToken(adminToken)) {
+    return 'SHOPIFY_ADMIN_ACCESS_TOKEN looks like an API secret (shpss_). Use the Admin API access token (shpat_…) from Shopify app credentials.';
+  }
+  return null;
+}
+
+async function storefrontFetch<T>(query: string, variables: Record<string, unknown>): Promise<T> {
+  const { storefrontDomain, storefrontToken, apiVersion } = getConfig();
+  if (!storefrontToken) {
+    throw new Error('SHOPIFY_STOREFRONT_ACCESS_TOKEN is not configured');
+  }
+
+  const host = storefrontDomain.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  const url = `https://${host}/api/${apiVersion}/graphql.json`;
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Shopify-Storefront-Access-Token': storefrontToken,
+    },
+    body: JSON.stringify({ query, variables }),
+    next: { revalidate: 300 },
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Shopify Storefront API ${res.status}: ${text.slice(0, 200)}`);
+  }
+
+  return res.json() as Promise<T>;
+}
+
+async function adminFetch<T>(query: string, variables: Record<string, unknown>): Promise<T> {
+  const { shopDomain, apiVersion } = getConfig();
+  const adminToken = await resolveAdminAccessToken();
+  if (!adminToken) {
+    throw new Error('SHOPIFY_ADMIN_ACCESS_TOKEN is not configured');
+  }
+
+  const host = shopDomain.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  const adminHost = host.includes('.myshopify.com')
+    ? host
+    : (process.env.SHOPIFY_MYSHOPIFY_DOMAIN ?? '00mi0h-6k.myshopify.com').replace(
+        /^https?:\/\//,
+        '',
+      );
+  const url = `https://${adminHost}/admin/api/${apiVersion}/graphql.json`;
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Shopify-Access-Token': adminToken,
+    },
+    body: JSON.stringify({ query, variables }),
+    next: { revalidate: 300 },
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Shopify Admin API ${res.status}: ${text.slice(0, 200)}`);
+  }
+
+  return res.json() as Promise<T>;
+}
+
+export function parseShopifyGid(gid: string): number {
+  const segment = gid.split('/').pop() ?? '0';
+  const n = Number(segment);
+  return Number.isFinite(n) ? n : 0;
+}
+
+export function toProductGid(numericId: number): string {
+  return `gid://shopify/Product/${numericId}`;
+}
+
+async function fetchCollectionProductsAdmin(
+  collectionId: string,
+  first: number,
+): Promise<{ collectionTitle: string; products: ShopifyProductNode[] }> {
+  const json = await adminFetch<AdminCollectionResponse>(ADMIN_COLLECTION_PRODUCTS_QUERY, {
+    id: collectionId,
+    first,
+  });
+
+  if (json.errors?.length) {
+    throw new Error(json.errors.map((e) => e.message).join('; '));
+  }
+
+  const collection = json.data?.collection;
+  if (!collection) {
+    throw new Error('Collection not found in Shopify Admin API');
+  }
+
+  return {
+    collectionTitle: collection.title,
+    products: collection.products.edges.map((e) => adminProductToStorefrontShape(e.node)),
+  };
+}
+
+async function fetchCollectionProductsStorefront(
+  collectionId: string,
+  first: number,
+): Promise<{ collectionTitle: string; products: ShopifyProductNode[] }> {
+  const json = await storefrontFetch<ShopifyCollectionResponse>(COLLECTION_PRODUCTS_QUERY, {
+    id: collectionId,
+    first,
+  });
+
+  if (json.errors?.length) {
+    throw new Error(json.errors.map((e) => e.message).join('; '));
+  }
+
+  const collection = json.data?.collection;
+  if (!collection) {
+    throw new Error('Collection not found in Shopify Storefront API');
+  }
+
+  return {
+    collectionTitle: collection.title,
+    products: collection.products.edges.map((e) => e.node),
+  };
+}
+
+export async function fetchCollectionProducts(
+  collectionId?: string,
+  first = 50,
+): Promise<{ collectionTitle: string; products: ShopifyProductNode[] }> {
+  const { collectionId: defaultId } = getConfig();
+  const id = collectionId ?? defaultId;
+  const mode = await shopifyApiMode();
+
+  if (mode === 'admin') {
+    return fetchCollectionProductsAdmin(id, first);
+  }
+  if (mode === 'storefront') {
+    return fetchCollectionProductsStorefront(id, first);
+  }
+  return fetchCollectionProductsStorefrontJson(id);
+}
+
+async function fetchProductByIdAdmin(productId: number): Promise<ShopifyProductNode | null> {
+  const json = await adminFetch<AdminProductResponse>(ADMIN_PRODUCT_BY_ID_QUERY, {
+    id: toProductGid(productId),
+  });
+
+  if (json.errors?.length) {
+    throw new Error(json.errors.map((e) => e.message).join('; '));
+  }
+
+  const product = json.data?.product;
+  return product ? adminProductToStorefrontShape(product) : null;
+}
+
+async function fetchProductByIdStorefront(productId: number): Promise<ShopifyProductNode | null> {
+  const json = await storefrontFetch<ShopifyProductResponse>(PRODUCT_BY_ID_QUERY, {
+    id: toProductGid(productId),
+  });
+
+  if (json.errors?.length) {
+    throw new Error(json.errors.map((e) => e.message).join('; '));
+  }
+
+  return json.data?.product ?? null;
+}
+
+export async function fetchProductById(
+  productId: number,
+  collectionId?: string,
+): Promise<ShopifyProductNode | null> {
+  const mode = await shopifyApiMode();
+  if (mode === 'admin') {
+    return fetchProductByIdAdmin(productId);
+  }
+  if (mode === 'storefront') {
+    return fetchProductByIdStorefront(productId);
+  }
+  return fetchProductByIdStorefrontJson(productId, collectionId);
+}

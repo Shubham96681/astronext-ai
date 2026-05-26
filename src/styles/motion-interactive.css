@@ -87,10 +87,7 @@ select:focus-visible {
   box-shadow: 0 10px 24px rgba(26, 43, 76, 0.1);
 }
 
-.astro-detail-also-card__btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(26, 43, 76, 0.12);
-}
+/* Tilt defined in astrologer-detail-page.css */
 
 .astro-detail-breadcrumb__link {
   transition: color var(--motion-fast) ease, opacity var(--motion-fast) ease;

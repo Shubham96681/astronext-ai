@@ -11,6 +11,9 @@ export const ROUTES = {
   puja: '/puja',
   login: '/login',
   signup: '/signup',
+  dashboard: '/dashboard',
+  dashboardAdmin: '/dashboard/admin',
+  dashboardAstrologer: '/dashboard/astrologer',
 } as const;
 
 export type AppRoutePath = (typeof ROUTES)[keyof typeof ROUTES];
@@ -24,7 +27,8 @@ export type AppTab =
   | 'puja'
   | 'astrologers'
   | 'login'
-  | 'signup';
+  | 'signup'
+  | 'dashboard';
 
 function normalizePath(pathname: string): string {
   return pathname.replace(/\/+$/, '') || '/';
@@ -79,6 +83,7 @@ export function pathnameToTab(pathname: string): AppTab {
   if (path === ROUTES.puja) return 'puja';
   if (path === ROUTES.login) return 'login';
   if (path === ROUTES.signup) return 'signup';
+  if (path === ROUTES.dashboard || path.startsWith(`${ROUTES.dashboard}/`)) return 'dashboard';
   return 'home';
 }
 
