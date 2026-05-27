@@ -1,0 +1,375 @@
+/* Cosmic section — pixel match to Kundli Patra reference */
+
+.cosmic-section {
+  position: relative;
+  overflow: hidden;
+  padding: 4.5rem 5% 0 !important;
+  border-bottom: none !important;
+  background:
+    radial-gradient(ellipse 75% 65% at 20% 50%, rgba(100, 55, 150, 0.45), transparent 58%),
+    radial-gradient(ellipse 55% 50% at 8% 40%, rgba(160, 100, 210, 0.25), transparent 52%),
+    radial-gradient(ellipse 50% 45% at 78% 35%, rgba(40, 55, 120, 0.25), transparent 55%),
+    linear-gradient(90deg, #0d0824 0%, #0b0828 48%, #09061e 100%) !important;
+}
+
+/* Darken right column for readable copy */
+.cosmic-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(9, 6, 30, 0.25) 38%,
+    rgba(9, 6, 30, 0.75) 50%,
+    #09061e 56%
+  );
+}
+
+/* Lavender nebula smoke (reference wisps) */
+.cosmic-section__smoke {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 65% 55% at 22% 52%, rgba(180, 120, 220, 0.28), transparent 58%),
+    radial-gradient(ellipse 50% 45% at 38% 68%, rgba(255, 255, 255, 0.12), transparent 55%),
+    radial-gradient(ellipse 45% 40% at 12% 35%, rgba(140, 90, 200, 0.22), transparent 52%),
+    radial-gradient(ellipse 40% 35% at 48% 42%, rgba(230, 210, 255, 0.1), transparent 50%);
+  mix-blend-mode: screen;
+  opacity: 0.95;
+}
+
+/* Star field */
+.cosmic-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.55;
+  background-image:
+    radial-gradient(1.5px 1.5px at 6% 14%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 12% 38%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 18% 22%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(2px 2px at 24% 68%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1px 1px at 30% 48%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1.5px 1.5px at 10% 78%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 36% 12%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1px 1px at 42% 32%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 48% 82%, rgba(255, 255, 255, 0.35), transparent),
+    radial-gradient(1.5px 1.5px at 54% 18%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 60% 58%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 66% 28%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(2px 2px at 72% 72%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 78% 42%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 84% 15%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1.5px 1.5px at 90% 62%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1px 1px at 96% 35%, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 52% 48%, rgba(255, 255, 255, 0.35), transparent),
+    radial-gradient(1px 1px at 88% 88%, rgba(255, 255, 255, 0.35), transparent);
+}
+
+.cosmic-section__stars {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image:
+    radial-gradient(1px 1px at 4% 52%, rgba(255, 255, 255, 0.35), transparent),
+    radial-gradient(1px 1px at 14% 8%, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 26% 88%, rgba(255, 255, 255, 0.35), transparent),
+    radial-gradient(1px 1px at 38% 62%, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 46% 8%, rgba(255, 255, 255, 0.35), transparent),
+    radial-gradient(1px 1px at 58% 38%, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 70% 8%, rgba(255, 255, 255, 0.35), transparent),
+    radial-gradient(1px 1px at 82% 52%, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 94% 78%, rgba(255, 255, 255, 0.35), transparent);
+}
+
+.cosmic-inner {
+  position: relative;
+  z-index: 1;
+  max-width: min(1180px, 96vw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 2rem 3.5rem;
+  align-items: stretch;
+  min-height: 460px;
+  padding-bottom: 0;
+}
+
+/* —— Left: wheel behind woman (reference layering) —— */
+.cosmic-visual {
+  position: relative;
+  display: grid;
+  grid-template-areas: 'stack';
+  align-items: end;
+  justify-items: center;
+  align-self: stretch;
+  min-height: 460px;
+  max-height: 500px;
+  margin-bottom: 0;
+  padding: 1.25rem 0 0;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+.cosmic-visual__backdrop,
+.cosmic-figure-layer {
+  grid-area: stack;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.cosmic-visual__backdrop {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 0;
+}
+
+.cosmic-figure-layer {
+  position: relative;
+  z-index: 3;
+  pointer-events: none;
+  align-items: flex-end;
+}
+
+.cosmic-visual__sky,
+.cosmic-visual__smoke {
+  display: none;
+}
+
+/* Zodiac wheel — static, centered on head/shoulders (reference) */
+.cosmic-zodiac-spin {
+  position: absolute;
+  top: 36%;
+  left: 50%;
+  width: min(86%, 350px);
+  max-width: 350px;
+  aspect-ratio: 1;
+  z-index: 1;
+  pointer-events: none;
+  animation: none;
+  transform: translate(-50%, -50%);
+}
+
+.cosmic-zodiac-spin .zodiac-wheel-bg.zodiac-wheel-svg,
+.cosmic-zodiac-spin .zodiac-wheel--cosmic {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  animation: none !important;
+  mix-blend-mode: normal !important;
+  filter: none !important;
+  color: var(--zodiac-wheel-color, #d4af37) !important;
+  opacity: 0.92 !important;
+}
+
+.cosmic-woman.section-photo,
+.cosmic-section .cosmic-woman {
+  position: relative;
+  z-index: 2;
+  width: min(70%, 310px);
+  max-width: 310px;
+  height: auto;
+  max-height: 108%;
+  object-fit: contain;
+  object-position: center bottom;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 0;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.35));
+  transform: none;
+}
+
+/* —— Right: typography + CTA —— */
+.cosmic-content {
+  position: relative;
+  z-index: 2;
+  text-align: left;
+  padding: 0.5rem 0 3.25rem;
+}
+
+.cosmic-headline {
+  font-family: var(--font-display, 'Playfair Display', 'Cormorant Garamond', Georgia, serif);
+  font-size: clamp(2.35rem, 3.8vw, 3.35rem);
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1.12;
+  color: #e8b84a;
+  margin: 0 0 0.35rem;
+  letter-spacing: -0.02em;
+}
+
+.cosmic-subhead {
+  font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif);
+  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #ffffff;
+  margin: 0 0 1.1rem;
+  letter-spacing: -0.01em;
+}
+
+.cosmic-divider {
+  width: 100%;
+  max-width: 100%;
+  height: 0;
+  border: none;
+  border-top: 2px dotted rgba(255, 255, 255, 0.55);
+  margin: 0 0 1.25rem;
+}
+
+.cosmic-lead {
+  font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 1.75rem;
+  max-width: 520px;
+}
+
+.cosmic-features {
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem 1.5rem;
+  max-width: 540px;
+}
+
+.cosmic-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.cosmic-check {
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  margin-top: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #22c55e;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+.cosmic-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.85rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  background: linear-gradient(180deg, #f5d020 0%, #e8b010 100%);
+  color: #0a0a0a;
+  font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cosmic-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 1024px) {
+  .cosmic-section {
+    padding-bottom: 0 !important;
+  }
+
+  .cosmic-section::after {
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(11, 8, 40, 0.5) 45%,
+      #0b0828 55%
+    );
+  }
+
+  .cosmic-inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .cosmic-content {
+    padding-bottom: 2.5rem;
+    text-align: center;
+  }
+
+  .cosmic-visual {
+    min-height: 380px;
+    order: -1;
+    align-self: center;
+    width: 100%;
+  }
+
+  .cosmic-lead,
+  .cosmic-features {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cosmic-features {
+    text-align: left;
+    max-width: 480px;
+  }
+
+  .cosmic-zodiac-spin {
+    width: min(82%, 320px);
+    max-width: 320px;
+    top: 38%;
+  }
+
+  .cosmic-woman.section-photo {
+    width: min(68%, 280px);
+    max-width: 280px;
+    max-height: 105%;
+  }
+}
+
+@media (max-width: 560px) {
+  .cosmic-features {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}

@@ -1,0 +1,181 @@
+/* Final motion polish — page feel, accordions, micro-interactions */
+
+.interactive-page a,
+.interactive-page button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Route enter — see motion-pages.css for per-route animations */
+
+/* Section titles ease in with reveal */
+.section-heading,
+.section-title,
+.faq-main-title {
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    letter-spacing 0.8s ease;
+}
+
+.reveal-visible .section-heading,
+.reveal-visible .section-title,
+.reveal-visible.faq-main-title {
+  letter-spacing: 0.015em;
+}
+
+/* FAQ — smooth height accordion */
+.faq-item-card {
+  transition:
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.faq-item-card:has(.faq-item-content-wrap.is-open) {
+  box-shadow: 0 8px 28px rgba(37, 21, 69, 0.08);
+}
+
+.faq-item-content-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.faq-item-content-wrap.is-open {
+  grid-template-rows: 1fr;
+}
+
+.faq-item-content {
+  overflow: hidden;
+  min-height: 0;
+  animation: none !important;
+  opacity: 1;
+  max-height: none;
+  transform: none;
+  transition: opacity 0.35s ease 0.08s;
+}
+
+.faq-item-content-wrap:not(.is-open) .faq-item-content {
+  opacity: 0;
+  transition-delay: 0s;
+}
+
+.faq-item-content-inner {
+  padding: 0 1.25rem 1.15rem;
+}
+
+.faq-toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+
+.faq-toggle-icon.active {
+  transform: rotate(90deg);
+}
+
+.faq-item-header {
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background 0.28s ease,
+    color 0.28s ease;
+}
+
+/* Header scroll — fluid state changes */
+.nav-header {
+  transition:
+    padding 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    min-height 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.45s ease,
+    box-shadow 0.45s ease,
+    backdrop-filter 0.5s ease,
+    -webkit-backdrop-filter 0.5s ease,
+    border-color 0.45s ease;
+}
+
+/* Card depth on hover */
+.interactive-card,
+.product-card--pdf,
+.jg-product-card,
+.astro-expert-card,
+.puja-card {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.product-card--pdf:hover,
+.estore-card:hover {
+  transform: translateY(-8px) scale(1.01);
+}
+
+/* Store / estore tiles */
+.store-grid > *,
+.puja-grid > *,
+.jg-store-grid > * {
+  transition:
+    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Inputs — soft focus glow */
+input:not([type='checkbox']):not([type='radio']),
+textarea,
+select {
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.25s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  box-shadow: 0 0 0 3px rgba(125, 127, 209, 0.18);
+}
+
+/* Breadcrumb & inline links */
+.astro-detail-breadcrumb__link,
+.detail-ref-page__back,
+.jg-detail-breadcrumb a {
+  transition:
+    color 0.22s ease,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.22s ease;
+}
+
+.detail-ref-page__back:hover {
+  transform: translateX(-5px);
+}
+
+/* Hero wheel gentle spin when visible */
+.hero-section .zodiac-wheel-asset,
+.auth-page .zodiac-wheel-asset {
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-section:hover .zodiac-wheel-asset,
+.auth-page:hover .zodiac-wheel-asset {
+  transform: rotate(6deg) scale(1.02);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-view {
+    animation: none !important;
+    filter: none !important;
+  }
+
+  .faq-item-content-wrap {
+    transition: none;
+  }
+
+  .faq-item-content-wrap:not(.is-open) .faq-item-content {
+    display: none;
+  }
+
+  .hero-section:hover .zodiac-wheel-asset,
+  .auth-page:hover .zodiac-wheel-asset {
+    transform: none;
+  }
+}

@@ -1,0 +1,330 @@
+/* Auth (Login / Sign Up) — pixel match Jagannath-Store (1).svg (1440×1300 artboard) */
+
+.auth-page {
+  --auth-artboard: 1440px;
+  --auth-navy-heading: #1a0a3d;
+  --auth-title-blue: #0272da;
+  --auth-link-blue: #0272da;
+  --auth-btn-bg: #1c064f;
+  --auth-input-border: #cdcdcd;
+  --auth-card-w: 424px;
+  --auth-card-min-h: 427px;
+  --auth-card-rx: 20px;
+  --auth-input-h: 40.62px;
+  --auth-input-rx: 4.5px;
+  --auth-btn-h: 42px;
+  --auth-btn-rx: 5px;
+  --auth-gutter: clamp(1.25rem, 6.94%, 100px);
+  --auth-font-display: 'Playfair Display', Georgia, serif;
+  --auth-font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  width: 100%;
+  background: #fff9f9;
+  font-family: var(--auth-font-sans);
+}
+
+/* Hero band — SVG pattern0: y=42, h=793 */
+.auth-hero {
+  position: relative;
+  min-height: min(793px, 72vh);
+  padding: clamp(2.5rem, 5vw, 4.5rem) var(--auth-gutter) clamp(3rem, 6vw, 5rem);
+  overflow: visible;
+  isolation: isolate;
+  background-color: #fff9f9;
+  background-image:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.55) 28%, transparent 52%),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.35) 22%, transparent 42%),
+    linear-gradient(to right, rgba(252, 188, 212, 0.22) 0%, rgba(248, 172, 200, 0.12) 32%, transparent 50%),
+    linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.35) 55%, rgba(255, 255, 255, 0.92) 100%),
+    url('../assets/pink_powder_texture.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.auth-hero__intro {
+  max-width: var(--auth-artboard);
+  margin: 0 auto clamp(2rem, 4vw, 3.25rem);
+  text-align: center;
+  padding: 0 clamp(0.5rem, 2vw, 2rem);
+}
+
+/* Reference heading scale (~48px on 1440) */
+.auth-hero__title {
+  margin: 0 0 1.15rem;
+  font-family: var(--auth-font-display);
+  font-size: clamp(1.85rem, 3.33vw, 48px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--auth-navy-heading);
+}
+
+.auth-hero__subtitle {
+  margin: 0 auto;
+  max-width: 720px;
+  font-size: clamp(0.9rem, 1.25vw, 18px);
+  font-weight: 400;
+  line-height: 1.55;
+  color: #333333;
+}
+
+/* Two-column flex — card at SVG x=924 / w=424 */
+.auth-hero__grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(3rem, 7vw, 5.5rem);
+  max-width: var(--auth-artboard);
+  margin: 0 auto;
+  padding: 0 clamp(0.5rem, 2vw, 1.5rem);
+}
+
+.auth-hero__visual {
+  flex: 1 1 380px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  max-width: 520px;
+  min-height: 440px;
+  padding: 1rem 2.5rem 1rem 0.5rem;
+  margin-right: clamp(1.25rem, 3vw, 2.75rem);
+  overflow: visible;
+}
+
+/* Vintage zodiac wheel SVG (zodiac-wheel.svg) — see zodiac-wheel-asset.css */
+.auth-zodiac-wheel-img {
+  display: block;
+  width: min(100%, 480px);
+  height: auto;
+  max-width: 480px;
+  object-fit: contain;
+  object-position: left center;
+  background: transparent !important;
+  transform: translateX(clamp(-8px, -1.5vw, -20px));
+}
+
+/* Card — rect 924,371 424×427 rx20; no visible outer boundary */
+.auth-card {
+  flex: 0 0 var(--auth-card-w);
+  width: 100%;
+  max-width: var(--auth-card-w);
+  min-height: var(--auth-card-min-h);
+  padding: 32px 32.5px 28px;
+  border: none;
+  outline: none;
+  border-radius: var(--auth-card-rx);
+  background: #ffffff;
+  box-shadow: none;
+  box-sizing: border-box;
+}
+
+.auth-card--signup {
+  min-height: 520px;
+}
+
+.auth-card--signup .auth-field {
+  margin-bottom: 16px;
+}
+
+.auth-card--signup .auth-card__switch {
+  margin-top: 16px;
+}
+
+.auth-card__title {
+  margin: 0 0 28px;
+  font-family: var(--auth-font-sans);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--auth-title-blue);
+}
+
+.auth-card__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: none;
+  outline: none;
+}
+
+.auth-field {
+  margin-bottom: 22px;
+}
+
+.auth-field__label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #1a1a1a;
+}
+
+.auth-field__control {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Inputs — subtle edges only on focus */
+.auth-field__input {
+  width: 100%;
+  height: var(--auth-input-h);
+  padding: 0 44px 0 14px;
+  border: 1px solid transparent;
+  border-radius: var(--auth-input-rx);
+  background: #fafafa;
+  font-family: var(--auth-font-sans);
+  font-size: 14px;
+  font-weight: 400;
+  color: #1a1a1a;
+  box-sizing: border-box;
+  box-shadow: inset 0 0 0 1px rgba(205, 205, 205, 0.45);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-field__input--plain {
+  padding-right: 14px;
+}
+
+.auth-field__input:focus {
+  outline: none;
+  border-color: transparent;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px #9b8ab8, 0 0 0 3px rgba(28, 6, 79, 0.06);
+}
+
+.auth-field__toggle {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: none;
+  background: transparent;
+  color: #666666;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.auth-field__toggle:hover {
+  opacity: 0.85;
+}
+
+.auth-card__forgot {
+  align-self: flex-start;
+  margin: -6px 0 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--auth-link-blue);
+  text-decoration: none;
+}
+
+.auth-card__forgot:hover {
+  text-decoration: underline;
+}
+
+/* Button — 360×42 rx5 #1C064F */
+.auth-card__submit {
+  width: 100%;
+  height: var(--auth-btn-h);
+  margin-top: 4px;
+  border: none;
+  border-radius: var(--auth-btn-rx);
+  background: var(--auth-btn-bg);
+  color: #ffffff;
+  font-family: var(--auth-font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.auth-card__submit:hover {
+  background: #2a0d6e;
+}
+
+.auth-card__submit:active {
+  transform: scale(0.99);
+}
+
+.auth-card__switch {
+  margin: 22px 0 0;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  color: #333333;
+}
+
+.auth-card__switch-link {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-weight: 500;
+  color: var(--auth-link-blue);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.auth-card__switch-link:hover {
+  text-decoration: underline;
+}
+
+/* Header on auth pages — solid bar like reference */
+.app-container:has(.auth-page) .nav-header {
+  position: sticky !important;
+  top: 0 !important;
+  background: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: 1px solid rgba(10, 10, 36, 0.06) !important;
+  box-shadow: 0 1px 0 rgba(10, 10, 36, 0.04) !important;
+  padding: 0.85rem 4.5% !important;
+  align-items: center !important;
+}
+
+.app-container:has(.auth-page) .main-content {
+  padding-top: 0;
+}
+
+@media (max-width: 1024px) {
+  .auth-hero__grid {
+    flex-direction: column;
+  }
+
+  .auth-hero__visual {
+    order: 1;
+    max-width: 100%;
+    min-height: 260px;
+    justify-content: center;
+    margin-right: 0;
+    padding: 1rem;
+  }
+
+  .auth-zodiac-wheel-img {
+    transform: none;
+    object-position: center;
+  }
+
+  .auth-card {
+    order: 2;
+    flex: 1 1 100%;
+    max-width: min(var(--auth-card-w), 100%);
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 24px 20px 22px;
+    border-radius: 16px;
+  }
+
+  .auth-card__title {
+    font-size: 24px;
+    margin-bottom: 22px;
+  }
+}

@@ -1,0 +1,359 @@
+/* Footer — 1440px artboard tokens (reference layout) */
+
+.mega-footer {
+  --footer-bg: #08062b;
+  --footer-gold: #c9a86c;
+  --footer-gold-hover: #e8c96a;
+  --footer-text: rgba(255, 255, 255, 0.78);
+  --footer-link: #ffffff;
+  --footer-input-bg: #1a1430;
+  --footer-submit: #7d7fd1;
+  --footer-submit-hover: #9496e0;
+  --footer-border: rgba(255, 255, 255, 0.08);
+  --footer-pad-x: clamp(1.5rem, 6.94vw, 6.25rem);
+  --footer-logo-w: clamp(9.5rem, 15.4vw, 13.875rem);
+  --footer-logo-h: clamp(3.75rem, 9.3vw, 8.375rem);
+  --footer-col-gap: clamp(2rem, 4.44vw, 4rem);
+  --footer-social-size: 56px;
+  --footer-social-gap: 14px;
+
+  background: var(--footer-bg) !important;
+  color: var(--footer-text) !important;
+  padding: 0 !important;
+  border-top: none !important;
+  text-align: left !important;
+  font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
+}
+
+.footer-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--footer-pad-x);
+}
+
+/* Top row: logo + links share one horizontal band (same vertical center) */
+.footer-top-row {
+  --footer-top-band-h: var(--footer-logo-h);
+  display: grid;
+  grid-template-columns: var(--footer-logo-w) minmax(0, 1fr);
+  align-items: center;
+  column-gap: clamp(1.5rem, 3vw, 2.75rem);
+  min-height: var(--footer-top-band-h);
+  padding: 1.375rem 0 1.25rem;
+  border-bottom: 1px solid var(--footer-border);
+}
+
+.footer-top-logo {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  width: var(--footer-logo-w);
+  height: var(--footer-top-band-h);
+  line-height: 0;
+  text-decoration: none;
+}
+
+.footer-top-logo__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.footer-top-nav {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  height: var(--footer-top-band-h);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-legal-inline {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem clamp(0.35rem, 1vw, 1rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.footer-legal-inline li {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-legal-inline a {
+  display: inline-flex;
+  align-items: center;
+  color: var(--footer-link) !important;
+  text-decoration: none !important;
+  font-size: clamp(0.6875rem, 0.75vw, 0.8125rem) !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.footer-legal-inline a:hover {
+  color: var(--footer-gold-hover) !important;
+}
+
+/* Three columns */
+.footer-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr) minmax(0, 0.92fr) !important;
+  column-gap: var(--footer-col-gap) !important;
+  row-gap: 0 !important;
+  align-items: start !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 2.75rem 0 2.125rem !important;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.mega-footer .footer-col h4 {
+  font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  color: var(--footer-gold) !important;
+  margin: 0 0 1rem !important;
+  padding: 0 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0 !important;
+}
+
+.mega-footer .footer-col p,
+.mega-footer .footer-contact-line {
+  font-size: 0.85rem !important;
+  line-height: 1.65 !important;
+  color: var(--footer-text) !important;
+  margin: 0 !important;
+  max-width: 36em;
+}
+
+.footer-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+.footer-input {
+  width: 100%;
+  height: 2.625rem;
+  padding: 0 1rem;
+  border-radius: 6px;
+  background: var(--footer-input-bg) !important;
+  border: none !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  color: #ffffff !important;
+  font-family: inherit;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  outline: none;
+  box-sizing: border-box;
+  transition: box-shadow 0.2s ease;
+}
+
+.footer-input--area {
+  height: 2.625rem;
+  min-height: 2.625rem;
+  resize: none;
+}
+
+.footer-input::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.footer-input:focus {
+  box-shadow: inset 0 0 0 1px rgba(201, 168, 108, 0.45);
+}
+
+.footer-submit-btn {
+  width: 100%;
+  height: 2.75rem;
+  padding: 0 1rem;
+  border-radius: 6px;
+  border: none;
+  background: var(--footer-submit) !important;
+  color: #ffffff !important;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.footer-submit-btn:hover {
+  background: var(--footer-submit-hover) !important;
+}
+
+.footer-email-line {
+  font-size: 0.85rem !important;
+  margin: 0.85rem 0 0 !important;
+  line-height: 1.5 !important;
+  color: var(--footer-text) !important;
+}
+
+.footer-email-label {
+  color: var(--footer-gold);
+  font-weight: 500;
+}
+
+.footer-email-value {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.footer-email-value:hover {
+  color: var(--footer-gold-hover);
+}
+
+.footer-success-msg {
+  color: var(--footer-gold);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.footer-social-row {
+  display: flex;
+  align-items: center;
+  gap: var(--footer-social-gap);
+  margin: 1.75rem 0 0;
+}
+
+.footer-social-btn {
+  width: var(--footer-social-size);
+  height: var(--footer-social-size);
+  display: block;
+  flex-shrink: 0;
+  text-decoration: none;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: var(--footer-social-size) var(--footer-social-size);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+/* Static WebP in /public — loads with CSS, not embedded in JS */
+.footer-social-btn--wa {
+  background-image: url('/footer-social/whatsapp.webp');
+}
+
+.footer-social-btn--yt {
+  background-image: url('/footer-social/youtube.webp');
+}
+
+.footer-social-btn--fb {
+  background-image: url('/footer-social/facebook.webp');
+}
+
+.footer-social-btn--ig {
+  background-image: url('/footer-social/instagram.webp');
+}
+
+@media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 1.5dppx) {
+  .footer-social-btn--wa {
+    background-image: url('/footer-social/whatsapp@2x.webp');
+  }
+
+  .footer-social-btn--yt {
+    background-image: url('/footer-social/youtube@2x.webp');
+  }
+
+  .footer-social-btn--fb {
+    background-image: url('/footer-social/facebook@2x.webp');
+  }
+
+  .footer-social-btn--ig {
+    background-image: url('/footer-social/instagram@2x.webp');
+  }
+}
+
+.footer-social-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+
+.footer-bottom {
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 1.25rem 0 2rem !important;
+  border-top: 1px solid var(--footer-border) !important;
+  text-align: center !important;
+  display: block !important;
+}
+
+.footer-bottom p {
+  margin: 0 !important;
+  font-size: 0.8125rem !important;
+  font-weight: 400 !important;
+  color: var(--footer-gold) !important;
+  letter-spacing: 0.01em;
+}
+
+@media (min-width: 1025px) {
+  .footer-top-row {
+    align-items: center;
+  }
+
+  .footer-legal-inline {
+    flex-wrap: nowrap;
+    /* Align link baseline with logo wordmark (icon is above text in asset) */
+    transform: translateY(clamp(0.4rem, 1.15vw, 0.75rem));
+  }
+}
+
+@media (max-width: 1024px) {
+  .footer-top-row {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    row-gap: 1rem;
+  }
+
+  .footer-top-logo,
+  .footer-top-nav {
+    height: auto;
+  }
+
+  .footer-top-nav {
+    width: 100%;
+  }
+
+  .footer-legal-inline {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    height: auto;
+    gap: 0.65rem 1.25rem;
+  }
+
+  .footer-top-logo__img {
+    width: min(var(--footer-logo-w), 72vw);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+    padding: 2rem 0 1.75rem !important;
+  }
+}

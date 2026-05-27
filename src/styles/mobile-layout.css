@@ -1,0 +1,514 @@
+/* Mobile layout — 412px artboards: Mobile.svg, Astrologer-Mobile.svg, Astrologer-Details-Mobile.svg */
+
+@media (max-width: 480px) {
+  :root {
+    --site-gutter-x: 1.25rem;
+    --nav-padding-x: 1.25rem;
+    --footer-pad-x: 1.25rem;
+    --nav-logo-height: 2.875rem;
+    --nav-logo-height-compact: 2.625rem;
+    --nav-logo-max-width: min(12.5rem, 58vw);
+    --mobile-content-max: 23.125rem;
+  }
+
+  /* —— Nav: logo left, actions right (~20px gutters) —— */
+  .nav-header.nav-header--home,
+  .nav-header--overlay,
+  .nav-header--inner {
+    padding-block: 0.75rem !important;
+    min-height: 4.25rem !important;
+  }
+
+  .nav-header__shell {
+    gap: 0.75rem;
+  }
+
+  .nav-right-container {
+    gap: 0.65rem !important;
+  }
+
+  /* —— Home hero —— */
+  .hero-section {
+    min-height: auto !important;
+    padding: 5rem 1.25rem 0 !important;
+    grid-template-columns: 1fr !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    row-gap: 1.25rem !important;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 0.75rem !important;
+    margin-bottom: 0 !important;
+    text-align: center !important;
+    position: relative;
+    z-index: 3;
+  }
+
+  .hero-title,
+  .hero-subtitle {
+    text-align: center !important;
+    margin-inline: auto !important;
+  }
+
+  .hero-section .whatsapp-badge-wrapper {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+    max-width: min(20rem, calc(100vw - 2.5rem)) !important;
+    margin-inline: auto !important;
+    margin-top: 0.75rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  .hero-title {
+    font-size: clamp(1.75rem, 8.2vw, 2.15rem) !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem !important;
+    margin-bottom: 1.25rem !important;
+    max-width: 100% !important;
+  }
+
+  /* In-flow icon + label — no overlapping bubble on narrow screens */
+  .hero-section .whatsapp-badge {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 0.65rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 3.25rem !important;
+    padding: 0.55rem 1rem 0.55rem 0.65rem !important;
+    box-sizing: border-box !important;
+  }
+
+  .hero-section .whatsapp-icon-circle {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    flex-shrink: 0 !important;
+    width: 2.75rem !important;
+    height: 2.75rem !important;
+    border-width: 2px !important;
+  }
+
+  .hero-section .whatsapp-icon-circle svg {
+    width: 1.35rem !important;
+    height: 1.35rem !important;
+  }
+
+  .hero-section .whatsapp-badge-text {
+    margin-left: 0 !important;
+    white-space: normal !important;
+    text-align: left !important;
+    font-size: clamp(0.8125rem, 3.6vw, 0.9375rem) !important;
+    line-height: 1.3 !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+  }
+
+  .hero-right {
+    min-height: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-visual-stack {
+    width: min(100%, 26rem) !important;
+    max-width: min(26rem, 96vw) !important;
+    min-height: clamp(340px, 98vw, 420px) !important;
+    margin-inline: auto !important;
+    margin-top: 0 !important;
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.25rem !important;
+    align-items: end !important;
+  }
+
+  /* Wheel sits lower so the ring stays below the CTA */
+  .hero-zodiac-spin {
+    width: min(96%, 22rem) !important;
+    max-width: 22rem !important;
+    top: 54% !important;
+  }
+
+  .hero-visual-stack::before {
+    width: min(20rem, 86vw) !important;
+    top: 50% !important;
+  }
+
+  .hero-woman-layer {
+    align-self: end !important;
+    width: 100% !important;
+  }
+
+  .hero-woman-layer .hero-woman-fg,
+  .hero-woman-layer .hero-woman-fg--generated {
+    width: 135% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    transform: scale(1.3) translateZ(0) !important;
+    transform-origin: bottom center !important;
+    margin-top: auto !important;
+  }
+
+  .hero-ticker-bar {
+    min-height: 3.9375rem;
+    padding: 0.75rem 1.25rem !important;
+  }
+
+  .hero-ticker-text {
+    font-size: 0.95rem !important;
+  }
+
+  /* —— Home: horizontal card rails (reference peek layout) —— */
+  .testimonials-section--dark .testimonial-grid,
+  .testimonials-section--dark .testimonial-quote-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 1rem;
+    max-width: none;
+    margin-top: 2rem;
+    padding: 0 0 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .testimonials-section--dark .testimonial-card--dark,
+  .testimonials-section--dark .testimonial-quote-grid > * {
+    flex: 0 0 min(17.625rem, 78vw);
+    scroll-snap-align: start;
+  }
+
+  .testimonials-section--dark .testimonial-quote-card {
+    min-height: 17.5rem;
+  }
+
+  .products-slider-grid--pdf:not(.shop-cards-grid) {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 1rem;
+    max-width: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 0.5rem;
+  }
+
+  .products-slider-grid--pdf:not(.shop-cards-grid) .product-card--pdf {
+    flex: 0 0 min(16.125rem, 72vw);
+    scroll-snap-align: start;
+  }
+
+  .devotion-section,
+  .cosmic-section,
+  .puja-promo-section,
+  .why-app-section,
+  .faq-section--pdf,
+  .products-section {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+  }
+
+  .cosmic-visual {
+    min-height: 320px;
+  }
+
+  /* —— Kundali Patra hero —— */
+  .kundali-hero {
+    padding: 5.25rem 1.25rem 0 !important;
+    min-height: auto !important;
+  }
+
+  .kundali-hero__grid {
+    min-height: auto !important;
+    gap: 1rem !important;
+    text-align: center !important;
+  }
+
+  .kundali-hero__copy {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    text-align: center !important;
+  }
+
+  .kundali-page .kundali-hero__title,
+  .kundali-hero__tagline,
+  .kundali-hero__desc {
+    text-align: center !important;
+    margin-inline: auto !important;
+  }
+
+  .kundali-hero__visual {
+    margin-inline: auto !important;
+    max-width: min(20rem, 88vw) !important;
+  }
+
+  .kundali-hero__wheel {
+    margin-inline: auto !important;
+    object-position: center !important;
+  }
+
+  .kundali-page .kundali-ticker.hero-ticker-bar {
+    padding-inline: 1.25rem !important;
+  }
+
+  /* —— Astrologers list page —— */
+  .astrologers-page {
+    --astro-gutter: 1.25rem;
+  }
+
+  .astrologers-hero {
+    padding: 5.25rem 1.25rem 0 !important;
+    min-height: auto !important;
+  }
+
+  .astrologers-hero__grid {
+    min-height: auto !important;
+    gap: 1rem !important;
+    padding-bottom: 0 !important;
+  }
+
+  .astrologers-page .astrologers-hero__title {
+    font-size: clamp(1.65rem, 7.5vw, 2rem) !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .astrologers-hero__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 0.25rem !important;
+    text-align: center !important;
+  }
+
+  .astrologers-page .astrologers-hero__title,
+  .astrologers-page .astrologers-hero__desc {
+    text-align: center !important;
+    margin-inline: auto !important;
+  }
+
+  .astrologers-hero__visual {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 391 / 243;
+    margin-inline: auto;
+  }
+
+  .astrologers-hero__img {
+    mix-blend-mode: normal;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .astrologers-page .hero-ticker-bar.astrologers-ticker {
+    padding-inline: 1.25rem !important;
+  }
+
+  body.jg-store-detail-active .nav-hamburger,
+  body.astro-detail-active .nav-hamburger,
+  body.jg-pdp-active .nav-hamburger {
+    display: inline-flex !important;
+  }
+
+  body.jg-store-detail-active .nav-header__nav-desktop,
+  body.astro-detail-active .nav-header__nav-desktop,
+  body.jg-pdp-active .nav-header__nav-desktop {
+    display: none !important;
+  }
+
+  .jg-store-page--detail .detail-ref-page__back,
+  .astrologers-page--detail .astro-detail-breadcrumb {
+    margin-top: 0.15rem;
+  }
+
+  .astrologers-intro,
+  .astrologers-main {
+    padding-inline: 1.25rem;
+  }
+
+  .astrologers-page .astrologers-experts-grid {
+    grid-template-columns: 1fr;
+    max-width: var(--mobile-content-max);
+    gap: 3.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .astro-expert-card {
+    max-width: var(--mobile-content-max);
+  }
+
+  .astrologers-testimonials {
+    padding-inline: 1.25rem;
+  }
+
+  .astrologers-testimonials__grid.testimonial-quote-grid,
+  .astrologers-testimonials__grid {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 1rem;
+    max-width: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2.5rem;
+  }
+
+  .astrologers-testimonials__grid > * {
+    flex: 0 0 min(17.625rem, 78vw);
+    scroll-snap-align: start;
+  }
+
+  .astrologers-testimonials__grid .testimonial-quote-card {
+    min-height: 17.5rem;
+    max-width: none;
+  }
+
+  /* —— Astrologer detail —— */
+  .astro-detail-page {
+    --astro-detail-gutter: 1.25rem;
+  }
+
+  .astro-detail-page__inner.site-shell {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .astro-detail-hero {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+
+  .astro-detail-hero__copy {
+    order: 2;
+  }
+
+  .astro-detail-hero__visual {
+    order: 1;
+    justify-self: center;
+    align-self: center;
+    max-width: min(12.5rem, 72vw);
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .astro-detail-hero__frame {
+    padding: 0.5rem;
+    border-radius: 16px;
+  }
+
+  .astro-detail-hero__share-btn {
+    top: 0.65rem;
+    right: 0.65rem;
+    left: auto;
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .astro-detail-hero__live {
+    top: 0.65rem;
+    left: 0.65rem;
+    right: auto;
+  }
+
+  .astro-detail-hero__portrait,
+  .astro-detail-hero__frame .jg-product-img-fallback {
+    max-height: 16.5rem;
+    aspect-ratio: 3 / 4;
+  }
+
+  .astro-detail-hero__name {
+    font-size: clamp(1.65rem, 7.5vw, 2rem) !important;
+  }
+
+  .astro-detail-hero__tagline {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .astro-detail-cta-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    padding: 1.15rem 1.25rem;
+    border-radius: 1.25rem;
+    text-align: center;
+  }
+
+  .astro-detail-cta-bar__price-block,
+  .astro-detail-cta-bar__lang {
+    text-align: center;
+  }
+
+  .astro-detail-cta-bar__lang-list {
+    white-space: normal;
+  }
+
+  .astro-detail-cta-bar__btn {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.9rem 1.25rem;
+    font-size: 0.75rem;
+  }
+
+  .astro-detail-also__grid {
+    grid-template-columns: 1fr;
+    max-width: var(--mobile-content-max);
+    margin-inline: auto;
+  }
+
+  .astro-detail-also-card__btn {
+    max-width: var(--mobile-content-max);
+    margin-inline: auto;
+  }
+
+  /* —— Footer —— */
+  .footer-inner {
+    padding-inline: 1.25rem;
+  }
+
+  .footer-top-row {
+    grid-template-columns: 1fr;
+    row-gap: 1rem;
+  }
+
+  .footer-top-logo__img {
+    width: min(10rem, 52vw);
+  }
+
+  .footer-legal-inline {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.85rem;
+  }
+}

@@ -1,0 +1,534 @@
+/* Kundali Patra page — pixel match kundalipatra.svg (1440×5156 artboard) */
+
+.kundali-page {
+  --kp-artboard: 1440px;
+  --kp-navy: #1c064f;
+  --kp-dark: #08072b;
+  --kp-orange: #f15a24;
+  --kp-gold: #d4af37;
+  --kp-gold-heading: #e8b84a;
+  --kp-gold-btn: #ffc30b;
+  --kp-hero-bg: #fbf4f8;
+  --kp-text: #1a1a1a;
+  --kp-text-body: #333333;
+  --kp-gutter: clamp(1.25rem, 6.94vw, 100px);
+  --kp-content-max: 1240px;
+  --kp-ticker-h: 63px;
+  --kp-btn-w: min(352px, 100%);
+  --kp-btn-h: 65px;
+  --kp-btn-rx: 32.5px;
+  --kp-hero-min-h: clamp(420px, 52vh, 580px);
+  --kp-font-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --kp-font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+  width: 100%;
+  background: #ffffff;
+  color: var(--kp-text);
+  font-family: var(--kp-font-sans);
+}
+
+/* —— Hero (pattern0: y=-95, h=675; copy left, wheel right) —— */
+.kundali-hero {
+  position: relative;
+  padding: clamp(7.5rem, 12vw, 9.5rem) var(--kp-gutter) 0;
+  min-height: calc(var(--kp-hero-min-h) + clamp(7.5rem, 12vw, 9.5rem));
+  overflow: hidden;
+  isolation: isolate;
+  background-color: var(--kp-hero-bg);
+  background-image:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.78) 24%, transparent 48%),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.68) 18%, rgba(255, 255, 255, 0.22) 36%, transparent 50%),
+    linear-gradient(to right, rgba(252, 188, 212, 0.28) 0%, rgba(248, 172, 200, 0.16) 28%, transparent 48%),
+    linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.35) 55%, rgba(255, 255, 255, 0.92) 100%),
+    url('../assets/pink_powder_texture.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.kundali-hero__grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(280px, 0.46fr) minmax(300px, 0.54fr);
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  max-width: var(--kp-content-max);
+  margin: 0 auto;
+  min-height: var(--kp-hero-min-h);
+  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.kundali-hero__copy {
+  padding-left: clamp(0.25rem, 1vw, 0.5rem);
+  max-width: 560px;
+}
+
+.kundali-page .kundali-hero__title {
+  margin: 0 0 0.35rem;
+  font-family: var(--kp-font-display);
+  font-size: clamp(2.75rem, 4.2vw, 3.85rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--kp-navy);
+}
+
+.kundali-hero__tagline {
+  margin: 0 0 1.25rem;
+  font-family: var(--kp-font-display);
+  font-size: clamp(1.85rem, 2.8vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--kp-navy);
+}
+
+.kundali-hero__desc {
+  margin: 0;
+  max-width: 26em;
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  line-height: 1.55;
+  color: var(--kp-text-body);
+}
+
+.kundali-hero__visual {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 380px;
+  padding-right: clamp(0, 2vw, 1.5rem);
+}
+
+/* Vintage zodiac wheel SVG (zodiac-wheel.svg) — see zodiac-wheel-asset.css */
+.kundali-hero__wheel {
+  display: block;
+  width: min(100%, 540px);
+  height: auto;
+  max-width: 540px;
+  object-fit: contain;
+  object-position: right center;
+  background: transparent !important;
+}
+
+.kundali-basic__wheel {
+  display: block;
+  width: min(100%, 520px);
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+  opacity: 1;
+}
+
+/* —— Ticker (rect y=563, h=63, #1C064F) —— */
+.kundali-page .kundali-ticker.hero-ticker-bar {
+  width: 100%;
+  min-height: var(--kp-ticker-h);
+  margin: 0 !important;
+  padding: 0 var(--kp-gutter) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--kp-navy) !important;
+  border: none !important;
+  box-shadow: none !important;
+  position: relative;
+  z-index: 3;
+}
+
+.kundali-page .kundali-ticker .hero-ticker-text {
+  margin: 0;
+  font-family: var(--kp-font-display);
+  font-size: clamp(1rem, 1.35vw, 1.25rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.96);
+  text-align: center;
+}
+
+/* —— Cosmic intro (white field + orange title + center art, SVG ~y 626–1683) —— */
+.kundali-cosmic {
+  position: relative;
+  padding: clamp(3.5rem, 7vw, 5.5rem) var(--kp-gutter) clamp(4rem, 8vw, 6rem);
+  background: #ffffff;
+  overflow: visible;
+}
+
+.kundali-cosmic__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: min(var(--kp-artboard), 100%);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.kundali-page .kundali-cosmic__title {
+  margin: 0 auto 1rem;
+  max-width: 16ch;
+  font-family: var(--kp-font-display);
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--kp-orange);
+}
+
+.kundali-cosmic__subtitle {
+  margin: 0 auto 1.25rem;
+  max-width: 28ch;
+  font-size: clamp(1.15rem, 1.6vw, 1.35rem);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--kp-text);
+}
+
+.kundali-cosmic__desc {
+  margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
+  max-width: 52ch;
+  font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+  line-height: 1.65;
+  color: var(--kp-text-body);
+}
+
+/* Artboard: geometry + watercolor centered (~780px on 1440 layout) */
+.kundali-cosmic__art-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  border: none;
+  line-height: 0;
+}
+
+.kundali-cosmic__art {
+  display: block;
+  width: min(780px, 94vw);
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+  object-fit: contain;
+  object-position: center center;
+}
+
+/* —— Basic report band (rect y=1683, h=631, #08072B) —— */
+.kundali-basic {
+  background: var(--kp-dark);
+  padding: clamp(3.5rem, 6vw, 5rem) var(--kp-gutter) clamp(4rem, 7vw, 5.5rem);
+}
+
+.kundali-basic__grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.42fr) minmax(320px, 0.58fr);
+  align-items: center;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  max-width: var(--kp-content-max);
+  margin: 0 auto;
+}
+
+.kundali-basic__wheel-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+
+.kundali-basic__content {
+  color: #ffffff;
+  max-width: 620px;
+  width: 100%;
+}
+
+.kundali-page .kundali-basic__title {
+  margin: 0 0 0.5rem;
+  font-family: var(--kp-font-display);
+  font-size: clamp(2rem, 3vw, 2.65rem);
+  font-weight: 700;
+  line-height: 1.12;
+  color: var(--kp-gold-heading);
+}
+
+.kundali-basic__subtitle {
+  margin: 0 0 1.25rem;
+  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.kundali-basic__rule {
+  margin: 0 0 1.35rem;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  width: 100%;
+  max-width: 520px;
+}
+
+.kundali-basic__desc {
+  margin: 0 0 1.75rem;
+  font-size: clamp(0.92rem, 1.1vw, 1rem);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 48ch;
+}
+
+.kundali-basic__features {
+  list-style: none;
+  margin: 0 0 2.25rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem 2rem;
+  max-width: 100%;
+  width: 100%;
+}
+
+.kundali-basic__feature {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr);
+  align-items: start;
+  column-gap: 0.75rem;
+  font-size: clamp(0.85rem, 1vw, 0.95rem);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.kundali-basic__bullet {
+  width: 8px;
+  height: 8px;
+  margin-top: 0.4em;
+  background: #ffffff;
+  border-radius: 1px;
+}
+
+/* —— CTAs (SVG: gold 352×65 @801,2185; navy 352×65 @544,2669) —— */
+.kundali-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--kp-btn-w);
+  height: var(--kp-btn-h);
+  padding: 0 2rem;
+  border: none;
+  border-radius: var(--kp-btn-rx);
+  font-family: var(--kp-font-sans);
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kundali-btn:hover {
+  transform: translateY(-1px);
+}
+
+.kundali-btn--gold {
+  background: var(--kp-gold-btn);
+  color: var(--kp-dark);
+  box-shadow:
+    inset 0 0 0 3px #ffffff,
+    0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+.kundali-btn--navy {
+  background: var(--kp-navy);
+  color: #ffffff;
+  box-shadow:
+    inset 0 0 0 3px #ffffff,
+    0 4px 14px rgba(26, 10, 61, 0.12);
+}
+
+/* —— Detailed report (white + chart pattern4 @444,2793) —— */
+.kundali-detail {
+  position: relative;
+  padding: clamp(3.5rem, 7vw, 5.5rem) var(--kp-gutter) clamp(4rem, 8vw, 6rem);
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.kundali-detail__waves {
+  position: absolute;
+  left: 50%;
+  bottom: 28%;
+  width: min(1440px, 150%);
+  opacity: 0.18;
+  pointer-events: none;
+  transform: translateX(-50%) rotate(1.38deg);
+}
+
+.kundali-detail__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.kundali-page .kundali-detail__title {
+  margin: 0 auto 0.85rem;
+  font-family: var(--kp-font-display);
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--kp-orange);
+}
+
+.kundali-detail__subtitle {
+  margin: 0 auto 1.15rem;
+  max-width: 32ch;
+  font-size: clamp(1.05rem, 1.45vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--kp-text);
+}
+
+.kundali-detail__desc {
+  margin: 0 auto 2rem;
+  max-width: 52ch;
+  font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+  line-height: 1.65;
+  color: var(--kp-text-body);
+}
+
+.kundali-detail .kundali-btn--navy {
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.kundali-detail__chart-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 585px;
+}
+
+.kundali-detail__chart {
+  display: block;
+  width: min(100%, 585px);
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 1024px) {
+  .kundali-hero {
+    min-height: calc(clamp(360px, 50vh, 480px) + clamp(6.5rem, 10vw, 8rem));
+  }
+
+  .kundali-hero__grid {
+    grid-template-columns: 1fr;
+    align-items: end;
+    text-align: center;
+    min-height: clamp(360px, 50vh, 480px);
+    padding-bottom: 0;
+  }
+
+  .kundali-hero__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    text-align: center;
+  }
+
+  .kundali-page .kundali-hero__title,
+  .kundali-hero__tagline,
+  .kundali-hero__desc {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .kundali-page .kundali-hero__title {
+    max-width: 14rem;
+  }
+
+  .kundali-hero__tagline {
+    max-width: 20rem;
+  }
+
+  .kundali-hero__desc {
+    max-width: 28rem;
+  }
+
+  .kundali-hero__visual {
+    justify-content: center;
+    min-height: clamp(260px, 48vw, 380px);
+    padding-right: 0;
+    margin-inline: auto;
+    width: 100%;
+  }
+
+  .kundali-hero__wheel {
+    object-position: center;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 960px) {
+  .kundali-basic__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kundali-basic__features {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    max-width: 36rem;
+  }
+
+  .kundali-basic__content {
+    margin-inline: auto;
+    text-align: left;
+  }
+
+  .kundali-basic__rule,
+  .kundali-basic__desc {
+    max-width: none;
+  }
+
+  .kundali-btn {
+    width: 100%;
+    max-width: 352px;
+  }
+}
+
+@media (max-width: 720px) {
+  .kundali-page {
+    --kp-gutter: 1.25rem;
+  }
+
+  .kundali-hero {
+    padding-top: 5.5rem;
+    min-height: auto;
+  }
+
+  .kundali-hero__grid {
+    min-height: auto;
+    gap: 1rem;
+  }
+
+  .kundali-hero__visual {
+    min-height: auto;
+    max-width: min(20rem, 88vw);
+  }
+
+  .kundali-page .kundali-hero__title {
+    font-size: clamp(1.85rem, 7.5vw, 2.35rem) !important;
+  }
+
+  .kundali-hero__tagline {
+    font-size: clamp(1.35rem, 5.5vw, 1.75rem);
+    margin-bottom: 1rem;
+  }
+
+  .kundali-page .kundali-ticker.hero-ticker-bar {
+    padding-inline: 1.25rem;
+  }
+}

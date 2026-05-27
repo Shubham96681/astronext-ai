@@ -1,0 +1,764 @@
+/* Astrologers page — tokens & layout from Astrologer-pAGE.svg (1440×3426) */
+
+.astrologers-page--detail {
+  background: transparent;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.astrologers-page {
+  --astro-navy: #1c064f;
+  --astro-purple: #552c83;
+  --astro-gold: #d4af37;
+  --astro-gold-light: #e8b84a;
+  --astro-text: #1a1a1a;
+  --astro-text-muted: #666666;
+  --astro-dash: #959595;
+  --astro-card-bg: #f6f6f6;
+  --astro-card-border: #d9d9d9;
+  --astro-dark: #08072b;
+  --astro-dark-border: #373653;
+  --astro-hero-bg: #fbf4f8;
+  --astro-gutter: clamp(1.25rem, 6.94vw, 100px);
+  --astro-content-max: 1240px;
+  --astro-card-w: 370px;
+  --astro-card-h: 323px;
+  --astro-card-gap: 45px;
+  --astro-card-radius: 19.5px;
+  --astro-chat-pill-h: 36px;
+  --astro-chat-pill-w: 171px;
+  --astro-ticker-h: 63px;
+  --astro-hero-img-h: clamp(320px, 46vw, 520px);
+  --astro-hero-min-h: clamp(420px, 58vh, 580px);
+
+  background: #ffffff;
+  color: var(--astro-text);
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif);
+}
+
+/* —— Hero (y≈101–563, image 745×463 @ x=795) —— */
+.astrologers-hero {
+  position: relative;
+  padding: clamp(7.5rem, 12vw, 9.5rem) var(--astro-gutter) 0;
+  margin: 0;
+  min-height: calc(var(--astro-hero-min-h) + clamp(7.5rem, 12vw, 9.5rem));
+  overflow: hidden;
+  isolation: isolate;
+  background-color: var(--astro-hero-bg);
+  background-image:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.78) 24%, rgba(255, 255, 255, 0) 48%),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.68) 18%, rgba(255, 255, 255, 0.22) 36%, rgba(255, 255, 255, 0) 50%),
+    linear-gradient(to right, rgba(252, 188, 212, 0.28) 0%, rgba(248, 172, 200, 0.16) 28%, transparent 48%),
+    linear-gradient(to left, rgba(252, 188, 212, 0.14) 0%, transparent 20%),
+    linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 40%, rgba(255, 255, 255, 0.85) 70%, #ffffff 100%),
+    url('../assets/pink_powder_texture.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.astrologers-hero__grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(280px, 0.48fr) minmax(300px, 0.52fr);
+  align-items: end;
+  gap: clamp(1.5rem, 3vw, 2.75rem);
+  max-width: var(--astro-content-max);
+  margin: 0 auto;
+  width: 100%;
+  min-height: var(--astro-hero-min-h);
+  padding-bottom: 0;
+}
+
+.astrologers-hero__copy {
+  align-self: center;
+  padding-left: clamp(0.25rem, 1vw, 0.75rem);
+  padding-bottom: clamp(0.5rem, 2vh, 1.5rem);
+  max-width: 620px;
+}
+
+.astrologers-page .astrologers-hero__title {
+  font-family: var(--font-display, 'Playfair Display', 'Cormorant Garamond', Georgia, serif) !important;
+  font-size: clamp(2.75rem, 4.1vw, 3.85rem) !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.02em !important;
+  color: var(--astro-navy) !important;
+  -webkit-text-fill-color: var(--astro-navy) !important;
+  background: none !important;
+  margin: 0 0 1.75rem !important;
+  max-width: 11.5em;
+}
+
+.astrologers-page .astrologers-hero__desc {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
+  font-size: clamp(1.05rem, 1.25vw, 1.2rem) !important;
+  font-weight: 400 !important;
+  line-height: 1.55 !important;
+  color: var(--astro-text) !important;
+  max-width: 26em;
+  margin: 0 !important;
+}
+
+.astrologers-hero__visual {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  align-self: end;
+  width: 100%;
+  max-width: 745px;
+  height: var(--astro-hero-img-h);
+  margin-left: auto;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.astrologers-hero__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  mix-blend-mode: screen;
+}
+
+/* —— Ticker (y=563, h=63, fill #1C064F) —— */
+.astrologers-page .hero-ticker-bar.astrologers-ticker {
+  width: 100%;
+  min-height: var(--astro-ticker-h);
+  margin: 0 !important;
+  margin-top: 0 !important;
+  padding: 0 var(--astro-gutter) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--astro-navy) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.astrologers-page .hero-ticker-bar.astrologers-ticker .hero-ticker-text {
+  font-family: var(--font-display, 'Playfair Display', 'Cormorant Garamond', Georgia, serif) !important;
+  font-size: clamp(1rem, 1.35vw, 1.25rem) !important;
+  font-weight: 400 !important;
+  font-style: italic !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.96) !important;
+  margin: 0;
+  text-align: center;
+}
+
+/* —— Intro copy block (reference) —— */
+.astrologers-intro {
+  padding: clamp(3rem, 6vw, 4.5rem) var(--astro-gutter) clamp(2.5rem, 5vw, 3.5rem);
+  background: #ffffff;
+  text-align: center;
+}
+
+.astrologers-page .astrologers-intro__title {
+  font-family: var(--font-display, 'Playfair Display', 'Cormorant Garamond', Georgia, serif) !important;
+  font-size: clamp(2rem, 3.2vw, 2.75rem) !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+  line-height: 1.15 !important;
+  color: var(--heading-orange, #f15a24) !important;
+  -webkit-text-fill-color: var(--heading-orange, #f15a24) !important;
+  background: none !important;
+  margin: 0 auto 0.85rem !important;
+  max-width: 18ch;
+}
+
+.astrologers-intro__tagline {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif);
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  font-weight: 600;
+  line-height: 1.4;
+  color: #333333;
+  margin: 0 auto 1.25rem;
+  max-width: 36em;
+}
+
+.astrologers-intro__divider {
+  width: min(100%, 520px);
+  height: 1px;
+  margin: 0 auto 1.75rem;
+  border: none;
+  border-top: 1px dotted #c8c8c8;
+  background: transparent;
+}
+
+.astrologers-intro__text {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif);
+  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  font-weight: 400;
+  line-height: 1.65;
+  color: #4a4a4a;
+  max-width: 52em;
+  margin: 0 auto 1.15rem;
+}
+
+.astrologers-intro__text:last-of-type {
+  margin-bottom: 0;
+}
+
+.astrologers-intro__text strong {
+  font-weight: 700;
+  color: #333333;
+}
+
+/* —— Expert cards (Movie Blocks grid) —— */
+.astrologers-main {
+  padding: 0 var(--astro-gutter) clamp(3.5rem, 6vw, 5rem);
+  background: #ffffff;
+}
+
+.astrologers-blocks-heading {
+  max-width: var(--astro-content-max);
+  margin: 0 auto 1.25rem;
+  padding-top: 0.5rem;
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 700;
+  color: var(--astro-navy);
+  text-align: center;
+  text-transform: none;
+}
+
+.astrologers-main--chat-only {
+  padding: clamp(6.5rem, 12vw, 8rem) var(--astro-gutter) clamp(3rem, 6vw, 4rem);
+}
+
+.astrologers-main--chat-only .astrologers-chat-panel {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.astrologers-page .astrologers-experts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, var(--astro-card-w)));
+  justify-content: center;
+  gap: clamp(3rem, 5vw, 4rem) var(--astro-card-gap);
+  max-width: var(--astro-content-max);
+  margin: 0 auto;
+  padding: 2rem 0 0;
+  overflow: visible;
+}
+
+.astro-expert-card {
+  width: 100%;
+  max-width: var(--astro-card-w);
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.astro-expert-card__body {
+  position: relative;
+  width: 100%;
+  margin-top: 3.25rem;
+  padding: 3.75rem 1.75rem 1.75rem;
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 22px;
+  text-align: center;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.05);
+  overflow: visible;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.astro-expert-card:hover .astro-expert-card__body {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.astro-expert-card__avatar-wrap {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 3;
+  width: 120px;
+  height: 120px;
+  transform: translate(-50%, -50%);
+  line-height: 0;
+  border-radius: 50%;
+  background: #e8e8e8;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.astro-expert-card__media-btn {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.astrologers-page .astro-expert-card__avatar,
+.astrologers-page .jg-product-img-fallback.astro-expert-card__avatar {
+  display: block;
+  width: 120px !important;
+  height: 120px !important;
+  min-width: 120px;
+  min-height: 120px;
+  max-width: none !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  object-position: top center !important;
+  border: 4px solid #ffffff;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+  background: #e8e8e8;
+}
+
+.astrologers-page .astro-expert-card__name {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
+  font-size: clamp(1.05rem, 1.2vw, 1.15rem) !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+  line-height: 1.3 !important;
+  color: var(--heading-orange, #f15a24) !important;
+  -webkit-text-fill-color: var(--heading-orange, #f15a24) !important;
+  background: none !important;
+  margin: 0 0 0.35rem !important;
+}
+
+.astro-expert-card__specialty {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #333333;
+  margin: 0 0 0.75rem;
+}
+
+.astro-expert-card__bio {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #757575;
+  margin: 0 0 1.35rem;
+  min-height: 3.2em;
+}
+
+.astro-expert-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px dotted #cccccc;
+}
+
+.astro-expert-card__price {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  white-space: nowrap;
+}
+
+.astro-expert-card__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-height: 36px;
+  padding: 0 1rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--astro-purple);
+  background: #ffffff;
+  color: var(--astro-purple);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.astro-expert-card__cta:hover {
+  background: var(--astro-purple);
+  color: #ffffff;
+}
+
+/* —— Live chat panel —— */
+.astrologers-chat-panel {
+  max-width: 800px;
+  margin: 0 auto;
+  border-radius: 16px;
+  border: 1px solid rgba(85, 44, 131, 0.2);
+  background: #ffffff;
+  box-shadow: 0 16px 40px rgba(28, 6, 79, 0.12);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 520px;
+}
+
+.astrologers-chat-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--astro-navy);
+  color: #ffffff;
+}
+
+.astrologers-chat-panel__profile {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.astrologers-chat-panel__profile img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+}
+
+.astrologers-chat-panel__profile h4 {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.astrologers-chat-panel__profile p {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+.astrologers-chat-panel__close {
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.astrologers-chat-panel__messages {
+  flex: 1;
+  padding: 1.25rem;
+  overflow-y: auto;
+  background: #faf8fb;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.astrologers-chat-bubble {
+  max-width: 85%;
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.astrologers-chat-bubble--bot {
+  align-self: flex-start;
+  background: #ffffff;
+  border: 1px solid rgba(85, 44, 131, 0.12);
+  color: var(--astro-text);
+}
+
+.astrologers-chat-bubble--user {
+  align-self: flex-end;
+  background: var(--astro-purple);
+  color: #ffffff;
+}
+
+.astrologers-chat-bubble--typing {
+  display: flex;
+  gap: 4px;
+  padding: 0.85rem 1rem;
+}
+
+.astrologers-chat-bubble--typing span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #999;
+  animation: astro-typing 1.2s infinite;
+}
+
+.astrologers-chat-bubble--typing span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.astrologers-chat-bubble--typing span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes astro-typing {
+  0%, 80%, 100% { opacity: 0.35; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-3px); }
+}
+
+.astrologers-chat-panel__form {
+  display: flex;
+  gap: 0.65rem;
+  padding: 1rem;
+  border-top: 1px solid rgba(85, 44, 131, 0.1);
+  background: #ffffff;
+}
+
+.astrologers-chat-panel__input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--astro-card-border);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.astrologers-chat-panel__input:focus {
+  border-color: var(--astro-purple);
+}
+
+.astrologers-chat-panel__send {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 10px;
+  background: var(--astro-purple);
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* —— Testimonials (reference: #08072B, gold title, outline quotes) —— */
+.astrologers-testimonials {
+  --testimonial-gold: #e8b84a;
+  --testimonial-quote: #5c5c8a;
+  background: var(--astro-dark, #08072b);
+  padding: clamp(3.75rem, 7vw, 5rem) var(--astro-gutter) clamp(5rem, 9vw, 6.5rem);
+  text-align: center;
+  overflow: visible;
+}
+
+.astrologers-page .astrologers-testimonials__title {
+  font-family: var(--font-display, 'Playfair Display', 'Cormorant Garamond', Georgia, serif) !important;
+  font-size: clamp(2rem, 3.5vw, 2.65rem) !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0.01em !important;
+  color: var(--testimonial-gold) !important;
+  -webkit-text-fill-color: var(--testimonial-gold) !important;
+  background: none !important;
+  margin: 0 auto 0.85rem !important;
+}
+
+.astrologers-page .astrologers-testimonials__subtitle {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
+  font-size: clamp(1rem, 1.25vw, 1.125rem) !important;
+  font-weight: 500 !important;
+  line-height: 1.45 !important;
+  color: #ffffff !important;
+  margin: 0 auto 2.75rem !important;
+}
+
+/* Grid layout — testimonial-quote-grid in testimonial-card.css */
+.astrologers-testimonials__grid {
+  max-width: var(--astro-content-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 2.5rem;
+  overflow: visible;
+}
+
+.astrologers-testimonial-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 2rem 1.5rem 3.25rem;
+  min-height: 280px;
+  border: 1px solid var(--astro-dark-border, #373653);
+  border-radius: 4.5px;
+  background: transparent;
+  text-align: center;
+}
+
+.astrologers-testimonial-card__quote-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 56px;
+  height: 40px;
+  margin: 0 auto 1.25rem;
+  color: var(--testimonial-quote);
+}
+
+.astrologers-testimonial-card__quote-icon svg {
+  width: 56px;
+  height: 40px;
+}
+
+.astrologers-testimonial-card__text {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.65;
+  color: #ffffff;
+  margin: 0 0 0;
+  max-width: 28em;
+}
+
+.astrologers-testimonial-card__footer {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 55%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.astrologers-page .astrologers-testimonial-card__avatar-img {
+  display: block;
+  width: 72px !important;
+  height: 72px !important;
+  min-width: 72px;
+  min-height: 72px;
+  max-width: none !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  object-position: top center;
+  border: 3px solid var(--astro-dark, #08072b);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  background: #2a2a4a;
+}
+
+.astrologers-testimonial-card__stars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+@media (max-width: 1280px) {
+  .astrologer-blocks-grid {
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 1024px) {
+  .astrologers-hero {
+    min-height: calc(clamp(360px, 50vh, 480px) + clamp(6.5rem, 10vw, 8rem));
+  }
+
+  .astrologers-hero__grid {
+    grid-template-columns: 1fr;
+    align-items: end;
+    min-height: clamp(360px, 50vh, 480px);
+    padding-bottom: 0;
+    text-align: center;
+  }
+
+  .astrologers-hero__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+    max-width: none;
+    text-align: center;
+  }
+
+  .astrologers-page .astrologers-hero__title {
+    max-width: 22rem;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center;
+  }
+
+  .astrologers-page .astrologers-hero__desc {
+    max-width: 28rem;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center;
+  }
+
+  .astrologers-hero__visual {
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    height: clamp(280px, 52vw, 420px);
+  }
+}
+
+@media (max-width: 720px) {
+  .astrologers-page {
+    --astro-gutter: 1.25rem;
+  }
+
+  .astrologers-hero {
+    padding-top: 5.5rem;
+    min-height: auto;
+  }
+
+  .astrologers-hero__grid {
+    min-height: auto;
+    text-align: center;
+  }
+
+  .astrologers-hero__copy {
+    align-items: center;
+    text-align: center;
+  }
+
+  .astrologers-page .astrologers-hero__title,
+  .astrologers-page .astrologers-hero__desc {
+    text-align: center;
+    margin-inline: auto !important;
+  }
+
+  .astrologers-hero__visual {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 391 / 243;
+  }
+
+  .astrologers-hero__img {
+    mix-blend-mode: normal;
+  }
+
+  .astrologers-main {
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
+  }
+
+  .astrologer-blocks-grid {
+    grid-template-columns: 1fr;
+    max-width: min(400px, calc(100% - 2.5rem));
+  }
+}

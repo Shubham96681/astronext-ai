@@ -1,0 +1,30 @@
+/* Shared design tokens from Figma SVG exports (1440px artboard) */
+
+:root {
+  --astro-navy: #1c064f;
+  --astro-purple: #552c83;
+  --astro-orange: #f15a24;
+  --astro-gold: #d4af37;
+  --astro-gold-light: #e8b84a;
+  --astro-dark: #08072b;
+  --astro-dark-border: #373653;
+  --astro-card-bg: #f6f6f6;
+  --astro-card-border: #d9d9d9;
+  --astro-text: #1a1a1a;
+  --astro-text-muted: #666666;
+  --astro-text-body: #4a4a4a;
+  --astro-dash: #959595;
+  --astro-in-stock-bg: #e6ffe9;
+  --astro-in-stock-text: #0bb628;
+  --astro-out-stock-bg: #ffefef;
+  --astro-out-stock-text: #c62828;
+  --astro-gutter: clamp(1.25rem, 6.94vw, 100px);
+  --astro-content-max: 1240px;
+  --astro-card-w: 370px;
+  --astro-card-gap: 45px;
+  --astro-card-radius: 19.5px;
+  --astro-pill-h: 36px;
+  --astro-ticker-h: 63px;
+  --font-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+}

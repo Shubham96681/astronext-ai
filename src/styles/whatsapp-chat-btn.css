@@ -1,0 +1,77 @@
+/* Header WhatsApp pill — green lockup with icon + label */
+
+.whatsapp-chat-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  padding: 0.55rem 1.15rem 0.55rem 0.7rem;
+  border-radius: 9999px;
+  background: #25d366;
+  color: #fff;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.38);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.whatsapp-chat-btn:hover {
+  background: #20bd5a;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.45);
+}
+
+.whatsapp-chat-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.whatsapp-chat-btn__icon svg {
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.whatsapp-chat-btn__label {
+  display: inline;
+}
+
+/* Floating layout lives on .wa-chat-widget--floating (see whatsapp-chat-widget.css) */
+
+.wa-chat-widget--floating .whatsapp-chat-btn:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 1024px) {
+  .whatsapp-chat-btn {
+    padding: 0.5rem 0.95rem 0.5rem 0.65rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .whatsapp-chat-btn--floating {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.5rem 0.9rem 0.5rem 0.65rem;
+    font-size: 0.8125rem;
+  }
+
+  .whatsapp-chat-btn--floating .whatsapp-chat-btn__icon svg {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+}

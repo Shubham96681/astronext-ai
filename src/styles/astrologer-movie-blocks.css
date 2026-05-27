@@ -1,0 +1,445 @@
+/* Astrologer cards — Movie Blocks style (Elegant Division) */
+
+.astrologer-blocks-grid {
+  --astro-block-gap: clamp(0.75rem, 2%, 1.25rem);
+  --astro-block-speed: 0.5s;
+  --astro-block-primary: #edcb59;
+  --astro-block-secondary: #fff;
+  --astro-block-bg: #616f75;
+  --astro-block-hover: #3c3c3c;
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--astro-block-gap);
+  max-width: var(--astro-content-max, 1240px);
+  margin: 0 auto;
+  padding: 2rem 0 0;
+  list-style: none;
+}
+
+.astrologer-blocks-grid::before,
+.astrologer-blocks-grid::after {
+  display: none;
+}
+
+/* —— Block base —— */
+.astro-block {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 18.5em;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--astro-block-primary);
+  background-color: var(--astro-block-bg);
+  border-radius: 4px;
+  isolation: isolate;
+}
+
+.astro-block__surface {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 18.5em;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.astro-block,
+.astro-block * {
+  box-sizing: border-box;
+}
+
+.astro-block__genre,
+.astro-block__main-inform,
+.astro-block__main-inform-inner,
+.astro-block__extra-inform,
+.astro-block__extra-inform-inner,
+.astro-block__big-hours {
+  position: absolute;
+  width: 100%;
+  left: 0;
+}
+
+.astro-block__genre,
+.astro-block__main-inform-inner,
+.astro-block__big-hours,
+.astro-block__extra-inform-inner {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+/* Genre ribbon (specialty) */
+.astro-block__genre {
+  z-index: 4;
+  height: 2.25em;
+  top: -2.25em;
+  padding-top: 2.25em;
+  overflow: hidden;
+  font-size: 0.72em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--astro-block-secondary);
+  background-color: rgba(60, 60, 60, 0.35);
+  transition:
+    top calc(var(--astro-block-speed) / 2) cubic-bezier(0.22, 0.61, 0.36, 1),
+    padding calc(var(--astro-block-speed) / 2) cubic-bezier(0.22, 0.61, 0.36, 1)
+      calc(var(--astro-block-speed) / 2);
+}
+
+/* Main overlay panel */
+.astro-block__main-inform {
+  z-index: 3;
+  top: 0;
+  bottom: -0.875em;
+  overflow: hidden;
+  background-color: rgba(60, 60, 60, 0.65);
+  border-bottom: 2.125em solid var(--astro-block-bg);
+  transition:
+    bottom calc(var(--astro-block-speed) / 1.2) cubic-bezier(0.17, 0.84, 0.44, 1)
+      calc(var(--astro-block-speed) / 6),
+    border-bottom calc(var(--astro-block-speed) / 1.5) cubic-bezier(0.39, 0.58, 0.57, 1)
+      calc(var(--astro-block-speed) / 3);
+}
+
+.astro-block__main-inform-inner {
+  bottom: 0.875em;
+  transition: bottom var(--astro-block-speed) ease-out;
+}
+
+.astro-block__hours {
+  margin-bottom: 0.1em;
+  font-size: 1.65em;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--astro-block-primary);
+}
+
+.astro-block__title {
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif);
+  font-size: 0.95em;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: none;
+}
+
+.astro-block__subtitle {
+  margin-top: 0.2em;
+  font-size: 0.72em;
+  font-weight: 500;
+  line-height: 1.35;
+  text-transform: none;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Large rating — rem for position (em would scale with this element’s 2.2em font) */
+.astro-block__big-hours {
+  z-index: 6;
+  bottom: 0.25rem;
+  font-size: 2.2em;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--astro-block-secondary);
+  pointer-events: none;
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.75),
+    0 0 20px rgba(0, 0, 0, 0.45);
+  transition:
+    bottom var(--astro-block-speed) cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.25s ease;
+}
+
+/* Bottom expand panel */
+.astro-block__extra-inform {
+  z-index: 4;
+  height: 1.25em;
+  bottom: 0;
+  overflow: hidden;
+  border-top: 0 solid #fff;
+  background-color: var(--astro-block-bg);
+  transition: height var(--astro-block-speed) cubic-bezier(0.17, 0.84, 0.44, 1);
+  pointer-events: none;
+}
+
+.astro-block__extra-inform-inner {
+  position: absolute;
+  height: 3.526em;
+  bottom: 4.105em;
+  font-size: 1.05em;
+  line-height: 1.1em;
+  transition: bottom var(--astro-block-speed) ease-out calc(var(--astro-block-speed) / 6);
+}
+
+.astro-block__extra-inform-inner .astro-block__title {
+  color: var(--astro-block-secondary);
+}
+
+.astro-block__extra-inform-inner .astro-block__subtitle {
+  margin-top: 0.15em;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+/* Portrait cover */
+.astro-block__cover {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  min-height: 18.5em;
+  transition: transform var(--astro-block-speed) ease-out;
+}
+
+.astro-block__cover-img,
+.astro-block__cover .jg-product-img-fallback {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 18.5em;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* Share — always visible on listing card */
+.astro-block__share-btn {
+  position: absolute;
+  z-index: 6;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  color: #110729;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.astro-block:hover .astro-block__share-btn,
+.astro-block:focus-within .astro-block__share-btn {
+  transform: scale(1.05);
+}
+
+.astro-block__share-btn:hover {
+  background: #110729;
+  color: #fff;
+}
+
+.astro-block__share-btn--done {
+  opacity: 1;
+  transform: scale(1);
+  background: #22c55e;
+  border-color: #fff;
+  color: #fff;
+}
+
+/* Chat CTA — visible on hover */
+.astro-block__chat-btn {
+  position: absolute;
+  z-index: 5;
+  right: 10px;
+  bottom: 10px;
+  padding: 0.45em 0.85em;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, sans-serif);
+  font-size: 0.65em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.25s ease;
+}
+
+/* —— Hover / focus —— */
+.astro-block:has(.astro-block__surface:hover) .astro-block__genre,
+.astro-block:has(.astro-block__surface:focus-visible) .astro-block__genre,
+.astro-block:hover .astro-block__genre,
+.astro-block:focus-within .astro-block__genre {
+  top: 0;
+  padding-top: 0.75em;
+  transition-delay: var(--astro-block-speed), calc(var(--astro-block-speed) / 0.85);
+}
+
+.astro-block:has(.astro-block__surface:hover) .astro-block__main-inform,
+.astro-block:has(.astro-block__surface:focus-visible) .astro-block__main-inform,
+.astro-block:hover .astro-block__main-inform,
+.astro-block:focus-within .astro-block__main-inform {
+  bottom: 100%;
+  border-bottom-width: 0;
+}
+
+.astro-block:has(.astro-block__surface:hover) .astro-block__main-inform-inner,
+.astro-block:has(.astro-block__surface:focus-visible) .astro-block__main-inform-inner,
+.astro-block:hover .astro-block__main-inform-inner,
+.astro-block:focus-within .astro-block__main-inform-inner {
+  bottom: -30em;
+}
+
+.astro-block:has(.astro-block__surface:hover) .astro-block__extra-inform,
+.astro-block:has(.astro-block__surface:focus-visible) .astro-block__extra-inform,
+.astro-block:hover .astro-block__extra-inform,
+.astro-block:focus-within .astro-block__extra-inform {
+  height: 4.625em;
+  animation: astro-block-border-bounce var(--astro-block-speed) ease;
+}
+
+.astro-block:has(.astro-block__surface:hover) .astro-block__extra-inform-inner,
+.astro-block:has(.astro-block__surface:focus-visible) .astro-block__extra-inform-inner,
+.astro-block:hover .astro-block__extra-inform-inner,
+.astro-block:focus-within .astro-block__extra-inform-inner {
+  bottom: 0;
+}
+
+.astro-block:has(.astro-block__surface:hover) .astro-block__big-hours,
+.astro-block:has(.astro-block__surface:focus-visible) .astro-block__big-hours,
+.astro-block:hover .astro-block__big-hours,
+.astro-block:focus-within .astro-block__big-hours {
+  /* 4.625rem = expanded bar height; sit just above the pink panel */
+  bottom: 4.85rem;
+  transition-duration: var(--astro-block-speed);
+  transition-delay: calc(var(--astro-block-speed) / 6);
+}
+
+.astro-block:has(.astro-block__surface:hover) .astro-block__cover,
+.astro-block:has(.astro-block__surface:focus-visible) .astro-block__cover,
+.astro-block:hover .astro-block__cover,
+.astro-block:focus-within .astro-block__cover {
+  transform: translateY(-1.25em);
+}
+
+.astro-block:hover .astro-block__chat-btn,
+.astro-block:focus-within .astro-block__chat-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.astro-block__chat-btn:hover {
+  background: rgba(255, 255, 255, 0.95);
+  color: #1c064f;
+}
+
+/* —— Color themes —— */
+.astro-block--pink .astro-block__main-inform {
+  border-bottom-color: #e90d4e;
+}
+.astro-block--pink .astro-block__extra-inform {
+  background-color: #e90d4e;
+}
+
+.astro-block--purple .astro-block__main-inform {
+  border-bottom-color: #7055b0;
+}
+.astro-block--purple .astro-block__extra-inform {
+  background-color: #7055b0;
+}
+
+.astro-block--blue .astro-block__main-inform {
+  border-bottom-color: #1378b4;
+}
+.astro-block--blue .astro-block__extra-inform {
+  background-color: #1378b4;
+}
+
+.astro-block--green .astro-block__main-inform {
+  border-bottom-color: #0bc651;
+}
+.astro-block--green .astro-block__extra-inform {
+  background-color: #0bc651;
+}
+
+.astro-block--orange .astro-block__main-inform {
+  border-bottom-color: #ff6f0e;
+}
+.astro-block--orange .astro-block__extra-inform {
+  background-color: #ff6f0e;
+}
+
+.astro-block--yellow .astro-block__main-inform {
+  border-bottom-color: #ffdc0e;
+}
+.astro-block--yellow .astro-block__extra-inform {
+  background-color: #ffdc0e;
+}
+
+.astro-block--yellow .astro-block__extra-inform-inner .astro-block__subtitle {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+@keyframes astro-block-border-bounce {
+  0% {
+    border-top-width: 0;
+  }
+  50% {
+    border-top-width: 8px;
+  }
+  100% {
+    border-top-width: 0;
+  }
+}
+
+/* —— Responsive —— */
+@media (max-width: 1280px) {
+  .astrologer-blocks-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .astrologer-blocks-grid {
+    grid-template-columns: 1fr;
+    max-width: min(400px, 100%);
+  }
+
+  .astro-block {
+    min-height: 16em;
+  }
+
+  .astro-block__cover,
+  .astro-block__cover-img,
+  .astro-block__cover .jg-product-img-fallback {
+    min-height: 16em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .astro-block,
+  .astro-block * {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .astro-block__genre {
+    top: 0;
+    padding-top: 0.75em;
+  }
+
+  .astro-block__share-btn,
+  .astro-block__chat-btn {
+    opacity: 1;
+    transform: none;
+  }
+}

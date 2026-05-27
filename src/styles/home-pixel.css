@@ -1,0 +1,346 @@
+/* Astro-Home pixel-perfect design system (1440px artboard → responsive) */
+
+:root {
+  --astro-navy: #0a0a24;
+  --astro-navy-mid: #12102e;
+  --astro-purple: #2d1b69;
+  --astro-purple-btn: #3b1c7a;
+  --astro-gold: #d4a017;
+  --astro-gold-light: #e8b84a;
+  --astro-orange: #f15a24;
+  --section-heading-orange: #f15a24;
+  --section-subtitle-grey: #333333;
+  --section-body-grey: #4a4a4a;
+  --astro-green: #25d366;
+  --astro-pink-hero: #f8eef2;
+  --astro-container: min(1200px, 92vw);
+  --font-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* Reset page chrome for landing */
+.app-container {
+  background: #fffafb;
+}
+
+body {
+  background: #fffafb;
+}
+
+.app-container .space-sparkles {
+  display: none;
+}
+
+/* Hero uses its own pink-dust layers — see hero-reference.css */
+.page-section:has(.hero-section) {
+  background: transparent;
+}
+
+.main-content .page-section {
+  animation: none;
+}
+
+/* —— Header —— */
+.nav-header--inner {
+  padding: 0.85rem 4%;
+}
+
+.nav-header--inner.scrolled {
+  padding: 0.65rem 4%;
+}
+
+/* Logo sizes — see site-logo.css (home uses .nav-header--home rules) */
+
+.nav-link {
+  font-size: 0.95rem;
+  padding: 0.35rem 0;
+  border-radius: 0;
+  color: #2a2540;
+}
+
+.nav-link.active {
+  background: transparent;
+  color: #110729;
+  box-shadow: none;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  padding: 0.35rem 0;
+}
+
+/* —— Hero —— */
+/* Hero — see hero-reference.css */
+
+.hero-right {
+  min-height: 480px;
+  padding-left: 0;
+}
+
+/* Hero sizing — overridden by hero-reference.css */
+
+.whatsapp-badge {
+  background: var(--astro-purple-btn);
+  padding: 4px 26px 4px 5px;
+}
+
+.whatsapp-badge-text {
+  font-size: 0.95rem;
+}
+
+/* Ticker */
+.ticker-footer {
+  background: var(--astro-navy-mid);
+  padding: 0.85rem 0;
+}
+
+.ticker-item {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Section typography — see section-typography.css */
+
+/* Devotion */
+.devotion-section {
+  padding: 5rem 4% 4.5rem;
+  background: #fff;
+}
+
+.devotion-section .section-label {
+  font-size: 1.25rem;
+  margin-bottom: 0.35rem;
+}
+
+.devotion-section .section-h2 {
+  margin-bottom: 1rem;
+}
+
+.devotion-phone-wrap {
+  min-height: 0;
+  max-width: 320px;
+  overflow: visible;
+}
+
+.devotion-phone {
+  width: auto;
+  max-width: 280px;
+  max-height: 520px;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 50px rgba(45, 27, 105, 0.2));
+}
+
+.cta-button,
+.cta-button--chat {
+  background: var(--astro-purple-btn);
+  border-radius: 999px;
+  padding: 0.9rem 1.75rem;
+  font-size: 0.9rem;
+}
+
+.cta-button.gold-btn {
+  background: linear-gradient(135deg, #c8862a, #e8b84a);
+  color: #1a0f3d;
+  border-radius: 999px;
+  padding: 1rem 2rem;
+  font-weight: 700;
+}
+
+/* Cosmic — see cosmic-section.css */
+
+/* Puja promo — see puja-promo-section.css */
+
+/* Testimonials */
+.testimonials-section--dark {
+  background: var(--astro-navy-mid);
+  padding: 5rem 4%;
+}
+
+.testimonials-section--dark .section-label {
+  color: var(--astro-gold-light);
+}
+
+.testimonial-grid:not(.testimonial-quote-grid) {
+  max-width: var(--astro-container);
+  gap: 1.5rem;
+}
+
+.testimonial-card--dark {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  padding: 2rem 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.testimonial-card--dark .quote-icon {
+  position: static;
+  opacity: 1;
+  color: #9b7fd4;
+  font-size: 2.5rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.testimonial-card--dark .testimonial-stars {
+  order: 3;
+  margin: 0.5rem 0 0;
+  justify-content: center;
+}
+
+.testimonial-card--dark .testimonial-text {
+  order: 1;
+  font-style: normal;
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.testimonial-card--dark .testimonial-author-wrapper {
+  order: 2;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.testimonial-author-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.testimonial-card--dark .author-initial,
+.testimonial-card--dark .testimonial-avatar,
+.testimonial-avatar-fallback {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #fff;
+  background: var(--astro-purple);
+}
+
+.testimonial-card--dark .author-info {
+  display: none;
+}
+
+/* Products */
+.products-section {
+  padding: 5rem 4%;
+  background: #fff;
+}
+
+.product-section-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+
+.products-slider-grid--pdf:not(.shop-cards-grid) {
+  max-width: var(--astro-container);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+.product-card--pdf {
+  border-radius: 8px;
+  border: 1px solid #e8e4ef;
+}
+
+.hot-tag {
+  background: #e91e8c;
+  font-size: 0.65rem;
+  text-transform: capitalize;
+}
+
+.hot-tag::after {
+  content: '';
+}
+
+.product-card--pdf .product-name {
+  font-size: 0.85rem;
+  min-height: 2.5em;
+}
+
+.product-price {
+  color: var(--astro-orange);
+  font-weight: 700;
+}
+
+.add-cart-text-btn {
+  background: var(--astro-purple-btn);
+  border-radius: 6px;
+  font-size: 0.7rem;
+  padding: 0.5rem 0.65rem;
+}
+
+/* Why app */
+.why-app-section {
+  background: var(--astro-navy);
+  padding: 5rem 4%;
+}
+
+.why-app-inner {
+  max-width: var(--astro-container);
+}
+
+.why-app-phone {
+  max-width: 300px;
+}
+
+.why-contact-btn {
+  background: #9b8fd4;
+  color: var(--astro-navy);
+  border-radius: 8px;
+}
+
+/* FAQ */
+.faq-section--pdf {
+  max-width: var(--astro-container);
+  margin: 0 auto;
+  padding: 5rem 4%;
+}
+
+
+.faq-item-card {
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  background: #fff;
+}
+
+.faq-item-header {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* Footer — canonical layout in footer-section.css */
+
+@media (max-width: 1024px) {
+  .hero-section {
+    grid-template-columns: 1fr;
+    text-align: center;
+    min-height: auto;
+  }
+
+  .hero-left {
+    align-items: center;
+  }
+
+  .products-slider-grid--pdf {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .products-slider-grid--pdf {
+    grid-template-columns: 1fr;
+  }
+
+}

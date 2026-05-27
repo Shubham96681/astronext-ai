@@ -1,0 +1,212 @@
+/* Global smooth interactions — complements motion.css */
+
+:root {
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-fast: 0.22s;
+  --motion-base: 0.35s;
+  --motion-slow: 0.55s;
+}
+
+/* Focus rings for keyboard users */
+a:focus-visible,
+button:focus-visible,
+[role='button']:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid rgba(125, 127, 209, 0.65);
+  outline-offset: 3px;
+  transition: outline-offset 0.2s var(--motion-ease);
+}
+
+/* —— Astrologers —— */
+.astro-expert-card__body {
+  transition:
+    transform var(--motion-base) var(--motion-ease),
+    box-shadow var(--motion-base) var(--motion-ease),
+    border-color var(--motion-fast) ease;
+}
+
+.astro-expert-card:hover .astro-expert-card__body {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 36px rgba(26, 43, 76, 0.12);
+}
+
+.astro-expert-card__avatar,
+.astro-expert-card__cta,
+.astro-expert-card__name-btn,
+.astro-expert-card__media-btn {
+  transition:
+    transform var(--motion-base) var(--motion-ease),
+    color var(--motion-fast) ease,
+    background var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    box-shadow var(--motion-base) ease;
+}
+
+.astro-expert-card:hover .astro-expert-card__avatar {
+  transform: scale(1.04);
+}
+
+.astro-expert-card__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(85, 44, 131, 0.2);
+}
+
+.astrologers-testimonial-card {
+  transition:
+    transform var(--motion-base) var(--motion-ease),
+    box-shadow var(--motion-base) ease;
+}
+
+.astrologers-testimonial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
+}
+
+/* —— Astrologer detail —— */
+.astro-detail-cta-bar__btn,
+.astro-detail-spec-card,
+.astro-detail-also-card__btn,
+.astro-detail-breadcrumb__link {
+  transition:
+    transform var(--motion-base) var(--motion-ease),
+    box-shadow var(--motion-base) ease,
+    background var(--motion-fast) ease,
+    color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease;
+}
+
+.astro-detail-cta-bar__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(233, 30, 140, 0.35);
+}
+
+.astro-detail-spec-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(26, 43, 76, 0.1);
+}
+
+/* Tilt defined in astrologer-detail-page.css */
+
+.astro-detail-breadcrumb__link {
+  transition: color var(--motion-fast) ease, opacity var(--motion-fast) ease;
+}
+
+/* —— Jagannath store —— */
+.jg-product-card {
+  transition:
+    transform var(--motion-base) var(--motion-ease),
+    box-shadow var(--motion-base) ease;
+}
+
+.jg-product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(8, 7, 43, 0.12);
+}
+
+.jg-product-card__img,
+.jg-product-card__media {
+  transition: transform var(--motion-slow) var(--motion-ease);
+}
+
+.jg-product-card:hover .jg-product-card__img {
+  transform: scale(1.06);
+}
+
+.jg-store-filter-btn,
+.jg-add-cart-btn,
+.detail-ref-page__cta,
+.detail-ref-page__back {
+  transition:
+    transform var(--motion-base) var(--motion-ease),
+    box-shadow var(--motion-base) ease,
+    background var(--motion-fast) ease,
+    color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease;
+}
+
+.jg-add-cart-btn:hover:not(:disabled),
+.detail-ref-page__cta:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.detail-ref-page__back:hover {
+  transform: translateX(-3px);
+}
+
+/* —— Kundali —— */
+.kundali-cta,
+.kundali-feature-card {
+  transition:
+    transform var(--motion-base) var(--motion-ease),
+    box-shadow var(--motion-base) ease,
+    background var(--motion-fast) ease;
+}
+
+.kundali-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 32px rgba(255, 195, 11, 0.25);
+}
+
+/* —— Auth —— */
+.auth-card,
+.auth-field__input,
+.auth-submit,
+.auth-switch-link {
+  transition:
+    transform var(--motion-base) var(--motion-ease),
+    box-shadow var(--motion-base) ease,
+    border-color var(--motion-fast) ease,
+    background var(--motion-fast) ease,
+    color var(--motion-fast) ease;
+}
+
+.auth-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(85, 44, 131, 0.28);
+}
+
+.auth-field__input:focus {
+  box-shadow: 0 0 0 3px rgba(125, 127, 209, 0.22);
+}
+
+/* —— Footer form —— */
+.footer-input,
+.footer-textarea,
+.footer-submit-btn {
+  transition:
+    border-color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease,
+    background var(--motion-fast) ease,
+    transform var(--motion-base) var(--motion-ease);
+}
+
+.footer-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(125, 127, 209, 0.35);
+}
+
+.mega-footer {
+  transition: background var(--motion-slow) ease;
+}
+
+/* Stagger extension for larger grids */
+[data-reveal-stagger].reveal-visible > *:nth-child(7) {
+  transition-delay: 540ms;
+}
+[data-reveal-stagger].reveal-visible > *:nth-child(8) {
+  transition-delay: 630ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-view {
+    animation: none;
+  }
+
+  .astro-expert-card:hover .astro-expert-card__body,
+  .jg-product-card:hover,
+  .astro-detail-cta-bar__btn:hover {
+    transform: none;
+  }
+}

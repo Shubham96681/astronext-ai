@@ -1,0 +1,24 @@
+/* Shared page column — logo, nav, and page content share the same left/right edges */
+
+.site-shell {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--site-content-max, 1440px);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--site-gutter-x, var(--nav-padding-x, clamp(1.5rem, 5vw, 4.5rem)));
+  padding-right: var(--site-gutter-x, var(--nav-padding-x, clamp(1.5rem, 5vw, 4.5rem)));
+}
+
+.nav-header__shell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: 100%;
+  min-height: calc(var(--nav-height, 6.5rem) - 2 * var(--nav-padding-y, 1.25rem));
+}
+
+.nav-header.scrolled .nav-header__shell {
+  min-height: calc(var(--nav-height-compact, 5.5rem) - 2rem);
+}

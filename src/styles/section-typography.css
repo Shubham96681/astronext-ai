@@ -1,0 +1,164 @@
+/* Unified section typography & colors — all landing sections */
+
+:root {
+  --section-heading-orange: #f15a24;
+  --section-subtitle-grey: #333333;
+  --section-body-grey: #4a4a4a;
+  --section-eyebrow-gold: #e8b84a;
+  --section-purple-deep: #1a0f3d;
+  --section-purple-brand: #3b1c7a;
+}
+
+/* —— Light sections (white background) —— */
+.main-content .section-eyebrow,
+.main-content .section-label {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif) !important;
+  font-size: 1.05rem !important;
+  font-weight: 400 !important;
+  font-style: italic !important;
+  color: var(--section-subtitle-grey) !important;
+  background: none !important;
+  -webkit-text-fill-color: var(--section-subtitle-grey) !important;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.main-content .section-eyebrow--gold,
+.main-content .section-label--gold {
+  color: var(--section-eyebrow-gold) !important;
+  -webkit-text-fill-color: var(--section-eyebrow-gold) !important;
+}
+
+.main-content .section-heading,
+.main-content .section-h2--orange,
+.main-content .products-heading {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif) !important;
+  font-size: clamp(2.35rem, 3.6vw, 3.15rem) !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.01em;
+  color: var(--section-heading-orange) !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-fill-color: var(--section-heading-orange) !important;
+  margin: 0 0 0.45rem;
+}
+
+.main-content .section-subline,
+.main-content .products-subheading {
+  font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
+  font-size: 1.05rem !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  line-height: 1.45 !important;
+  color: var(--section-subtitle-grey) !important;
+  margin: 0 0 1.25rem;
+}
+
+.main-content .section-body,
+.main-content .section-p:not(.section-p--light) {
+  font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif) !important;
+  font-size: 1.05rem !important;
+  font-weight: 400 !important;
+  line-height: 1.55 !important;
+  color: var(--section-body-grey) !important;
+}
+
+/* —— Dark sections —— */
+.main-content .section-heading--dark,
+.main-content .section-h2--light:not(.section-heading--gold) {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.main-content .section-heading--gold,
+.main-content .section-h2--gold {
+  color: var(--section-eyebrow-gold) !important;
+  -webkit-text-fill-color: var(--section-eyebrow-gold) !important;
+}
+
+.main-content .section-p--light,
+.main-content .cosmic-lead {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+
+/* Cosmic band titles */
+.main-content .cosmic-headline {
+  color: var(--section-eyebrow-gold) !important;
+  -webkit-text-fill-color: var(--section-eyebrow-gold) !important;
+}
+
+.main-content .cosmic-subhead {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* FAQ */
+.main-content .faq-main-title,
+.main-content .faq-section--pdf .faq-main-title {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif) !important;
+  font-size: clamp(2.35rem, 3.6vw, 3.15rem) !important;
+  font-weight: 700 !important;
+  color: var(--section-heading-orange) !important;
+  -webkit-text-fill-color: var(--section-heading-orange) !important;
+  background: none !important;
+}
+
+.main-content .faq-item-header {
+  color: var(--section-subtitle-grey) !important;
+}
+
+.main-content .faq-item-content {
+  color: var(--section-body-grey) !important;
+}
+
+/* Centering utilities */
+.section-eyebrow--center,
+.section-label--center,
+.section-heading--center,
+.section-h2--center,
+.section-subline--center,
+.section-body--center,
+.section-p--center {
+  text-align: center;
+}
+
+.section-body--narrow,
+.section-p--narrow {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Product cards accent */
+.main-content .product-price {
+  color: var(--section-heading-orange) !important;
+}
+
+/* Gold CTA buttons — reference yellow */
+.main-content .cta-button.gold-btn,
+.main-content .cosmic-cta-btn {
+  background: linear-gradient(180deg, #f5d020 0%, #f0b818 100%) !important;
+  color: #0a0a0a !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+}
+
+.main-content .cta-button {
+  background: var(--section-purple-brand, #3b1c7a) !important;
+}
+
+/* Page views (Kundali, store) */
+.main-content .section-title {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif) !important;
+  color: var(--section-purple-deep) !important;
+}
+
+.main-content .section-title span {
+  color: var(--section-heading-orange) !important;
+}
+
+.main-content .section-desc {
+  color: var(--section-body-grey) !important;
+}

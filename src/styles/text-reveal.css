@@ -1,0 +1,21 @@
+/* Line-by-line text reveal (GSAP + SplitType) */
+
+.text-reveal {
+  font-kerning: none;
+}
+
+.text-reveal__line-wrapper {
+  overflow: hidden;
+  display: block;
+}
+
+.text-reveal .line {
+  display: block;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-reveal__line-wrapper {
+    overflow: visible;
+  }
+}
