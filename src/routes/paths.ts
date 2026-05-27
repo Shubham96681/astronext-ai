@@ -9,6 +9,8 @@ export const ROUTES = {
   divineStore: '/divine-store',
   cart: '/cart',
   checkout: '/checkout',
+  checkoutSuccess: '/checkout/success',
+  checkoutFailure: '/checkout/failure',
   estore: '/estore',
   puja: '/puja',
   login: '/login',
@@ -84,7 +86,14 @@ export function pathnameToTab(pathname: string): AppTab {
   }
   if (path === ROUTES.estore) return 'estore';
   if (path === ROUTES.puja) return 'puja';
-  if (path === ROUTES.cart || path === ROUTES.checkout) return 'cart';
+  if (
+    path === ROUTES.cart ||
+    path === ROUTES.checkout ||
+    path === ROUTES.checkoutSuccess ||
+    path === ROUTES.checkoutFailure
+  ) {
+    return 'cart';
+  }
   if (path === ROUTES.login) return 'login';
   if (path === ROUTES.signup) return 'signup';
   if (path === ROUTES.dashboard || path.startsWith(`${ROUTES.dashboard}/`)) return 'dashboard';

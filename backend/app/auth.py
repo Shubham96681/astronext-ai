@@ -1,23 +1,57 @@
 from datetime import datetime, timedelta, timezone
+import base64
+import hashlib
 from typing import Any, Literal
 
+import bcrypt
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 
 from app.config import settings
 from app.models import User, UserRole
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 ALGORITHM = "HS256"
 TokenType = Literal["access", "refresh"]
+_PW_PREFIX = "sha256$"
+
+
+def _bcrypt_safe_secret(password: str) -> str:
+    """
+    Convert arbitrary-length password to a bcrypt-safe deterministic secret.
+    bcrypt truncates at 72 bytes; this avoids runtime errors and preserves entropy.
+    """
+    digest = hashlib.sha256(password.encode("utf-8")).digest()
+    encoded = base64.urlsafe_b64encode(digest).decode("ascii").rstrip("=")
+    return f"{_PW_PREFIX}{encoded}"
 
 
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    secret = _bcrypt_safe_secret(password).encode("utf-8")
+    return bcrypt.hashpw(secret, bcrypt.gensalt()).decode("utf-8")
 
 
 def verify_password(plain: str, hashed: str) -> bool:
-    return pwd_context.verify(plain, hashed)
+    if not hashed:
+        return False
+
+    hashed_bytes = hashed.encode("utf-8")
+    normalized = _bcrypt_safe_secret(plain).encode("utf-8")
+
+    # Primary path: new hashes use normalized secret.
+    try:
+        if bcrypt.checkpw(normalized, hashed_bytes):
+            return True
+    except ValueError:
+        return False
+    except Exception:
+        return False
+
+    # Backward compatibility for legacy rows hashed from raw password input.
+    try:
+        return bcrypt.checkpw(plain.encode("utf-8"), hashed_bytes)
+    except ValueError:
+        return False
+    except Exception:
+        return False
 
 
 def _build_payload(

@@ -36,3 +36,18 @@ scripts/_tmp.svg
 scripts/_kundali-wheel-export.svg
 /* Reference HTML exports (Shopify/theme dumps) */
 Astronext*.html
+
+# Design references (keep locally, do not commit)
+/docs/design/
+Astro-Home.pdf
+design-master.png
+design-reference.png
+design-*.png
+
+# Scratch / extraction artifacts
+src/assets/_scratch/
+**/pdf_img_*
+**/av_test_*
+**/phone_try_*
+**/phone_only_*
+**/test_[abc].png

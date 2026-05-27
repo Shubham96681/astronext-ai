@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.routers import admin, admin_astrologers, astrologer, astrologers, auth
+from app.routers import admin, admin_astrologers, astrologer, astrologers, auth, payments
 from app.seed import seed_database
 
 
@@ -34,6 +34,7 @@ app.include_router(astrologers.router, prefix="/api/v1")
 app.include_router(admin.router, prefix="/api/v1")
 app.include_router(admin_astrologers.router, prefix="/api/v1")
 app.include_router(astrologer.router, prefix="/api/v1")
+app.include_router(payments.router, prefix="/api/v1")
 
 
 @app.get("/api/v1/health")

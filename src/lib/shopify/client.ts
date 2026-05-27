@@ -45,9 +45,11 @@ function getConfig() {
   };
 }
 
-/** Admin access tokens start with shpat_; shpss_ is the API secret, not a valid access token. */
+/** shpss_ is the API secret — never use it as an access token. */
 export function isValidAdminToken(token: string): boolean {
-  return token.startsWith('shpat_');
+  const t = token.trim();
+  if (!t || t.startsWith('shpss_')) return false;
+  return t.startsWith('shpat_') || t.length >= 32;
 }
 
 export function isShopifyConfigured(): boolean {
@@ -72,6 +74,9 @@ export async function shopifyApiMode(): Promise<ShopifyApiMode> {
   if (hasOAuth) {
     const resolved = await resolveAdminAccessToken();
     if (resolved && isValidAdminToken(resolved)) return 'admin';
+    if (resolved) {
+      console.warn('[Shopify] OAuth token received but format unexpected — using storefront fallback');
+    }
   }
 
   if (storefrontToken) return 'storefront';

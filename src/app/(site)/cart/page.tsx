@@ -1,12 +1,19 @@
 'use client';
 
 import Link from 'next/link';
+import { useMemo } from 'react';
 import { Minus, Plus, Trash2 } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
 import { ROUTES } from '@/routes/paths';
 
 export default function CartPage() {
+  const { user, isLoading } = useAuth();
   const { cartItems, subtotal, cartCount, incrementQty, decrementQty, removeFromCart } = useCart();
+  const checkoutHref = useMemo(() => {
+    if (isLoading || user) return ROUTES.checkout;
+    return `${ROUTES.login}?redirect=${encodeURIComponent(ROUTES.checkout)}`;
+  }, [isLoading, user]);
 
   return (
     <section className="cart-page site-shell">
@@ -70,8 +77,8 @@ export default function CartPage() {
               <span>Total</span>
               <strong>₹{subtotal.toLocaleString('en-IN')}</strong>
             </div>
-            <Link href={ROUTES.checkout} className="cart-summary__cta">
-              Proceed to Checkout
+            <Link href={checkoutHref} className="cart-summary__cta">
+              {isLoading ? 'Checking session…' : user ? 'Proceed to Checkout' : 'Login to Checkout'}
             </Link>
           </aside>
         </div>

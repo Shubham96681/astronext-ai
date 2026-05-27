@@ -15,6 +15,13 @@ type Props = {
   mode: AuthMode;
 };
 
+function normalizeRedirect(raw: string | null): string | null {
+  if (!raw || !raw.startsWith('/')) return null;
+  // Block protocol-relative URLs and direct API callbacks.
+  if (raw.startsWith('//') || raw.startsWith('/api')) return null;
+  return raw;
+}
+
 function PasswordField({
   id,
   label,
@@ -73,34 +80,33 @@ export default function AuthPage({ mode }: Props) {
   const [submitting, setSubmitting] = useState(false);
 
   const isLogin = mode === 'login';
+  const redirect = normalizeRedirect(searchParams.get('redirect'));
 
   useEffect(() => {
     if (searchParams.get('refresh') === '1') {
       refreshSession().then((token) => {
-        const redirect = searchParams.get('redirect');
-        if (token && redirect?.startsWith('/dashboard')) {
+        if (token && redirect) {
           router.replace(redirect);
         }
       });
     }
-  }, [searchParams, refreshSession, router]);
+  }, [searchParams, refreshSession, router, redirect]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSubmitting(true);
     try {
-      const redirect = searchParams.get('redirect');
       if (isLogin) {
         const res = await login(loginForm.email.trim(), loginForm.password);
-        router.push(redirect?.startsWith('/dashboard') ? redirect : res.redirect_to);
+        router.push(redirect ?? res.redirect_to);
       } else {
         if (signupForm.password !== signupForm.confirm) {
           setError('Passwords do not match');
           return;
         }
         const res = await register(signupForm.name.trim(), signupForm.email.trim(), signupForm.password);
-        router.push(redirect?.startsWith('/dashboard') ? redirect : res.redirect_to);
+        router.push(redirect ?? res.redirect_to);
       }
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Something went wrong. Please try again.');
@@ -180,7 +186,13 @@ export default function AuthPage({ mode }: Props) {
 
                   <p className="auth-card__switch">
                     Don&apos;t have an account?{' '}
-                    <button type="button" className="auth-card__switch-link" onClick={() => router.push(ROUTES.signup)}>
+                    <button
+                      type="button"
+                      className="auth-card__switch-link"
+                      onClick={() =>
+                        router.push(redirect ? `${ROUTES.signup}?redirect=${encodeURIComponent(redirect)}` : ROUTES.signup)
+                      }
+                    >
                       Sign Up
                     </button>
                   </p>
@@ -239,7 +251,13 @@ export default function AuthPage({ mode }: Props) {
 
                   <p className="auth-card__switch">
                     Already have an account?{' '}
-                    <button type="button" className="auth-card__switch-link" onClick={() => router.push(ROUTES.login)}>
+                    <button
+                      type="button"
+                      className="auth-card__switch-link"
+                      onClick={() =>
+                        router.push(redirect ? `${ROUTES.login}?redirect=${encodeURIComponent(redirect)}` : ROUTES.login)
+                      }
+                    >
                       Login
                     </button>
                   </p>

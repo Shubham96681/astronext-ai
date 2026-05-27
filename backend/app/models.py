@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 
 
 class UserRole(str, enum.Enum):
@@ -47,6 +47,13 @@ class PujaBookingStatus(str, enum.Enum):
     confirmed = "confirmed"
     completed = "completed"
     cancelled = "cancelled"
+
+
+class OrderStatus(str, enum.Enum):
+    pending = "pending"
+    paid = "paid"
+    failed = "failed"
+    cod = "cod"
 
 
 def utcnow() -> datetime:
@@ -190,3 +197,26 @@ class PujaBooking(Base):
     amount_paise: Mapped[int] = mapped_column(Integer)
     status: Mapped[PujaBookingStatus] = mapped_column(Enum(PujaBookingStatus), default=PujaBookingStatus.pending)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class StoreOrder(Base):
+    __tablename__ = "store_orders"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    txnid: Mapped[str] = mapped_column(String(25), unique=True, index=True)
+    customer_name: Mapped[str] = mapped_column(String(120))
+    phone: Mapped[str] = mapped_column(String(20))
+    email: Mapped[str] = mapped_column(String(255))
+    address: Mapped[str] = mapped_column(Text)
+    items_json: Mapped[str] = mapped_column(Text)
+    subtotal_paise: Mapped[int] = mapped_column(Integer)
+    delivery_paise: Mapped[int] = mapped_column(Integer)
+    total_paise: Mapped[int] = mapped_column(Integer)
+    payment_method: Mapped[str] = mapped_column(String(20), default="payonline")
+    delivery_slot: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    coupon: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    status: Mapped[OrderStatus] = mapped_column(Enum(OrderStatus), default=OrderStatus.pending)
+    payu_mihpayid: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    payu_status: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)

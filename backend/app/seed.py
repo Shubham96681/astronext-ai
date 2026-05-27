@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Session
 
 from app.auth import hash_password
+from app.config import settings
 from app.database import Base, SessionLocal, engine
 from app.models import (
     SCHEMA_VERSION,
@@ -165,14 +166,18 @@ def _seed_users_and_demo_data(db: Session, linked_astro: Astrologer) -> None:
 
 def seed_database() -> None:
     Base.metadata.create_all(bind=engine)
+    if not settings.seed_demo_data:
+        return
+
     db = SessionLocal()
     try:
         version = _get_schema_version(db)
         if version < SCHEMA_VERSION:
-            db.close()
-            Base.metadata.drop_all(bind=engine)
-            Base.metadata.create_all(bind=engine)
-            db = SessionLocal()
+            if settings.allow_destructive_schema_reset:
+                db.close()
+                Base.metadata.drop_all(bind=engine)
+                Base.metadata.create_all(bind=engine)
+                db = SessionLocal()
             _set_schema_version(db, SCHEMA_VERSION)
             db.commit()
         elif db.query(User).first():

@@ -1,14 +1,17 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CreditCard, MapPin, ShieldCheck, Wallet } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
+import { initPayuCheckout, redirectToPayu, validateCartWithShopify } from '@/lib/payments';
 import { ROUTES } from '@/routes/paths';
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const { user, isLoading } = useAuth();
   const { cartItems, subtotal, clearCart } = useCart();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -17,10 +20,28 @@ export default function CheckoutPage() {
   const [coupon, setCoupon] = useState('');
   const [isEditingAddress, setIsEditingAddress] = useState(false);
   const [deliverySlot, setDeliverySlot] = useState<'8-11' | '1-6'>('8-11');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const totalQty = useMemo(() => cartItems.reduce((sum, item) => sum + item.qty, 0), [cartItems]);
   const delivery = useMemo(() => (subtotal >= 500 ? 0 : 49), [subtotal]);
   const total = subtotal + delivery;
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.replace(`${ROUTES.login}?redirect=${encodeURIComponent(ROUTES.checkout)}`);
+    }
+  }, [isLoading, user, router]);
+
+  if (isLoading || !user) {
+    return (
+      <section className="cart-page site-shell">
+        <div className="cart-page__empty">
+          <p>Checking your session…</p>
+        </div>
+      </section>
+    );
+  }
 
   if (cartItems.length === 0) {
     return (
@@ -62,11 +83,57 @@ export default function CheckoutPage() {
 
       <form
         className="checkout-grid"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          if (!name || !phone || !address) return;
-          clearCart();
-          router.push(ROUTES.divineStore);
+          if (submitting) return;
+          if (!name || !phone || !address) {
+            setSubmitError('Please enter name, phone, and delivery address before payment.');
+            setIsEditingAddress(true);
+            return;
+          }
+          setSubmitError('');
+          setSubmitting(true);
+          try {
+            const shopifyItems = await validateCartWithShopify(
+              cartItems.map((item) => ({
+                product_id: item.productId,
+                name: item.name,
+                price: item.price,
+                qty: item.qty,
+              })),
+            );
+            const shopifySubtotal = shopifyItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+            const shopifyTotal = shopifySubtotal + delivery;
+
+            const result = await initPayuCheckout({
+              customer_name: name,
+              phone,
+              address,
+              payment_method: payment,
+              items: shopifyItems,
+              subtotal: shopifySubtotal,
+              delivery,
+              total: shopifyTotal,
+              delivery_slot: deliverySlot,
+              coupon: coupon || undefined,
+            });
+
+            clearCart();
+
+            if (result.cod) {
+              router.push(`${ROUTES.checkoutSuccess}?txnid=${encodeURIComponent(result.txnid)}`);
+              return;
+            }
+
+            if (!result.payu_action || !result.payu_fields?.length) {
+              throw new Error('PayU payment details missing');
+            }
+
+            redirectToPayu(result.payu_action, result.payu_fields);
+          } catch (err) {
+            setSubmitError(err instanceof Error ? err.message : 'Checkout failed');
+            setSubmitting(false);
+          }
         }}
       >
         <section className="checkout-col">
@@ -233,8 +300,13 @@ export default function CheckoutPage() {
               <strong>₹{total.toLocaleString('en-IN')}</strong>
             </div>
 
-            <button type="submit" className="cart-summary__cta">
-              {payment === 'cod' ? 'Place COD Order' : `Pay ₹${total.toLocaleString('en-IN')}`}
+            {submitError && <p className="checkout-offer-note" style={{ color: '#dc2626' }}>{submitError}</p>}
+            <button type="submit" className="cart-summary__cta" disabled={submitting}>
+              {submitting
+                ? 'Processing…'
+                : payment === 'cod'
+                  ? 'Place COD Order'
+                  : `Pay ₹${total.toLocaleString('en-IN')}`}
             </button>
             <Link href={ROUTES.cart} className="checkout-back-link">
               Back to cart
