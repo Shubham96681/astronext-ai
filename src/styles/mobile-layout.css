@@ -333,12 +333,14 @@
   }
 
   body.jg-store-detail-active .nav-hamburger,
-  body.astro-detail-active .nav-hamburger {
+  body.astro-detail-active .nav-hamburger,
+  body.jg-pdp-active .nav-hamburger {
     display: inline-flex !important;
   }
 
   body.jg-store-detail-active .nav-header__nav-desktop,
-  body.astro-detail-active .nav-header__nav-desktop {
+  body.astro-detail-active .nav-header__nav-desktop,
+  body.jg-pdp-active .nav-header__nav-desktop {
     display: none !important;
   }
 

@@ -27,6 +27,12 @@ out
 
 # Local / generated artifacts
 Astronext Logo.zip
+logo-assets/
+*.tsbuildinfo
+scripts/_ref-*
+scripts/_shopify-raw.json
 scripts/_test-*.png
 scripts/_tmp.svg
 scripts/_kundali-wheel-export.svg
+/* Reference HTML exports (Shopify/theme dumps) */
+Astronext*.html

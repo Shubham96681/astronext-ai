@@ -25,6 +25,7 @@
 @import '../styles/astrologer-detail-page.css';
 @import '../styles/jg-detail-readmore.css';
 @import '../styles/jg-product-detail.css';
+@import '../styles/product-detail-page.css';
 @import '../styles/kundali-page.css';
 @import '../styles/jagannath-store-page.css';
 @import '../styles/auth-page.css';
@@ -34,6 +35,8 @@
 @import '../styles/site-shell.css';
 @import '../styles/nav-header.css';
 @import '../styles/nav-mobile.css';
+@import '../styles/cart-drawer.css';
+@import '../styles/cart-pages.css';
 @import '../styles/whatsapp-chat-btn.css';
 @import '../styles/whatsapp-chat-widget.css';
 @import '../styles/mobile-layout.css';

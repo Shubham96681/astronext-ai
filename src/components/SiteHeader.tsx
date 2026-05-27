@@ -14,6 +14,8 @@ type SiteHeaderProps = {
   logoCompact: boolean;
   logoPriority: boolean;
   cartCount: number;
+  cartOpen?: boolean;
+  onCartClick?: () => void;
 };
 
 function isNavActive(pathname: string, href: string, end?: boolean) {
@@ -37,6 +39,8 @@ export default function SiteHeader({
   logoCompact,
   logoPriority,
   cartCount,
+  cartOpen = false,
+  onCartClick,
 }: SiteHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -96,7 +100,14 @@ export default function SiteHeader({
             >
               <User size={22} strokeWidth={1.75} />
             </button>
-            <button type="button" className="action-btn" title="Remedies Cart">
+            <button
+              type="button"
+              className="action-btn"
+              title="Remedies Cart"
+              aria-label="Open cart"
+              aria-expanded={cartOpen}
+              onClick={onCartClick}
+            >
               <ShoppingCart size={22} strokeWidth={1.75} />
               {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
             </button>
@@ -159,7 +170,7 @@ export default function SiteHeader({
             <Search size={20} strokeWidth={1.75} />
             Search
           </button>
-          <button type="button" className="nav-mobile-action">
+          <button type="button" className="nav-mobile-action" onClick={() => { closeMenu(); onCartClick?.(); }}>
             <ShoppingCart size={20} strokeWidth={1.75} />
             Cart{cartCount > 0 ? ` (${cartCount})` : ''}
           </button>

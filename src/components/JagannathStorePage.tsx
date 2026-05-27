@@ -281,7 +281,14 @@ export default function JagannathStorePage({ products = [], shopifyWarning = nul
                 inStock={product.inStock}
                 added={!!addedItems[product.id]}
                 onSelect={() => goToProduct(product.id)}
-                onAddToCart={() => onAddToCart(product.id)}
+                onAddToCart={() =>
+                  onAddToCart({
+                    productId: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                  })
+                }
               />
             ))}
           </div>

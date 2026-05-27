@@ -249,7 +249,14 @@ export default function HomePage({ products = [] }: HomePageProps) {
                 image={prod.image}
                 themeIndex={index}
                 added={!!addedItems[prod.id]}
-                onAddToCart={() => handleAddToCart(prod.id)}
+                onAddToCart={() =>
+                  handleAddToCart({
+                    productId: prod.id,
+                    name: prod.name,
+                    price: prod.price,
+                    image: prod.image,
+                  })
+                }
               />
             ))
           )}

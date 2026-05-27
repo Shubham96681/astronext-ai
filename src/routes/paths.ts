@@ -7,6 +7,8 @@ export const ROUTES = {
   kundali: '/kundali',
   astrologers: '/astrologers',
   divineStore: '/divine-store',
+  cart: '/cart',
+  checkout: '/checkout',
   estore: '/estore',
   puja: '/puja',
   login: '/login',
@@ -25,6 +27,7 @@ export type AppTab =
   | 'estore'
   | 'jgstore'
   | 'puja'
+  | 'cart'
   | 'astrologers'
   | 'login'
   | 'signup'
@@ -81,6 +84,7 @@ export function pathnameToTab(pathname: string): AppTab {
   }
   if (path === ROUTES.estore) return 'estore';
   if (path === ROUTES.puja) return 'puja';
+  if (path === ROUTES.cart || path === ROUTES.checkout) return 'cart';
   if (path === ROUTES.login) return 'login';
   if (path === ROUTES.signup) return 'signup';
   if (path === ROUTES.dashboard || path.startsWith(`${ROUTES.dashboard}/`)) return 'dashboard';
@@ -93,7 +97,8 @@ export function isHeroOverlayPath(pathname: string): boolean {
   return (
     path === ROUTES.kundali ||
     path === ROUTES.astrologers ||
-    path === ROUTES.divineStore
+    path === ROUTES.divineStore ||
+    isDivineStoreProductPath(pathname)
   );
 }
 
@@ -114,6 +119,8 @@ export function tabToPath(tab: AppTab): AppRoutePath {
       return ROUTES.estore;
     case 'puja':
       return ROUTES.puja;
+    case 'cart':
+      return ROUTES.cart;
     case 'login':
       return ROUTES.login;
     case 'signup':

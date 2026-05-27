@@ -25,21 +25,44 @@ export function mapShopifyToJgProduct(node: ShopifyProductNode, collectionTitle?
     node.priceRange.minVariantPrice.amount,
     node.priceRange.minVariantPrice.currencyCode,
   );
+  const compare = node.compareAtPriceRange?.minVariantPrice;
+  const compareAtPrice = compare
+    ? toInrPrice(compare.amount, compare.currencyCode)
+    : undefined;
   const plainDesc = stripHtml(node.description || '');
+  const aboutParagraphs = plainDesc
+    ? plainDesc.split(/\n\n+/).map((p) => p.trim()).filter(Boolean)
+    : [];
   const shortDesc =
-    plainDesc.length > 160 ? `${plainDesc.slice(0, 157)}…` : plainDesc || node.title;
+    aboutParagraphs[0]?.length && aboutParagraphs[0].length > 160
+      ? `${aboutParagraphs[0].slice(0, 157)}…`
+      : aboutParagraphs[0] || node.title;
+  const images = node.images.edges.map((e) => e.node.url).filter(Boolean);
+  const image = images[0] ?? '';
 
   return {
     id: parseShopifyGid(node.id),
+    handle: node.handle,
     name: node.title,
     category: node.productType || collectionTitle || 'Divine Store',
+    vendor: 'astronext.ai',
     price,
+    compareAtPrice: compareAtPrice && compareAtPrice > price ? compareAtPrice : undefined,
     desc: shortDesc,
     descLong: plainDesc || shortDesc,
+    aboutParagraphs: aboutParagraphs.length ? aboutParagraphs : [shortDesc],
     rating: 4.9,
     reviews: 0,
     inStock: node.availableForSale,
-    image: firstImage(node),
+    images: images.length ? images : image ? [image] : [],
+    image,
+    specs: [],
+    trustBullets: [
+      'Genuine sacred items from trusted sources',
+      'Secure packaging for safe delivery',
+      'Devotee-rated quality on Astronext Divine Store',
+    ],
+    priceNote: 'Inclusive of blessings · Ships from Puri',
   };
 }
 

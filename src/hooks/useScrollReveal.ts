@@ -8,6 +8,9 @@ function getPageRoot(): HTMLElement | null {
 
 function initRevealElements(root: ParentNode) {
   root.querySelectorAll<HTMLElement>('[data-reveal-stagger]:not([data-reveal])').forEach((el) => {
+    // Stagger inside an outer [data-reveal] uses `.reveal-visible [data-reveal-stagger] > *`
+    const outerReveal = el.parentElement?.closest('[data-reveal]');
+    if (outerReveal && outerReveal !== el) return;
     el.setAttribute('data-reveal', 'fade');
   });
 

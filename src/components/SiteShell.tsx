@@ -2,8 +2,8 @@
 
 import { useEffect, useState, type ReactNode } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Check, X } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { ArrowRight, Check, Minus, Plus, Trash2, X } from 'lucide-react';
 import SiteHeader from '@/components/SiteHeader';
 import ScrollToTop from '@/components/ScrollToTop';
 import WhatsAppChatButton from '@/components/WhatsAppChatButton';
@@ -11,7 +11,7 @@ import FooterSocialLinks from '@/components/FooterSocialLinks';
 import logoFooterImg from '@/assets/logos/logo-footer.svg';
 import { imageSrc } from '@/lib/imageSrc';
 import { getNavLogoThemeFromPath } from '@/content/logoThemes';
-import { isDetailSubRoute, isHeroOverlayPath, pathnameToTab, ROUTES } from '@/routes/paths';
+import { isAstrologerDetailPath, isHeroOverlayPath, pathnameToTab, ROUTES } from '@/routes/paths';
 import {
   FOOTER_ABOUT,
   FOOTER_CONTACT_INTRO,
@@ -23,10 +23,11 @@ import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 function SiteShellInner({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const activeTab = pathnameToTab(pathname);
   const navLogoTheme = getNavLogoThemeFromPath(pathname);
-  const isHeroOverlayPage = !isDetailSubRoute(pathname) && isHeroOverlayPath(pathname);
-  const { cartCount } = useCart();
+  const isHeroOverlayPage = isHeroOverlayPath(pathname) && !isAstrologerDetailPath(pathname);
+  const { cartCount, cartItems, subtotal, incrementQty, decrementQty, removeFromCart } = useCart();
   const { selectedPuja, closePujaModal } = usePujaBooking();
   const [isScrolled, setIsScrolled] = useState(false);
   const [bookingForm, setBookingForm] = useState({ name: '', dob: '', gotra: '' });
@@ -34,6 +35,7 @@ function SiteShellInner({ children }: { children: ReactNode }) {
   const [footerEmail, setFooterEmail] = useState('');
   const [footerQuery, setFooterQuery] = useState('');
   const [footerSubmitted, setFooterSubmitted] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
 
   const navHeaderClass = [
     'nav-header',
@@ -57,7 +59,13 @@ function SiteShellInner({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     setIsScrolled(false);
+    setCartOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    document.body.classList.toggle('site-cart-open', cartOpen);
+    return () => document.body.classList.remove('site-cart-open');
+  }, [cartOpen]);
 
   useEffect(() => {
     if (selectedPuja) {
@@ -99,11 +107,16 @@ function SiteShellInner({ children }: { children: ReactNode }) {
         logoCompact={isScrolled && !isHeroOverlayPage}
         logoPriority={activeTab === 'home' || isHeroOverlayPage}
         cartCount={cartCount}
+        cartOpen={cartOpen}
+        onCartClick={() => setCartOpen(true)}
       />
 
       <main
         className={`main-content ${
-          activeTab !== 'home' && activeTab !== 'login' && activeTab !== 'signup'
+          activeTab !== 'home' &&
+          activeTab !== 'login' &&
+          activeTab !== 'signup' &&
+          !isHeroOverlayPage
             ? 'main-content--with-nav-gap'
             : ''
         } ${isHeroOverlayPage ? 'main-content--hero-overlay' : ''}`}
@@ -195,6 +208,94 @@ function SiteShellInner({ children }: { children: ReactNode }) {
           </div>
         </div>
       </footer>
+
+      <button
+        type="button"
+        className={`site-cart-backdrop${cartOpen ? ' is-visible' : ''}`}
+        aria-label="Close cart"
+        onClick={() => setCartOpen(false)}
+      />
+
+      <aside className={`site-cart-drawer${cartOpen ? ' is-open' : ''}`} aria-hidden={!cartOpen}>
+        <header className="site-cart-drawer__head">
+          <div>
+            <p className="site-cart-drawer__title">Shopping Cart</p>
+            <p className="site-cart-drawer__count">{cartCount} items</p>
+          </div>
+          <button type="button" className="site-cart-drawer__close" onClick={() => setCartOpen(false)}>
+            <X size={18} />
+          </button>
+        </header>
+
+        <div className="site-cart-drawer__body">
+          {cartItems.length === 0 ? (
+            <div className="site-cart-empty">
+              <p className="site-cart-empty__title">Your cart is empty</p>
+              <p className="site-cart-empty__desc">Add divine products to begin your sacred checkout.</p>
+            </div>
+          ) : (
+            cartItems.map((item) => (
+              <article key={item.productId} className="site-cart-item">
+                <div className="site-cart-item__thumb">
+                  {item.image ? <img src={item.image} alt={item.name} loading="lazy" /> : <span aria-hidden>🛍</span>}
+                </div>
+                <div className="site-cart-item__meta">
+                  <p className="site-cart-item__name">{item.name}</p>
+                  <p className="site-cart-item__price">₹{item.price.toLocaleString('en-IN')}</p>
+                  <div className="site-cart-item__controls">
+                    <button type="button" aria-label="Decrease quantity" onClick={() => decrementQty(item.productId)}>
+                      <Minus size={14} />
+                    </button>
+                    <span>{item.qty}</span>
+                    <button type="button" aria-label="Increase quantity" onClick={() => incrementQty(item.productId)}>
+                      <Plus size={14} />
+                    </button>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className="site-cart-item__remove"
+                  aria-label={`Remove ${item.name}`}
+                  onClick={() => removeFromCart(item.productId)}
+                >
+                  <Trash2 size={16} />
+                </button>
+              </article>
+            ))
+          )}
+        </div>
+
+        <footer className="site-cart-drawer__foot">
+          <div className="site-cart-row">
+            <span>Subtotal</span>
+            <strong>₹{subtotal.toLocaleString('en-IN')}</strong>
+          </div>
+          <div className="site-cart-row">
+            <span>Tax</span>
+            <strong>₹0.00</strong>
+          </div>
+          <div className="site-cart-delivery">Free delivery on orders above ₹500</div>
+          <div className="site-cart-row site-cart-row--total">
+            <span>Total</span>
+            <strong>₹{subtotal.toLocaleString('en-IN')}</strong>
+          </div>
+          <div className="site-cart-actions">
+            <button type="button" className="site-cart-btn site-cart-btn--ghost" onClick={() => setCartOpen(false)}>
+              Close
+            </button>
+            <button
+              type="button"
+              className="site-cart-btn site-cart-btn--primary"
+              onClick={() => {
+                setCartOpen(false);
+                router.push(ROUTES.cart);
+              }}
+            >
+              View Cart <ArrowRight size={15} />
+            </button>
+          </div>
+        </footer>
+      </aside>
 
       <WhatsAppChatButton className="wa-chat-widget--floating" />
 

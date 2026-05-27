@@ -58,7 +58,14 @@ export default function EstorePage({ products = [] }: Props) {
             iconBg={prod.iconBg}
             themeIndex={index}
             added={!!addedItems[prod.id]}
-            onAddToCart={() => handleAddToCart(prod.id)}
+            onAddToCart={() =>
+              handleAddToCart({
+                productId: prod.id,
+                name: prod.name,
+                price: prod.price,
+                image: prod.image,
+              })
+            }
           />
         ))}
       </div>

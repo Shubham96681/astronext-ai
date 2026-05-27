@@ -1,15 +1,15 @@
 import type { JgProduct } from '@/content/jgStoreProducts';
 import type { Product as EstoreProduct } from '@/content/estoreProducts';
 import {
-  fetchCollectionProducts,
-  fetchProductById,
-  isShopifyConfigured,
-  shopifyConfigWarning,
-} from '@/lib/shopify/client';
-import { mapShopifyToEstoreProduct, mapShopifyToJgProduct } from '@/lib/shopify/mapProduct';
+  getDivineStoreCatalogMeta,
+  getDivineStoreProductByIdFromJson,
+  getDivineStoreProductsFromJson,
+} from '@/lib/divineStoreCatalog';
+import { mapShopifyToEstoreProduct } from '@/lib/shopify/mapProduct';
+import { fetchCollectionProducts, isShopifyConfigured, shopifyConfigWarning } from '@/lib/shopify/client';
 import { SHOPIFY_DEFAULTS } from '@/lib/shopify/defaults';
 
-export type StoreSource = 'shopify' | 'static';
+export type StoreSource = 'shopify' | 'static' | 'json';
 
 export type DivineStorePayload = {
   products: JgProduct[];
@@ -33,38 +33,26 @@ function estoreCollectionId(): string {
   );
 }
 
+/** Divine store catalog — JSON file is the source of truth for now. */
 export async function getDivineStoreProducts(): Promise<DivineStorePayload> {
-  const configWarning = shopifyConfigWarning();
+  const meta = getDivineStoreCatalogMeta();
+  const products = getDivineStoreProductsFromJson();
 
-  if (!isShopifyConfigured()) {
+  if (products.length === 0) {
     return {
       products: [],
       source: 'static',
-      shopifyWarning: configWarning ?? 'Shopify is not configured.',
+      collectionTitle: meta.collectionTitle,
+      shopifyWarning: 'No products in divine-store-catalog.json',
     };
   }
 
-  try {
-    const { collectionTitle, products } = await fetchCollectionProducts();
-    const mapped = products.map((p) => mapShopifyToJgProduct(p, collectionTitle));
-    if (mapped.length === 0) {
-      return {
-        products: [],
-        source: 'static',
-        shopifyWarning: 'No products returned from Shopify for this collection.',
-      };
-    }
-    return {
-      products: mapped,
-      source: 'shopify',
-      collectionTitle,
-      shopifyWarning: configWarning,
-    };
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : 'Shopify fetch failed';
-    console.error('[Shopify] divine store fetch failed:', msg);
-    return { products: [], source: 'static', shopifyWarning: configWarning ?? msg };
-  }
+  return {
+    products,
+    source: 'json',
+    collectionTitle: meta.collectionTitle,
+    shopifyWarning: shopifyConfigWarning(),
+  };
 }
 
 export async function getEstoreProducts(): Promise<EstorePayload> {
@@ -103,15 +91,7 @@ export async function getEstoreProducts(): Promise<EstorePayload> {
 }
 
 export async function getDivineStoreProductById(id: number): Promise<JgProduct | null> {
-  if (!isShopifyConfigured()) return null;
-
-  try {
-    const node = await fetchProductById(id);
-    if (node) return mapShopifyToJgProduct(node);
-  } catch (err) {
-    console.error('[Shopify] product fetch failed:', err);
-  }
-  return null;
+  return getDivineStoreProductByIdFromJson(id);
 }
 
 export async function getDivineStoreProductCatalog(): Promise<JgProduct[]> {
