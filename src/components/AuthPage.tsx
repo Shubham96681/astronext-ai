@@ -2,114 +2,141 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Eye, EyeOff } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import { ROUTES } from '../routes/paths';
 import { ZODIAC_WHEEL_SRC } from '@/lib/imageSrc';
 import { AUTH_HERO_SUBTITLE, AUTH_HERO_TITLE } from '../content/siteCopy';
 import { useAuth } from '@/context/AuthContext';
 import { ApiError } from '@/lib/api';
 
-type AuthMode = 'login' | 'signup';
-
-type Props = {
-  mode: AuthMode;
-};
+type Step = 'choose' | 'mobile' | 'otp';
 
 function normalizeRedirect(raw: string | null): string | null {
   if (!raw || !raw.startsWith('/')) return null;
-  // Block protocol-relative URLs and direct API callbacks.
   if (raw.startsWith('//') || raw.startsWith('/api')) return null;
   return raw;
 }
 
-function PasswordField({
-  id,
-  label,
-  value,
-  onChange,
-  placeholder,
-}: {
-  id: string;
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  placeholder?: string;
-}) {
-  const [visible, setVisible] = useState(false);
-
+function OtpInput({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const digits = Array.from({ length: 4 }, (_, i) => value[i] ?? '');
   return (
-    <div className="auth-field">
-      <label className="auth-field__label" htmlFor={id}>
-        {label}
-      </label>
-      <div className="auth-field__control">
+    <div className="auth-otp-boxes">
+      {digits.map((d, i) => (
         <input
-          id={id}
-          type={visible ? 'text' : 'password'}
-          className="auth-field__input"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          autoComplete={id.includes('confirm') ? 'new-password' : 'current-password'}
+          key={i}
+          type="text"
+          inputMode="numeric"
+          maxLength={1}
+          className="auth-otp-box"
+          value={d}
+          onChange={(e) => {
+            const next = value.split('');
+            next[i] = e.target.value.replace(/\D/, '');
+            onChange(next.join('').slice(0, 4));
+            if (e.target.value && i < 3) {
+              (e.target.nextElementSibling as HTMLInputElement | null)?.focus();
+            }
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Backspace' && !digits[i] && i > 0) {
+              (e.currentTarget.previousElementSibling as HTMLInputElement | null)?.focus();
+            }
+          }}
+          aria-label={`OTP digit ${i + 1}`}
         />
-        <button
-          type="button"
-          className="auth-field__toggle"
-          onClick={() => setVisible((v) => !v)}
-          aria-label={visible ? 'Hide password' : 'Show password'}
-        >
-          {visible ? <EyeOff size={18} strokeWidth={1.75} /> : <Eye size={18} strokeWidth={1.75} />}
-        </button>
-      </div>
+      ))}
     </div>
   );
 }
 
-export default function AuthPage({ mode }: Props) {
+export default function AuthPage({ mode: _mode }: { mode: 'login' | 'signup' }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { login, register, refreshSession } = useAuth();
-  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
-  const [signupForm, setSignupForm] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirm: '',
-  });
-  const [error, setError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
-
-  const isLogin = mode === 'login';
+  const { user, isLoading, sendOtp, verifyOtp, loginWithGoogle } = useAuth();
   const redirect = normalizeRedirect(searchParams.get('redirect'));
 
+  // Redirect already-logged-in users away from the login page
   useEffect(() => {
-    if (searchParams.get('refresh') === '1') {
-      refreshSession().then((token) => {
-        if (token && redirect) {
-          router.replace(redirect);
-        }
-      });
+    if (!isLoading && user) {
+      router.replace(redirect ?? ROUTES.home);
     }
-  }, [searchParams, refreshSession, router, redirect]);
+  }, [user, isLoading, redirect, router]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const [step, setStep] = useState<Step>('choose');
+  const [mobile, setMobile] = useState('');
+  const [otp, setOtp] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [resendCountdown, setResendCountdown] = useState(0);
+
+  const afterLogin = () => router.push(redirect ?? ROUTES.home);
+
+  const startResendTimer = () => {
+    setResendCountdown(30);
+    const id = setInterval(() => {
+      setResendCountdown((c) => {
+        if (c <= 1) { clearInterval(id); return 0; }
+        return c - 1;
+      });
+    }, 1000);
+  };
+
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
+    const cleaned = mobile.trim().replace(/\D/g, '').slice(-10);
+    if (cleaned.length !== 10) {
+      setError('Please enter a valid 10-digit mobile number');
+      return;
+    }
+    setSubmitting(true);
+    try {
+      await sendOtp(cleaned);
+      setStep('otp');
+      startResendTimer();
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Failed to send OTP. Try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    if (otp.length !== 4) { setError('Enter the 4-digit OTP'); return; }
+    setSubmitting(true);
+    try {
+      await verifyOtp(mobile.trim().replace(/\D/g, '').slice(-10), otp);
+      afterLogin();
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Incorrect OTP. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleResend = async () => {
+    if (resendCountdown > 0) return;
+    setError(null);
+    setOtp('');
+    const cleaned = mobile.trim().replace(/\D/g, '').slice(-10);
+    try {
+      await sendOtp(cleaned);
+      startResendTimer();
+    } catch {
+      setError('Failed to resend OTP');
+    }
+  };
+
+  const handleGoogle = async () => {
     setError(null);
     setSubmitting(true);
     try {
-      if (isLogin) {
-        const res = await login(loginForm.email.trim(), loginForm.password);
-        router.push(redirect ?? res.redirect_to);
-      } else {
-        if (signupForm.password !== signupForm.confirm) {
-          setError('Passwords do not match');
-          return;
-        }
-        const res = await register(signupForm.name.trim(), signupForm.email.trim(), signupForm.password);
-        router.push(redirect ?? res.redirect_to);
-      }
+      await loginWithGoogle();
+      afterLogin();
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Something went wrong. Please try again.');
+      setError(err instanceof ApiError ? err.message : 'Google sign-in failed. Try again.');
     } finally {
       setSubmitting(false);
     }
@@ -119,9 +146,7 @@ export default function AuthPage({ mode }: Props) {
     <div className="auth-page">
       <section className="auth-hero" aria-labelledby="auth-hero-title" data-reveal="fade-up" data-reveal-immediate>
         <div className="auth-hero__intro" data-reveal="fade-up" data-reveal-immediate>
-          <h1 id="auth-hero-title" className="auth-hero__title">
-            {AUTH_HERO_TITLE}
-          </h1>
+          <h1 id="auth-hero-title" className="auth-hero__title">{AUTH_HERO_TITLE}</h1>
           <p className="auth-hero__subtitle">{AUTH_HERO_SUBTITLE}</p>
         </div>
 
@@ -138,132 +163,109 @@ export default function AuthPage({ mode }: Props) {
             />
           </div>
 
-          <div className={`auth-card interactive-card ${!isLogin ? 'auth-card--signup' : ''}`} data-reveal="flip-in" data-reveal-immediate data-reveal-delay="140ms">
-            <h2 className="auth-card__title">{isLogin ? 'Login' : 'Sign Up'}</h2>
+          <div className="auth-card interactive-card" data-reveal="flip-in" data-reveal-immediate data-reveal-delay="140ms">
 
-            <form className="auth-card__form" onSubmit={handleSubmit} noValidate>
-              {error ? (
-                <p role="alert" style={{ color: '#c62828', fontSize: '0.875rem', marginBottom: '12px' }}>
-                  {error}
+            {/* ── Step: choose ── */}
+            {step === 'choose' && (
+              <>
+                <h2 className="auth-card__title">Welcome Back</h2>
+                {error && <p role="alert" className="auth-error">{error}</p>}
+
+                <button
+                  type="button"
+                  className="auth-google-btn"
+                  onClick={handleGoogle}
+                  disabled={submitting}
+                >
+                  <svg className="auth-google-btn__icon" viewBox="0 0 24 24" aria-hidden>
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                  </svg>
+                  {submitting ? 'Signing in…' : 'Continue with Google'}
+                </button>
+
+                <div className="auth-divider"><span>or</span></div>
+
+                <button
+                  type="button"
+                  className="auth-card__submit"
+                  onClick={() => { setError(null); setStep('mobile'); }}
+                >
+                  Login with Mobile Number
+                </button>
+              </>
+            )}
+
+            {/* ── Step: mobile ── */}
+            {step === 'mobile' && (
+              <>
+                <button type="button" className="auth-back-btn" onClick={() => { setStep('choose'); setError(null); }}>
+                  <ChevronLeft size={16} /> Back
+                </button>
+                <h2 className="auth-card__title">Enter Mobile</h2>
+                {error && <p role="alert" className="auth-error">{error}</p>}
+
+                <form onSubmit={handleSendOtp} noValidate>
+                  <div className="auth-field">
+                    <label className="auth-field__label" htmlFor="auth-mobile">Mobile Number</label>
+                    <div className="auth-mobile-row">
+                      <span className="auth-mobile-prefix">+91</span>
+                      <input
+                        id="auth-mobile"
+                        type="tel"
+                        className="auth-field__input auth-field__input--plain"
+                        value={mobile}
+                        onChange={(e) => setMobile(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                        placeholder="10-digit number"
+                        autoComplete="tel-national"
+                        inputMode="numeric"
+                      />
+                    </div>
+                  </div>
+                  <button type="submit" className="auth-card__submit" disabled={submitting}>
+                    {submitting ? 'Sending…' : 'Send OTP on WhatsApp'}
+                  </button>
+                </form>
+              </>
+            )}
+
+            {/* ── Step: otp ── */}
+            {step === 'otp' && (
+              <>
+                <button type="button" className="auth-back-btn" onClick={() => { setStep('mobile'); setError(null); setOtp(''); }}>
+                  <ChevronLeft size={16} /> Back
+                </button>
+                <h2 className="auth-card__title">Verify OTP</h2>
+                <p className="auth-otp-hint">
+                  We sent a 4-digit OTP to WhatsApp<br />
+                  <strong>+91 {mobile}</strong>
                 </p>
-              ) : null}
-              {isLogin ? (
-                <>
-                  <div className="auth-field">
-                    <label className="auth-field__label" htmlFor="auth-email">
-                      Email/Mobile Number
-                    </label>
-                    <input
-                      id="auth-email"
-                      type="text"
-                      className="auth-field__input auth-field__input--plain"
-                      value={loginForm.email}
-                      onChange={(e) => setLoginForm((f) => ({ ...f, email: e.target.value }))}
-                      placeholder="Enter your email or mobile number"
-                      autoComplete="username"
-                    />
-                  </div>
+                {error && <p role="alert" className="auth-error">{error}</p>}
 
-                  <PasswordField
-                    id="auth-password"
-                    label="Password"
-                    value={loginForm.password}
-                    onChange={(password) => setLoginForm((f) => ({ ...f, password }))}
-                    placeholder="Enter your password"
-                  />
-
-                  <a href="#forgot" className="auth-card__forgot">
-                    Forgot Password ?
-                  </a>
-
-                  <button type="submit" className="auth-card__submit" disabled={submitting}>
-                    {submitting ? 'Signing in…' : 'Login'}
+                <form onSubmit={handleVerifyOtp} noValidate>
+                  <OtpInput value={otp} onChange={setOtp} />
+                  <button type="submit" className="auth-card__submit" disabled={submitting || otp.length < 4} style={{ marginTop: '24px' }}>
+                    {submitting ? 'Verifying…' : 'Verify & Login'}
                   </button>
+                </form>
 
-                  <p className="auth-card__switch" style={{ marginTop: '14px', fontSize: '12px', color: '#666' }}>
-                    Demo: admin@astronext.ai / admin123 · astrologer@astronext.ai / astro123
-                  </p>
-
-                  <p className="auth-card__switch">
-                    Don&apos;t have an account?{' '}
-                    <button
-                      type="button"
-                      className="auth-card__switch-link"
-                      onClick={() =>
-                        router.push(redirect ? `${ROUTES.signup}?redirect=${encodeURIComponent(redirect)}` : ROUTES.signup)
-                      }
-                    >
-                      Sign Up
-                    </button>
-                  </p>
-                </>
-              ) : (
-                <>
-                  <div className="auth-field">
-                    <label className="auth-field__label" htmlFor="auth-name">
-                      Full Name
-                    </label>
-                    <input
-                      id="auth-name"
-                      type="text"
-                      className="auth-field__input auth-field__input--plain"
-                      value={signupForm.name}
-                      onChange={(e) => setSignupForm((f) => ({ ...f, name: e.target.value }))}
-                      placeholder="Enter your full name"
-                      autoComplete="name"
-                    />
-                  </div>
-
-                  <div className="auth-field">
-                    <label className="auth-field__label" htmlFor="auth-signup-email">
-                      Email/Mobile Number
-                    </label>
-                    <input
-                      id="auth-signup-email"
-                      type="text"
-                      className="auth-field__input auth-field__input--plain"
-                      value={signupForm.email}
-                      onChange={(e) => setSignupForm((f) => ({ ...f, email: e.target.value }))}
-                      placeholder="Enter your email or mobile number"
-                      autoComplete="username"
-                    />
-                  </div>
-
-                  <PasswordField
-                    id="auth-signup-password"
-                    label="Password"
-                    value={signupForm.password}
-                    onChange={(password) => setSignupForm((f) => ({ ...f, password }))}
-                    placeholder="Create a password"
-                  />
-
-                  <PasswordField
-                    id="auth-signup-confirm"
-                    label="Confirm Password"
-                    value={signupForm.confirm}
-                    onChange={(confirm) => setSignupForm((f) => ({ ...f, confirm }))}
-                    placeholder="Re-enter your password"
-                  />
-
-                  <button type="submit" className="auth-card__submit" disabled={submitting}>
-                    {submitting ? 'Creating account…' : 'Sign Up'}
+                <p className="auth-card__switch" style={{ marginTop: '18px' }}>
+                  Didn&apos;t receive it?{' '}
+                  <button
+                    type="button"
+                    className="auth-card__switch-link"
+                    onClick={handleResend}
+                    disabled={resendCountdown > 0}
+                    style={{ opacity: resendCountdown > 0 ? 0.5 : 1 }}
+                  >
+                    {resendCountdown > 0 ? `Resend in ${resendCountdown}s` : 'Resend OTP'}
                   </button>
+                </p>
+              </>
+            )}
 
-                  <p className="auth-card__switch">
-                    Already have an account?{' '}
-                    <button
-                      type="button"
-                      className="auth-card__switch-link"
-                      onClick={() =>
-                        router.push(redirect ? `${ROUTES.login}?redirect=${encodeURIComponent(redirect)}` : ROUTES.login)
-                      }
-                    >
-                      Login
-                    </button>
-                  </p>
-                </>
-              )}
-            </form>
           </div>
         </div>
       </section>

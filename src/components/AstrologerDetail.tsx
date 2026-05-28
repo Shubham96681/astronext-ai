@@ -1,5 +1,14 @@
-import { useEffect } from 'react';
-import { ArrowRight, Star } from 'lucide-react';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { ArrowRight, Loader2, Phone, Star, X } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
+import {
+  checkUserByPhone,
+  createGuestUser,
+  initConsultationPayment,
+  redirectToPayu,
+} from '@/lib/consultationPayments';
 import {
   ASTROLOGERS,
   formatConsultCount,
@@ -40,15 +49,86 @@ function AlsoLikeCard({
   );
 }
 
+const DURATION_OPTIONS = [30, 45, 60] as const;
+
 export default function AstrologerDetail({ astrologer, onBack, onHome, onSelect, onChat }: Props) {
+  const { user } = useAuth();
   const related = ASTROLOGERS.filter((a) => a.id !== astrologer.id).slice(0, 4);
   const bioParagraphs = astrologer.bioLong.split(/\n\n+/).filter(Boolean);
+
+  // Booking state
+  const [showModal, setShowModal] = useState(false);
+  const [phone, setPhone] = useState('');
+  const [duration, setDuration] = useState<30 | 45 | 60>(30);
+  const [booking, setBooking] = useState(false);
+  const [bookingError, setBookingError] = useState('');
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
     document.body.classList.add('astro-detail-active');
     return () => document.body.classList.remove('astro-detail-active');
   }, [astrologer.id]);
+
+  const initiatePayment = async (userId: string, userPhone: string, userName: string, userEmail: string) => {
+    const result = await initConsultationPayment({
+      astrologer_id: String(astrologer.id),
+      astrologer_name: astrologer.name,
+      astrologer_slug: astrologer.slug,
+      price_per_minute: astrologer.pricePerMinute,
+      duration_minutes: duration,
+      user_id: userId,
+      phone: userPhone,
+      email: userEmail,
+      customer_name: userName,
+    });
+    redirectToPayu(result.payu_action, result.payu_fields);
+  };
+
+  const handleBookNow = async () => {
+    setBookingError('');
+    if (user) {
+      // Logged-in path — go straight to payment
+      setBooking(true);
+      try {
+        await initiatePayment(
+          String(user.id),
+          (user as { mobile?: string }).mobile ?? '',
+          user.name,
+          user.email,
+        );
+      } catch (e) {
+        setBookingError(e instanceof Error ? e.message : 'Something went wrong');
+        setBooking(false);
+      }
+    } else {
+      // Guest path — show phone modal
+      setShowModal(true);
+    }
+  };
+
+  const handleGuestPay = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setBookingError('');
+    const cleaned = phone.replace(/\D/g, '').slice(-10);
+    if (cleaned.length !== 10) { setBookingError('Enter a valid 10-digit mobile number'); return; }
+    setBooking(true);
+    try {
+      const check = await checkUserByPhone(cleaned);
+      let userId: string;
+      let userName = '';
+      if (check?.found) {
+        userId = check.user_id;
+        userName = check.name;
+      } else {
+        const guest = await createGuestUser(cleaned);
+        userId = guest.user_id;
+      }
+      await initiatePayment(userId, cleaned, userName, '');
+    } catch (e) {
+      setBookingError(e instanceof Error ? e.message : 'Something went wrong');
+      setBooking(false);
+    }
+  };
 
   return (
     <div className="astro-detail-page">
@@ -125,11 +205,74 @@ export default function AstrologerDetail({ astrologer, onBack, onHome, onSelect,
             <span className="astro-detail-cta-bar__lang-label">SPEAKS</span>
             <p className="astro-detail-cta-bar__lang-list">{languagesList(astrologer.languages)}</p>
           </div>
-          <button type="button" className="astro-detail-cta-bar__btn" onClick={() => onChat(astrologer)}>
-            BOOK CONSULTATION
-            <ArrowRight size={18} strokeWidth={2.25} aria-hidden />
-          </button>
+          <div className="astro-detail-cta-bar__book">
+            <div className="astro-detail-duration">
+              {DURATION_OPTIONS.map((d) => (
+                <button
+                  key={d}
+                  type="button"
+                  className={`astro-detail-duration__opt${duration === d ? ' is-active' : ''}`}
+                  onClick={() => setDuration(d)}
+                >
+                  {d} min · ₹{(astrologer.pricePerMinute * d).toFixed(0)}
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              className="astro-detail-cta-bar__btn"
+              onClick={handleBookNow}
+              disabled={booking}
+            >
+              {booking
+                ? <Loader2 size={18} className="spin" aria-hidden />
+                : <><ArrowRight size={18} strokeWidth={2.25} aria-hidden /> BOOK CONSULTATION</>}
+            </button>
+            {bookingError && <p className="astro-detail-book-error">{bookingError}</p>}
+          </div>
         </div>
+
+        {/* ── Phone modal for guest users ── */}
+        {showModal && (
+          <div className="booking-modal-overlay" onClick={() => !booking && setShowModal(false)}>
+            <div className="booking-modal" onClick={(e) => e.stopPropagation()}>
+              <button
+                type="button"
+                className="booking-modal__close"
+                onClick={() => setShowModal(false)}
+                aria-label="Close"
+              >
+                <X size={20} />
+              </button>
+              <div className="booking-modal__icon"><Phone size={28} /></div>
+              <h3 className="booking-modal__title">Enter your mobile number</h3>
+              <p className="booking-modal__sub">
+                We'll use this to link your booking. No OTP needed.
+              </p>
+              <form onSubmit={handleGuestPay} noValidate>
+                <div className="booking-modal__input-row">
+                  <span className="booking-modal__prefix">+91</span>
+                  <input
+                    type="tel"
+                    inputMode="numeric"
+                    maxLength={10}
+                    className="booking-modal__input"
+                    placeholder="10-digit mobile"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                    autoFocus
+                  />
+                </div>
+                {bookingError && <p className="booking-modal__error">{bookingError}</p>}
+                <button type="submit" className="booking-modal__cta" disabled={booking}>
+                  {booking
+                    ? <Loader2 size={18} className="spin" />
+                    : `Pay ₹${(astrologer.pricePerMinute * duration).toFixed(0)} · ${duration} min`}
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
         </section>
 
         <div className="astro-detail-body" data-reveal="fade-up">

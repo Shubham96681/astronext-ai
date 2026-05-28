@@ -1,5 +1,5 @@
 import { ApiError } from '@/lib/api';
-import { clearAuthCookies, setAuthCookies } from '@/lib/authCookies';
+import { clearAuthCookies, setAuthCookies, ACCESS_COOKIE } from '@/lib/authCookies';
 import { isTokenExpired } from '@/lib/jwt';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
@@ -11,7 +11,7 @@ export const USER_KEY = 'astronext_user';
 export type UserRole = 'customer' | 'astrologer' | 'admin' | 'ops';
 
 export type AuthUser = {
-  id: number;
+  id: string | number;
   email: string;
   name: string;
   role: UserRole;
@@ -116,6 +116,69 @@ export async function logoutRequest(accessToken: string): Promise<void> {
     method: 'POST',
     headers: { Authorization: `Bearer ${accessToken}` },
   }).catch(() => undefined);
+}
+
+// ── New auth (OTP + Google) ───────────────────────────────────────────────
+
+type NewAuthResponse = {
+  access_token: string;
+  token_type: string;
+  user: Record<string, unknown>;
+};
+
+export function persistNewSession(res: NewAuthResponse, fallbackName?: string): AuthUser {
+  const u = res.user as Record<string, unknown>;
+  const user: AuthUser = {
+    id: (u.UserId as string) ?? '',
+    email: (u.email as string) ?? '',
+    name: (u.Name as string) ?? fallbackName ?? '',
+    role: 'customer',
+  };
+  localStorage.setItem(TOKEN_KEY, res.access_token);
+  localStorage.removeItem(REFRESH_KEY);
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
+  // Set cookie so middleware and server reads see the token (30-day expiry, no refresh token)
+  const thirtyDays = 30 * 24 * 60 * 60;
+  setAuthCookies(res.access_token, '', thirtyDays);
+  return user;
+}
+
+export async function sendOtpRequest(mobile: string): Promise<void> {
+  const res = await fetch(`${API_BASE}/api/v1/auth/send-otp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ mobile }),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError((body as { detail?: string }).detail ?? 'Failed to send OTP', res.status);
+  }
+}
+
+export async function verifyOtpRequest(mobile: string, otp: string): Promise<NewAuthResponse> {
+  const res = await fetch(`${API_BASE}/api/v1/auth/verify-otp`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ mobile, otp }),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError((body as { detail?: string }).detail ?? 'Invalid OTP', res.status);
+  }
+  return res.json() as Promise<NewAuthResponse>;
+}
+
+export async function googleAuthRequest(idToken: string): Promise<NewAuthResponse> {
+  const res = await fetch(`${API_BASE}/api/v1/auth/google`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id_token: idToken }),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError((body as { detail?: string }).detail ?? 'Google login failed', res.status);
+  }
+  return res.json() as Promise<NewAuthResponse>;
 }
 
 /** Returns a valid access token, refreshing via JWT refresh token if needed. */

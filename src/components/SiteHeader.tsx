@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Menu, Search, ShoppingCart, User, X } from 'lucide-react';
+import { LogOut, Menu, Search, ShoppingCart, User, X } from 'lucide-react';
 import SiteLogo from './SiteLogo';
 import type { LogoTheme } from '../content/logoThemes';
 import { ROUTES } from '../routes/paths';
+import { useAuth } from '@/context/AuthContext';
 
 type SiteHeaderProps = {
   headerClassName: string;
@@ -43,8 +44,29 @@ export default function SiteHeader({
   onCartClick,
 }: SiteHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
+  const { user, logout } = useAuth();
+
+  // Close profile dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setProfileOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const handleLogout = async () => {
+    setProfileOpen(false);
+    setMenuOpen(false);
+    await logout();
+    router.push(ROUTES.home);
+  };
 
   useEffect(() => {
     setMenuOpen(false);
@@ -92,14 +114,44 @@ export default function SiteHeader({
             <button type="button" className="action-btn" title="Search stars...">
               <Search size={22} strokeWidth={1.75} />
             </button>
-            <button
-              type="button"
-              className="action-btn"
-              title="Login / Sign Up"
-              onClick={() => router.push(ROUTES.login)}
-            >
-              <User size={22} strokeWidth={1.75} />
-            </button>
+
+            {user ? (
+              <div className="nav-profile" ref={profileRef}>
+                <button
+                  type="button"
+                  className="nav-profile__trigger"
+                  onClick={() => setProfileOpen((o) => !o)}
+                  aria-label="Profile menu"
+                  aria-expanded={profileOpen}
+                >
+                  <span className="nav-profile__avatar">
+                    {(user.name?.[0] ?? user.email?.[0] ?? 'U').toUpperCase()}
+                  </span>
+                </button>
+                {profileOpen && (
+                  <div className="nav-profile__dropdown">
+                    <div className="nav-profile__info">
+                      <p className="nav-profile__name">{user.name || 'User'}</p>
+                      <p className="nav-profile__email">{user.email}</p>
+                    </div>
+                    <hr className="nav-profile__divider" />
+                    <button type="button" className="nav-profile__item" onClick={handleLogout}>
+                      <LogOut size={15} strokeWidth={1.75} />
+                      Sign out
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                type="button"
+                className="action-btn"
+                title="Login / Sign Up"
+                onClick={() => router.push(ROUTES.login)}
+              >
+                <User size={22} strokeWidth={1.75} />
+              </button>
+            )}
             <button
               type="button"
               className="action-btn"
@@ -162,10 +214,25 @@ export default function SiteHeader({
         </ul>
 
         <div className="nav-mobile-drawer__actions">
-          <button type="button" className="nav-mobile-action" onClick={() => { closeMenu(); router.push(ROUTES.login); }}>
-            <User size={20} strokeWidth={1.75} />
-            Login / Sign Up
-          </button>
+          {user ? (
+            <>
+              <div className="nav-mobile-user">
+                <span className="nav-profile__avatar nav-profile__avatar--sm">
+                  {(user.name?.[0] ?? user.email?.[0] ?? 'U').toUpperCase()}
+                </span>
+                <span className="nav-mobile-user__name">{user.name || user.email}</span>
+              </div>
+              <button type="button" className="nav-mobile-action" onClick={handleLogout}>
+                <LogOut size={20} strokeWidth={1.75} />
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <button type="button" className="nav-mobile-action" onClick={() => { closeMenu(); router.push(ROUTES.login); }}>
+              <User size={20} strokeWidth={1.75} />
+              Login / Sign Up
+            </button>
+          )}
           <button type="button" className="nav-mobile-action">
             <Search size={20} strokeWidth={1.75} />
             Search

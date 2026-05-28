@@ -88,3 +88,121 @@
     --nav-logo-max-width: min(13rem, 62vw);
   }
 }
+
+/* ── Profile avatar + dropdown ─────────────────────────────────────────── */
+.nav-profile {
+  position: relative;
+}
+
+.nav-profile__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.nav-profile__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #1c064f;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.nav-profile__avatar--sm {
+  width: 28px;
+  height: 28px;
+  font-size: 12px;
+}
+
+.nav-profile__dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 200px;
+  padding: 8px 0;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+  z-index: 200;
+  animation: nav-dropdown-in 0.15s ease;
+}
+
+@keyframes nav-dropdown-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.nav-profile__info {
+  padding: 10px 16px 8px;
+}
+
+.nav-profile__name {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-profile__email {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #888;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-profile__divider {
+  margin: 6px 0;
+  border: none;
+  border-top: 1px solid #f0f0f0;
+}
+
+.nav-profile__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: #444;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s;
+}
+.nav-profile__item:hover { background: #f7f7f7; color: #1a1a1a; }
+
+/* Mobile drawer user info */
+.nav-mobile-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0 8px;
+}
+
+.nav-mobile-user__name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
