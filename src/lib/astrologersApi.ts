@@ -1,60 +1,65 @@
 import type { Astrologer } from '@/content/astrologersData';
 import { ASTROLOGERS, resolveAstrologerParam } from '@/content/astrologersData';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000';
+// Proxy route — requests go through Next.js server to avoid CORS
+const ASTRO_PROXY = '/api/astrologers';
 
 export type ApiAstrologerPublic = {
-  id: number;
+  id: string;
   slug: string;
   name: string;
-  specialty: string;
+  display_name: string;
   title: string;
   tagline: string;
   bio: string;
-  bio_long: string;
+  primary_expertise: string;
+  expertise: string[];
   rating: number;
-  reviews: number;
-  consultations: number;
-  exp: number;
+  total_reviews: number;
+  consultation_count: number;
+  experience_years: number;
   price_per_minute: number;
-  online: boolean;
-  languages: string;
-  specialities: { title: string; description: string }[];
-  avatar: string;
-  portrait: string;
+  is_live: boolean;
+  languages: string[];
+  specialities: { name: string; description: string }[];
+  profile_image: string;
+  cover_image: string | null;
 };
 
 type ApiListResponse = {
+  total: number;
+  page: number;
+  size: number;
+  pages: number;
   data: ApiAstrologerPublic[];
-  meta: { total: number };
 };
 
 export function mapAstrologerFromApi(row: ApiAstrologerPublic): Astrologer {
   return {
     id: row.id,
     slug: row.slug,
-    name: row.name,
-    specialty: row.specialty,
+    name: row.display_name || row.name,
+    specialty: row.primary_expertise || row.expertise?.[0] || '',
     title: row.title,
     tagline: row.tagline,
     bio: row.bio,
-    bioLong: row.bio_long,
+    bioLong: row.bio,
     rating: row.rating,
-    reviews: row.reviews,
-    consultations: row.consultations,
-    exp: row.exp,
+    reviews: row.total_reviews,
+    consultations: row.consultation_count,
+    exp: row.experience_years,
     pricePerMinute: row.price_per_minute,
-    online: row.online,
-    languages: row.languages,
-    specialities: row.specialities,
-    avatar: row.avatar,
-    portrait: row.portrait,
+    online: row.is_live,
+    languages: Array.isArray(row.languages) ? row.languages.join(', ') : row.languages,
+    specialities: (row.specialities ?? []).map((s) => ({ title: s.name, description: s.description })),
+    avatar: row.profile_image,
+    portrait: row.cover_image ?? row.profile_image,
   };
 }
 
 export async function fetchAstrologersFromApi(): Promise<Astrologer[]> {
   try {
-    const res = await fetch(`${API_BASE}/api/v1/astrologers`);
+    const res = await fetch(`${ASTRO_PROXY}?page=1&size=20`);
     if (!res.ok) return ASTROLOGERS;
     const json = (await res.json()) as ApiListResponse;
     if (!json.data?.length) return ASTROLOGERS;
@@ -66,7 +71,10 @@ export async function fetchAstrologersFromApi(): Promise<Astrologer[]> {
 
 export async function fetchAstrologerByParam(param: string): Promise<Astrologer | undefined> {
   try {
-    const res = await fetch(`${API_BASE}/api/v1/astrologers/${encodeURIComponent(param)}`);
+    // /api/astrologers/[id] proxies to localhost:8000 server-side (supports UUID and slug)
+    const res = await fetch(`/api/astrologers/${encodeURIComponent(param)}`, {
+      headers: { Accept: 'application/json' },
+    });
     if (res.ok) return mapAstrologerFromApi((await res.json()) as ApiAstrologerPublic);
   } catch {
     /* static fallback */

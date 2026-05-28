@@ -6,7 +6,7 @@ export type AstroSpeciality = {
 import { astrologerShareSlug } from '@/lib/astrologerSlug';
 
 export type Astrologer = {
-  id: number;
+  id: string | number;
   /** Shareable profile URL segment, e.g. acharya-vidyabhushan-ab0000012d */
   slug: string;
   name: string;
@@ -222,7 +222,7 @@ export const ASTROLOGERS: Astrologer[] = ASTROLOGER_ROWS.map((row) => ({
   slug: astrologerShareSlug(row.name, row.id),
 }));
 
-export function getAstrologerById(id: number): Astrologer | undefined {
+export function getAstrologerById(id: string | number): Astrologer | undefined {
   return ASTROLOGERS.find((a) => a.id === id);
 }
 

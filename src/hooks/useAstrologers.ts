@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ASTROLOGERS, type Astrologer } from '@/content/astrologersData';
+import { type Astrologer } from '@/content/astrologersData';
 import { fetchAstrologersFromApi } from '@/lib/astrologersApi';
 
 export function useAstrologers() {
-  const [astrologers, setAstrologers] = useState<Astrologer[]>(ASTROLOGERS);
+  const [astrologers, setAstrologers] = useState<Astrologer[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

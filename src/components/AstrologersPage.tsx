@@ -30,6 +30,8 @@ export default function AstrologersPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let cancelled = false;
+
     if (!astrologerIdParam) {
       setSelected(undefined);
       return;
@@ -41,11 +43,19 @@ export default function AstrologersPage() {
       setSelected(fromList);
       return;
     }
-    fetchAstrologerByParam(astrologerIdParam).then((a) => {
-      if (!a) router.replace(ROUTES.astrologers);
-      else setSelected(a);
-    });
-  }, [astrologerIdParam, astrologers, router]);
+    // Only fetch from API when not yet in the loaded list (e.g. direct URL navigation
+    // before the listing has finished loading). The cancellation flag prevents a stale
+    // promise from redirecting away after the list loads and sets selected itself.
+    if (!listLoading) {
+      fetchAstrologerByParam(astrologerIdParam).then((a) => {
+        if (cancelled) return;
+        if (!a) router.replace(ROUTES.astrologers);
+        else setSelected(a);
+      });
+    }
+
+    return () => { cancelled = true; };
+  }, [astrologerIdParam, astrologers, listLoading, router]);
 
   useEffect(() => {
     if (!astrologerIdParam || !selected) return;
@@ -227,14 +237,18 @@ export default function AstrologersPage() {
           Choose your guide
         </h2>
         <div className="astrologer-blocks-grid" data-reveal="fade-up" data-reveal-stagger>
-          {astrologers.map((astro, index) => (
-            <AstrologerBlockCard
-              key={astro.id}
-              astro={astro}
-              themeIndex={index}
-              onChat={() => startChat(astro)}
-            />
-          ))}
+          {listLoading
+            ? Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="astro-block astro-block--skeleton" aria-hidden="true" />
+              ))
+            : astrologers.map((astro, index) => (
+                <AstrologerBlockCard
+                  key={astro.id}
+                  astro={astro}
+                  themeIndex={index}
+                  onChat={() => startChat(astro)}
+                />
+              ))}
         </div>
       </section>
 
