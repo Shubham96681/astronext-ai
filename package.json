@@ -17,8 +17,7 @@
     "start": "next start",
     "start:uat": "dotenv -e .env.uat -o -- next start",
     "start:prod": "dotenv -e .env.prod -o -- next start",
-    "lint": "eslint .",
-    "api": "cd backend && .venv\\Scripts\\uvicorn app.main:app --reload --port 8000"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
